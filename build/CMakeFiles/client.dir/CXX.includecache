@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/martin/skola/UPS/SP/algorithm.h
+card.h
+/home/martin/skola/UPS/SP/card.h
+hand.h
+/home/martin/skola/UPS/SP/hand.h
+vector
+-
+
+/home/martin/skola/UPS/SP/card.h
+ostream
+-
+
+/home/martin/skola/UPS/SP/hand.h
+card.h
+/home/martin/skola/UPS/SP/card.h
+
+/home/martin/skola/UPS/SP/networking/server.h
+
+/home/martin/skola/UPS/SP/networkplayer.cxx
+networkplayer.h
+/home/martin/skola/UPS/SP/networkplayer.h
+cstring
+-
+iostream
+-
+
+/home/martin/skola/UPS/SP/networkplayer.h
+algorithm.h
+/home/martin/skola/UPS/SP/algorithm.h
+networking/server.h
+/home/martin/skola/UPS/SP/networking/server.h
+

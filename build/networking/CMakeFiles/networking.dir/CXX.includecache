@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/martin/skola/UPS/SP/networking/commonnetwork.h
+sys/socket.h
+-
+sys/types.h
+-
+arpa/inet.h
+-
+netinet/in.h
+-
+netdb.h
+-
+
+/home/martin/skola/UPS/SP/networking/server.cxx
+server.h
+/home/martin/skola/UPS/SP/networking/server.h
+unistd.h
+-
+iostream
+-
+cstring
+-
+commonnetwork.h
+/home/martin/skola/UPS/SP/networking/commonnetwork.h
+
+/home/martin/skola/UPS/SP/networking/server.h
+
