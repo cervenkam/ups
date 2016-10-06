@@ -434,33 +434,6 @@ programmerbot.cxx.s:
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/programmerbot.cxx.s
 .PHONY : programmerbot.cxx.s
 
-startgame.o: startgame.cxx.o
-.PHONY : startgame.o
-
-# target to build an object file
-startgame.cxx.o:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/startgame.cxx.o
-	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/startgame.cxx.o
-.PHONY : startgame.cxx.o
-
-startgame.i: startgame.cxx.i
-.PHONY : startgame.i
-
-# target to preprocess a source file
-startgame.cxx.i:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/startgame.cxx.i
-	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/startgame.cxx.i
-.PHONY : startgame.cxx.i
-
-startgame.s: startgame.cxx.s
-.PHONY : startgame.s
-
-# target to generate assembly for a file
-startgame.cxx.s:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/startgame.cxx.s
-	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/startgame.cxx.s
-.PHONY : startgame.cxx.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -505,9 +478,6 @@ help:
 	@echo "... programmerbot.o"
 	@echo "... programmerbot.i"
 	@echo "... programmerbot.s"
-	@echo "... startgame.o"
-	@echo "... startgame.i"
-	@echo "... startgame.s"
 .PHONY : help
 
 

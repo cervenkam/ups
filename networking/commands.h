@@ -1,30 +1,39 @@
-#ifndef _NETWORK_PLAYER_H_
-#define _NETWORK_PLAYER_H_
+#ifndef _COMMANDS_H_
+#define _COMMANDS_H_
 
-#include "algorithm.h"
-#include "networking/server.h"
+#include "server.h"
+#include "../networkplayer.h"
+#include "../game.h"
 
-#define COMMANDS 4
+#define COMMANDS 6
 
-class NetworkPlayer: public Algorithm{
-	typedef void (NetworkPlayer::*funcptr)(char*);
+class Server;
+class Commands{
+	typedef void (Commands::*funcptr)(char*);
 	public:
-		NetworkPlayer(const char* player,unsigned char ch);
-		void SetSocket(int sock);
-		void SetServer(Server* server);
-		~NetworkPlayer();
+		Commands();
+		Commands(int,Server*,NetworkPlayer*,Game*);
+		void SetSocket(int);
+		void SetServer(Server*);
+		void SetPlayer(NetworkPlayer*);
+		void SetGame(Game*);
 		void Call(char* command);
-		void Used(Card*,unsigned char);
-		Card* Play(bool force);
+		void Start();
 	private:
-		void  BadCommand(char* command);
-		void       Login(char* command);
-		void    SendCard(char* command);
-		void  Disconnect(char* command);  
-		void     MyCards(char* message);
+		void  BadCommand(const char*);
+		void  CreateGame(char*);
+		void       Login(char*);
+		void    SendCard(char*);
+		void  Disconnect(char*);  
+		void     MyCards(char*);
+		void        Ping(char*);
+
 		Server* server;
 		int sock;
+		NetworkPlayer* player;
+		Game* game;
 		Card* card_to_play;
+
 		static funcptr commands[COMMANDS];
 		static const char* texts[COMMANDS];
 		static const char* ranks[8];

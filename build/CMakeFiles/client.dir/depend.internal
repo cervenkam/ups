@@ -25,7 +25,6 @@ CMakeFiles/client.dir/config.cxx.o
  /home/martin/skola/UPS/SP/config.h
  /home/martin/skola/UPS/SP/hand.h
  /home/martin/skola/UPS/SP/lang.h
- /home/martin/skola/UPS/SP/networking/server.h
  /home/martin/skola/UPS/SP/networkplayer.h
  /home/martin/skola/UPS/SP/person.h
  /home/martin/skola/UPS/SP/programmerbot.h
@@ -53,15 +52,21 @@ CMakeFiles/client.dir/hand.cxx.o
  /home/martin/skola/UPS/SP/hand.cxx
  /home/martin/skola/UPS/SP/hand.h
 CMakeFiles/client.dir/main.cxx.o
+ /home/martin/skola/UPS/SP/algorithm.h
+ /home/martin/skola/UPS/SP/card.h
+ /home/martin/skola/UPS/SP/deck.h
+ /home/martin/skola/UPS/SP/game.h
+ /home/martin/skola/UPS/SP/hand.h
  /home/martin/skola/UPS/SP/main.cxx
  /home/martin/skola/UPS/SP/networking/client.h
+ /home/martin/skola/UPS/SP/networking/commands.h
+ /home/martin/skola/UPS/SP/networking/commonnetwork.h
  /home/martin/skola/UPS/SP/networking/server.h
- /home/martin/skola/UPS/SP/startgame.h
+ /home/martin/skola/UPS/SP/networkplayer.h
 CMakeFiles/client.dir/networkplayer.cxx.o
  /home/martin/skola/UPS/SP/algorithm.h
  /home/martin/skola/UPS/SP/card.h
  /home/martin/skola/UPS/SP/hand.h
- /home/martin/skola/UPS/SP/networking/server.h
  /home/martin/skola/UPS/SP/networkplayer.cxx
  /home/martin/skola/UPS/SP/networkplayer.h
 CMakeFiles/client.dir/person.cxx.o
@@ -78,14 +83,3 @@ CMakeFiles/client.dir/programmerbot.cxx.o
  /home/martin/skola/UPS/SP/hand.h
  /home/martin/skola/UPS/SP/programmerbot.cxx
  /home/martin/skola/UPS/SP/programmerbot.h
-CMakeFiles/client.dir/startgame.cxx.o
- /home/martin/skola/UPS/SP/algorithm.h
- /home/martin/skola/UPS/SP/card.h
- /home/martin/skola/UPS/SP/config.h
- /home/martin/skola/UPS/SP/deck.h
- /home/martin/skola/UPS/SP/game.h
- /home/martin/skola/UPS/SP/hand.h
- /home/martin/skola/UPS/SP/lang.h
- /home/martin/skola/UPS/SP/startgame.cxx
- /home/martin/skola/UPS/SP/startgame.h
- /home/martin/skola/UPS/SP/stdmcr.h

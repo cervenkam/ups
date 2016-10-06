@@ -49,9 +49,32 @@ include networking/CMakeFiles/networking.dir/progress.make
 # Include the compile flags for this target's objects.
 include networking/CMakeFiles/networking.dir/flags.make
 
+networking/CMakeFiles/networking.dir/commands.cxx.o: networking/CMakeFiles/networking.dir/flags.make
+networking/CMakeFiles/networking.dir/commands.cxx.o: ../networking/commands.cxx
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/martin/skola/UPS/SP/build/CMakeFiles $(CMAKE_PROGRESS_1)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object networking/CMakeFiles/networking.dir/commands.cxx.o"
+	cd /home/martin/skola/UPS/SP/build/networking && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/networking.dir/commands.cxx.o -c /home/martin/skola/UPS/SP/networking/commands.cxx
+
+networking/CMakeFiles/networking.dir/commands.cxx.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/networking.dir/commands.cxx.i"
+	cd /home/martin/skola/UPS/SP/build/networking && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/martin/skola/UPS/SP/networking/commands.cxx > CMakeFiles/networking.dir/commands.cxx.i
+
+networking/CMakeFiles/networking.dir/commands.cxx.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/networking.dir/commands.cxx.s"
+	cd /home/martin/skola/UPS/SP/build/networking && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/martin/skola/UPS/SP/networking/commands.cxx -o CMakeFiles/networking.dir/commands.cxx.s
+
+networking/CMakeFiles/networking.dir/commands.cxx.o.requires:
+.PHONY : networking/CMakeFiles/networking.dir/commands.cxx.o.requires
+
+networking/CMakeFiles/networking.dir/commands.cxx.o.provides: networking/CMakeFiles/networking.dir/commands.cxx.o.requires
+	$(MAKE) -f networking/CMakeFiles/networking.dir/build.make networking/CMakeFiles/networking.dir/commands.cxx.o.provides.build
+.PHONY : networking/CMakeFiles/networking.dir/commands.cxx.o.provides
+
+networking/CMakeFiles/networking.dir/commands.cxx.o.provides.build: networking/CMakeFiles/networking.dir/commands.cxx.o
+
 networking/CMakeFiles/networking.dir/commonnetwork.cxx.o: networking/CMakeFiles/networking.dir/flags.make
 networking/CMakeFiles/networking.dir/commonnetwork.cxx.o: ../networking/commonnetwork.cxx
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/martin/skola/UPS/SP/build/CMakeFiles $(CMAKE_PROGRESS_1)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/martin/skola/UPS/SP/build/CMakeFiles $(CMAKE_PROGRESS_2)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object networking/CMakeFiles/networking.dir/commonnetwork.cxx.o"
 	cd /home/martin/skola/UPS/SP/build/networking && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/networking.dir/commonnetwork.cxx.o -c /home/martin/skola/UPS/SP/networking/commonnetwork.cxx
 
@@ -74,7 +97,7 @@ networking/CMakeFiles/networking.dir/commonnetwork.cxx.o.provides.build: network
 
 networking/CMakeFiles/networking.dir/server.cxx.o: networking/CMakeFiles/networking.dir/flags.make
 networking/CMakeFiles/networking.dir/server.cxx.o: ../networking/server.cxx
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/martin/skola/UPS/SP/build/CMakeFiles $(CMAKE_PROGRESS_2)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/martin/skola/UPS/SP/build/CMakeFiles $(CMAKE_PROGRESS_3)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object networking/CMakeFiles/networking.dir/server.cxx.o"
 	cd /home/martin/skola/UPS/SP/build/networking && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/networking.dir/server.cxx.o -c /home/martin/skola/UPS/SP/networking/server.cxx
 
@@ -97,7 +120,7 @@ networking/CMakeFiles/networking.dir/server.cxx.o.provides.build: networking/CMa
 
 networking/CMakeFiles/networking.dir/client.cxx.o: networking/CMakeFiles/networking.dir/flags.make
 networking/CMakeFiles/networking.dir/client.cxx.o: ../networking/client.cxx
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/martin/skola/UPS/SP/build/CMakeFiles $(CMAKE_PROGRESS_3)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/martin/skola/UPS/SP/build/CMakeFiles $(CMAKE_PROGRESS_4)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object networking/CMakeFiles/networking.dir/client.cxx.o"
 	cd /home/martin/skola/UPS/SP/build/networking && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/networking.dir/client.cxx.o -c /home/martin/skola/UPS/SP/networking/client.cxx
 
@@ -120,6 +143,7 @@ networking/CMakeFiles/networking.dir/client.cxx.o.provides.build: networking/CMa
 
 # Object files for target networking
 networking_OBJECTS = \
+"CMakeFiles/networking.dir/commands.cxx.o" \
 "CMakeFiles/networking.dir/commonnetwork.cxx.o" \
 "CMakeFiles/networking.dir/server.cxx.o" \
 "CMakeFiles/networking.dir/client.cxx.o"
@@ -127,6 +151,7 @@ networking_OBJECTS = \
 # External object files for target networking
 networking_EXTERNAL_OBJECTS =
 
+networking/libnetworking.a: networking/CMakeFiles/networking.dir/commands.cxx.o
 networking/libnetworking.a: networking/CMakeFiles/networking.dir/commonnetwork.cxx.o
 networking/libnetworking.a: networking/CMakeFiles/networking.dir/server.cxx.o
 networking/libnetworking.a: networking/CMakeFiles/networking.dir/client.cxx.o
@@ -140,6 +165,7 @@ networking/libnetworking.a: networking/CMakeFiles/networking.dir/link.txt
 networking/CMakeFiles/networking.dir/build: networking/libnetworking.a
 .PHONY : networking/CMakeFiles/networking.dir/build
 
+networking/CMakeFiles/networking.dir/requires: networking/CMakeFiles/networking.dir/commands.cxx.o.requires
 networking/CMakeFiles/networking.dir/requires: networking/CMakeFiles/networking.dir/commonnetwork.cxx.o.requires
 networking/CMakeFiles/networking.dir/requires: networking/CMakeFiles/networking.dir/server.cxx.o.requires
 networking/CMakeFiles/networking.dir/requires: networking/CMakeFiles/networking.dir/client.cxx.o.requires

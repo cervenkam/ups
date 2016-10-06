@@ -20,7 +20,7 @@ class Configuration{
 		Algorithm* GetAlgorithm(char* name,char* player_name,unsigned id);
 		/*
 			Returns single configuration
-				=> Configuration string / NULL if already created
+				=> Configuration string / empty string if already created
 				<= Configuration
 		*/
 		static Configuration* GetConfiguration(string str="");

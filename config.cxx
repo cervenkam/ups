@@ -107,11 +107,11 @@ Algorithm** Configuration::GetAlgorithms(){
 }
 /*
 	Returns single configuration
-		=> Configuration string / NULL if already created
+		=> Configuration string / empty string if already created
 		<= Configuration
 */
 Configuration* Configuration::GetConfiguration(string str){
-	if(config==NULL){
+	if(config==NULL || str!=""){
 		cout << "Creating configuration by: " << endl << "\t#" << str << "#" << endl;
 		config = new Configuration(str);
 	}

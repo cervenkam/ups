@@ -5,10 +5,29 @@ networking/CMakeFiles/networking.dir/client.cxx.o: ../networking/client.cxx
 networking/CMakeFiles/networking.dir/client.cxx.o: ../networking/client.h
 networking/CMakeFiles/networking.dir/client.cxx.o: ../networking/commonnetwork.h
 
+networking/CMakeFiles/networking.dir/commands.cxx.o: ../algorithm.h
+networking/CMakeFiles/networking.dir/commands.cxx.o: ../card.h
+networking/CMakeFiles/networking.dir/commands.cxx.o: ../config.h
+networking/CMakeFiles/networking.dir/commands.cxx.o: ../deck.h
+networking/CMakeFiles/networking.dir/commands.cxx.o: ../game.h
+networking/CMakeFiles/networking.dir/commands.cxx.o: ../hand.h
+networking/CMakeFiles/networking.dir/commands.cxx.o: ../networking/commands.cxx
+networking/CMakeFiles/networking.dir/commands.cxx.o: ../networking/commands.h
+networking/CMakeFiles/networking.dir/commands.cxx.o: ../networking/commonnetwork.h
+networking/CMakeFiles/networking.dir/commands.cxx.o: ../networking/server.h
+networking/CMakeFiles/networking.dir/commands.cxx.o: ../networkplayer.h
+
 networking/CMakeFiles/networking.dir/commonnetwork.cxx.o: ../networking/commonnetwork.cxx
 networking/CMakeFiles/networking.dir/commonnetwork.cxx.o: ../networking/commonnetwork.h
 
+networking/CMakeFiles/networking.dir/server.cxx.o: ../algorithm.h
+networking/CMakeFiles/networking.dir/server.cxx.o: ../card.h
+networking/CMakeFiles/networking.dir/server.cxx.o: ../deck.h
+networking/CMakeFiles/networking.dir/server.cxx.o: ../game.h
+networking/CMakeFiles/networking.dir/server.cxx.o: ../hand.h
+networking/CMakeFiles/networking.dir/server.cxx.o: ../networking/commands.h
 networking/CMakeFiles/networking.dir/server.cxx.o: ../networking/commonnetwork.h
 networking/CMakeFiles/networking.dir/server.cxx.o: ../networking/server.cxx
 networking/CMakeFiles/networking.dir/server.cxx.o: ../networking/server.h
+networking/CMakeFiles/networking.dir/server.cxx.o: ../networkplayer.h
 

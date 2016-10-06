@@ -11,6 +11,8 @@
 #define TEST_ERR(T,P) TEST_ERR_DO(T,P,)
 #define TEST_ERR_RET(T,X,R) TEST_ERR_DO_RET(T,X,,R)
 
+#define MAX_LEN 512
+
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <arpa/inet.h>

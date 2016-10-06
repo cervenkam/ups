@@ -3,10 +3,9 @@ project(Cards)
 
 set(CMAKE_CXX_FLAGS "-Wl,--no-as-needed -std=c++11 -Wall -Wextra -Wno-conversion-null -g -lpthread")
 set(SRCS
-	startgame.cxx
 	config.cxx
-	networkplayer.cxx
 	programmerbot.cxx
+	networkplayer.cxx
 	person.cxx
 	algono.cxx
 	algorithm.cxx

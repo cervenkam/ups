@@ -6,6 +6,22 @@
 
 #IncludeRegexTransform: 
 
+/home/martin/skola/UPS/SP/networking/client.cxx
+client.h
+/home/martin/skola/UPS/SP/networking/client.h
+commonnetwork.h
+/home/martin/skola/UPS/SP/networking/commonnetwork.h
+iostream
+-
+cstring
+-
+thread
+-
+
+/home/martin/skola/UPS/SP/networking/client.h
+commonnetwork.h
+/home/martin/skola/UPS/SP/networking/commonnetwork.h
+
 /home/martin/skola/UPS/SP/networking/commonnetwork.h
 sys/socket.h
 -
@@ -17,18 +33,4 @@ netinet/in.h
 -
 netdb.h
 -
-
-/home/martin/skola/UPS/SP/networking/server.cxx
-server.h
-/home/martin/skola/UPS/SP/networking/server.h
-unistd.h
--
-iostream
--
-cstring
--
-commonnetwork.h
-/home/martin/skola/UPS/SP/networking/commonnetwork.h
-
-/home/martin/skola/UPS/SP/networking/server.h
 

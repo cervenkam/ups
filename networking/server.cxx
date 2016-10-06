@@ -2,11 +2,23 @@
 #include <unistd.h>
 #include <iostream>
 #include <cstring>
+#include <thread>
 #include "commonnetwork.h"
 
 using namespace std;
 Server::Server(unsigned port){
 	this->port = port;
+}
+
+Server::~Server(){
+	unsigned len = commands.size();
+	for(unsigned a=0; a<len; a++){
+		delete commands[a];
+	}
+	len = games.size();
+	for(unsigned a=0; a<len; a++){
+		delete games[a];
+	}
 }
 
 void Server::Start(){
@@ -27,11 +39,12 @@ void Server::Start(){
 		TEST_ERR(errno>0,strerror(errno));
 		TEST_ERR_DO(sckt<0,"Cannot accept socket",close(sock))
 		cout << "Connection from " << inet_ntoa(in_addr.sin_addr) << ":" << ntohs(in_addr.sin_port) << endl;
-		if(fork() == 0){
-			while(1){
-				cout << Receive(sckt);
-			}
-		}
+		Commands* cmd = new Commands();
+		cmd->SetServer(this);
+		cmd->SetSocket(sckt);
+		this->commands.push_back(cmd);
+		thread* thr = new thread(&Commands::Start,cmd);
+		//TODO housekeeping
 		//close(sckt);
 	}
 }
@@ -53,4 +66,28 @@ void Server::Send(int sock,char* message){
 	TEST_ERR(snd<0,"Cannot send message length")
 	snd = send(sock,message,sizeof(char)*length,0);
 	TEST_ERR(snd<0,"Cannot send message")
+}
+
+unsigned Server::GetCountOfGames(){
+	return games.size();
+}
+
+Game* Server::GetGame(unsigned index){
+	return games[index];
+}
+
+void Server::AddGame(Game* game){
+	games.push_back(game);
+}
+
+unsigned Server::GetCountOfCommands(){
+	return commands.size();
+}
+
+Commands* Server::GetCommands(unsigned index){
+	return commands[index];
+}
+
+void Server::AddCommands(Commands* command){
+	commands.push_back(command);
 }

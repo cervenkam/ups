@@ -1,8 +1,7 @@
 FILE(REMOVE_RECURSE
-  "CMakeFiles/client.dir/startgame.cxx.o"
   "CMakeFiles/client.dir/config.cxx.o"
-  "CMakeFiles/client.dir/networkplayer.cxx.o"
   "CMakeFiles/client.dir/programmerbot.cxx.o"
+  "CMakeFiles/client.dir/networkplayer.cxx.o"
   "CMakeFiles/client.dir/person.cxx.o"
   "CMakeFiles/client.dir/algono.cxx.o"
   "CMakeFiles/client.dir/algorithm.cxx.o"

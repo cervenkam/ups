@@ -1,4 +1,5 @@
 FILE(REMOVE_RECURSE
+  "CMakeFiles/networking.dir/commands.cxx.o"
   "CMakeFiles/networking.dir/commonnetwork.cxx.o"
   "CMakeFiles/networking.dir/server.cxx.o"
   "CMakeFiles/networking.dir/client.cxx.o"

@@ -136,6 +136,30 @@ client.cxx.s:
 	cd /home/martin/skola/UPS/SP/build && $(MAKE) -f networking/CMakeFiles/networking.dir/build.make networking/CMakeFiles/networking.dir/client.cxx.s
 .PHONY : client.cxx.s
 
+commands.o: commands.cxx.o
+.PHONY : commands.o
+
+# target to build an object file
+commands.cxx.o:
+	cd /home/martin/skola/UPS/SP/build && $(MAKE) -f networking/CMakeFiles/networking.dir/build.make networking/CMakeFiles/networking.dir/commands.cxx.o
+.PHONY : commands.cxx.o
+
+commands.i: commands.cxx.i
+.PHONY : commands.i
+
+# target to preprocess a source file
+commands.cxx.i:
+	cd /home/martin/skola/UPS/SP/build && $(MAKE) -f networking/CMakeFiles/networking.dir/build.make networking/CMakeFiles/networking.dir/commands.cxx.i
+.PHONY : commands.cxx.i
+
+commands.s: commands.cxx.s
+.PHONY : commands.s
+
+# target to generate assembly for a file
+commands.cxx.s:
+	cd /home/martin/skola/UPS/SP/build && $(MAKE) -f networking/CMakeFiles/networking.dir/build.make networking/CMakeFiles/networking.dir/commands.cxx.s
+.PHONY : commands.cxx.s
+
 commonnetwork.o: commonnetwork.cxx.o
 .PHONY : commonnetwork.o
 
@@ -196,6 +220,9 @@ help:
 	@echo "... client.o"
 	@echo "... client.i"
 	@echo "... client.s"
+	@echo "... commands.o"
+	@echo "... commands.i"
+	@echo "... commands.s"
 	@echo "... commonnetwork.o"
 	@echo "... commonnetwork.i"
 	@echo "... commonnetwork.s"

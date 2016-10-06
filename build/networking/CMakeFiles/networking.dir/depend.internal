@@ -5,10 +5,29 @@ networking/CMakeFiles/networking.dir/client.cxx.o
  /home/martin/skola/UPS/SP/networking/client.cxx
  /home/martin/skola/UPS/SP/networking/client.h
  /home/martin/skola/UPS/SP/networking/commonnetwork.h
+networking/CMakeFiles/networking.dir/commands.cxx.o
+ /home/martin/skola/UPS/SP/algorithm.h
+ /home/martin/skola/UPS/SP/card.h
+ /home/martin/skola/UPS/SP/config.h
+ /home/martin/skola/UPS/SP/deck.h
+ /home/martin/skola/UPS/SP/game.h
+ /home/martin/skola/UPS/SP/hand.h
+ /home/martin/skola/UPS/SP/networking/commands.cxx
+ /home/martin/skola/UPS/SP/networking/commands.h
+ /home/martin/skola/UPS/SP/networking/commonnetwork.h
+ /home/martin/skola/UPS/SP/networking/server.h
+ /home/martin/skola/UPS/SP/networkplayer.h
 networking/CMakeFiles/networking.dir/commonnetwork.cxx.o
  /home/martin/skola/UPS/SP/networking/commonnetwork.cxx
  /home/martin/skola/UPS/SP/networking/commonnetwork.h
 networking/CMakeFiles/networking.dir/server.cxx.o
+ /home/martin/skola/UPS/SP/algorithm.h
+ /home/martin/skola/UPS/SP/card.h
+ /home/martin/skola/UPS/SP/deck.h
+ /home/martin/skola/UPS/SP/game.h
+ /home/martin/skola/UPS/SP/hand.h
+ /home/martin/skola/UPS/SP/networking/commands.h
  /home/martin/skola/UPS/SP/networking/commonnetwork.h
  /home/martin/skola/UPS/SP/networking/server.cxx
  /home/martin/skola/UPS/SP/networking/server.h
+ /home/martin/skola/UPS/SP/networkplayer.h

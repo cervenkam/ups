@@ -15,7 +15,6 @@ SET(CMAKE_DEPENDS_CHECK_CXX
   "/home/martin/skola/UPS/SP/networkplayer.cxx" "/home/martin/skola/UPS/SP/build/CMakeFiles/client.dir/networkplayer.cxx.o"
   "/home/martin/skola/UPS/SP/person.cxx" "/home/martin/skola/UPS/SP/build/CMakeFiles/client.dir/person.cxx.o"
   "/home/martin/skola/UPS/SP/programmerbot.cxx" "/home/martin/skola/UPS/SP/build/CMakeFiles/client.dir/programmerbot.cxx.o"
-  "/home/martin/skola/UPS/SP/startgame.cxx" "/home/martin/skola/UPS/SP/build/CMakeFiles/client.dir/startgame.cxx.o"
   )
 SET(CMAKE_CXX_COMPILER_ID "GNU")
 

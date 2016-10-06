@@ -1,59 +1,92 @@
-#include "networkplayer.h"
+#include "commands.h"
+#include "../config.h"
 #include <cstring>
 #include <iostream>
+#include <unistd.h>
 
-NetworkPlayer::funcptr NetworkPlayer::commands[COMMANDS] = {
-	&NetworkPlayer::Login,
-	&NetworkPlayer::Disconnect,
-	&NetworkPlayer::SendCard,
-	&NetworkPlayer::CreateGame,
-	&NetworkPlayer::MyCards
+Commands::funcptr Commands::commands[COMMANDS] = {
+	&Commands::Login,
+	&Commands::Disconnect,
+	&Commands::SendCard,
+	&Commands::CreateGame,
+	&Commands::MyCards,
+	&Commands::Ping
 };
 //requires first letter distinct
 #ifdef LANG_CS
-const char* NetworkPlayer::texts[COMMANDS] = {
+const char* Commands::texts[COMMANDS] = {
 	"PRIHLASIT SE",
 	"ODPOJIT",
 	"ZAHRAT",
 	"VYTVORIT HRU",
-	"MOJE KARTY"
+	"MOJE KARTY",
+	"PING"
 };
-const char* NetworkPlayer::ranks[8] = {"7","8","9","10","SPODEK","SVRSEK","KRAL","ESO"};
-const char* NetworkPlayer::colors[4] = {"CERVENY", "ZELENY", "KULE", "ZALUDY"};
+const char* Commands::ranks[8] = {"7","8","9","10","SPODEK","SVRSEK","KRAL","ESO"};
+const char* Commands::colors[4] = {"CERVENY", "ZELENY", "KULE", "ZALUDY"};
 #else
-const char* NetworkPlayer::texts[COMMANDS] = {
+const char* Commands::texts[COMMANDS] = {
 	"LOGIN",
 	"DISCONNECT",
 	"GIVE",
-	"CREATE GAME"
-	"MY CARDS"
+	"CREATE GAME",
+	"MY CARDS",
+	"PING"
 };
-const char* NetworkPlayer::ranks[8] = {"7","8","9","X","JACK","QUEEN","KING","ACE"};
-const char* NetworkPlayer::colors[4] = {"HEART", "LEAF", "BELL", "ACORN"};
+const char* Commands::ranks[8] = {"7","8","9","X","JACK","QUEEN","KING","ACE"};
+const char* Commands::colors[4] = {"HEART", "LEAF", "BELL", "ACORN"};
 #endif
 
-NetworkPlayer::NetworkPlayer(const char* player,unsigned char ch): Algorithm(player,ch){
-	server=NULL;
-	sock=-1;
-	name="network_player";
+Commands::Commands(){
+	this->sock = -1;
+	this->server = NULL;
+	this->player = NULL;
+	this->game = NULL;
 }
 
-void NetworkPlayer::SetSocket(int sock){
+Commands::Commands(int sock,Server* server,NetworkPlayer* player,Game* game){
+	SetSocket(sock);
+	SetServer(server);
+	SetPlayer(player);
+	SetGame(game);
+}
+
+void Commands::Start(){
+	while(1){
+		cout << "SOCKET: " << this->sock << ", SERVER: " << this->server << endl;
+		Call(this->server->Receive(this->sock));
+	}
+}
+
+void Commands::SetSocket(int sock){
 	this->sock=sock;
 }
 
-void NetworkPlayer::SetServer(Server* server){
+void Commands::SetServer(Server* server){
 	this->server=server;
 }
 
-void NetworkPlayer::BadCommand(char* command){
+void Commands::SetPlayer(NetworkPlayer* player){
+	this->player=player;
+}
+
+void Commands::SetGame(Game* game){
+	this->game=game;
+}
+
+void Commands::Ping(char*){
+	this->server->Send(this->sock,"PONG");
+}
+
+void Commands::BadCommand(const char* command){
 #ifdef LANG_CS
 	cerr << "Spatny prikaz: " << command;
 #else
 	cerr << "Bad command: " << command;
 #endif
 }
-void NetworkPlayer::Call(char* command){
+void Commands::Call(char* command){
+	cout << "CALL: " << command << endl;
 	unsigned a;
 	for(a=0; a<COMMANDS; a++){
 		if(command[0] == texts[a][0]){
@@ -74,7 +107,7 @@ void NetworkPlayer::Call(char* command){
 	(this->*commands[a])(command+len+1);
 }
 
-void NetworkPlayer::MyCards(char* message){
+void Commands::MyCards(char* message){
 	char buff[MAX_LEN];
 #ifdef LANG_CS
 	strcpy(buff,"TVOJE KARTY JSOU");
@@ -83,9 +116,9 @@ void NetworkPlayer::MyCards(char* message){
 	strcpy(buff,"YOUR CARDS ARE");
 	char* ptr = message+14;
 #endif
-	unsigned cardcount = GetHand()->Size();
+	unsigned cardcount = player->GetHand()->Size();
 	for(unsigned c=0; c<cardcount; c++){
-		Card* card = GetHand()->Get(c);
+		Card* card = player->GetHand()->Get(c);
 		const char* clr = colors[card->GetColor()];
 		unsigned len_clr = strlen(clr);
 		ptr[0] = ' ';
@@ -99,14 +132,15 @@ void NetworkPlayer::MyCards(char* message){
 	}
 }
 	
-void NetworkPlayer::Login(char* message){
+void Commands::Login(char*){
 	
 }
 
-void NetworkPlayer::Disconnect(char* message){
+void Commands::Disconnect(char*){
+	close(this->sock);
 }
 
-void NetworkPlayer::SendCard(char* message){
+void Commands::SendCard(char* message){
 	this->card_to_play = NULL;
 	char* message2 = message;
 	unsigned len = strlen(message);
@@ -148,9 +182,9 @@ void NetworkPlayer::SendCard(char* message){
 		BadCommand("Bad card rank");
 	}
 	//finding the card
-	unsigned cardcount = GetHand()->Size();
+	unsigned cardcount = player->GetHand()->Size();
 	for(unsigned c=0; c<cardcount; c++){
-		Card* card = GetHand()->Get(c);
+		Card* card = player->GetHand()->Get(c);
 		if(card->GetColor()==a && card->GetRank()==b){
 			card_to_play = card;
 			return;
@@ -158,28 +192,9 @@ void NetworkPlayer::SendCard(char* message){
 	}
 }
 
-void NetworkPlayer::CreateGame(char* message){
-	start_game(1,message);	
-}
-
-void NetworkPlayer::Used(Card*,unsigned char){
-	
-}
-Card* NetworkPlayer::Play(bool force){
-#ifdef LANG_CS
-	char* message = "IT IS YOUR TURN";
-#else
-	char* message = "JSI NA TAHU";
-#endif
-	if(server==NULL){
-		cerr << "SERVER IS NOT INITIALIZED, Call SetServer() to fix it" << endl;
-		return NULL;
-	}
-	if(sock<0){
-		cerr << "SOCKET IS NOT INITIALIZED, Call SetSocket() to fix it" << endl;
-		return NULL;
-	}
-	server->Send(this->sock,message);
-	Call(server->Receive(this->sock));
-	return card_to_play;
+void Commands::CreateGame(char* message){
+	Configuration* conf = Configuration::GetConfiguration(message);
+	Game* game = new Game(conf->GetCount(),conf->GetAlgorithms());
+	server->AddGame(game);
+	game->Start();
 }

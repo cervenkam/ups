@@ -24,7 +24,6 @@ CMakeFiles/client.dir/config.cxx.o: ../config.cxx
 CMakeFiles/client.dir/config.cxx.o: ../config.h
 CMakeFiles/client.dir/config.cxx.o: ../hand.h
 CMakeFiles/client.dir/config.cxx.o: ../lang.h
-CMakeFiles/client.dir/config.cxx.o: ../networking/server.h
 CMakeFiles/client.dir/config.cxx.o: ../networkplayer.h
 CMakeFiles/client.dir/config.cxx.o: ../person.h
 CMakeFiles/client.dir/config.cxx.o: ../programmerbot.h
@@ -52,15 +51,21 @@ CMakeFiles/client.dir/hand.cxx.o: ../card.h
 CMakeFiles/client.dir/hand.cxx.o: ../hand.cxx
 CMakeFiles/client.dir/hand.cxx.o: ../hand.h
 
+CMakeFiles/client.dir/main.cxx.o: ../algorithm.h
+CMakeFiles/client.dir/main.cxx.o: ../card.h
+CMakeFiles/client.dir/main.cxx.o: ../deck.h
+CMakeFiles/client.dir/main.cxx.o: ../game.h
+CMakeFiles/client.dir/main.cxx.o: ../hand.h
 CMakeFiles/client.dir/main.cxx.o: ../main.cxx
 CMakeFiles/client.dir/main.cxx.o: ../networking/client.h
+CMakeFiles/client.dir/main.cxx.o: ../networking/commands.h
+CMakeFiles/client.dir/main.cxx.o: ../networking/commonnetwork.h
 CMakeFiles/client.dir/main.cxx.o: ../networking/server.h
-CMakeFiles/client.dir/main.cxx.o: ../startgame.h
+CMakeFiles/client.dir/main.cxx.o: ../networkplayer.h
 
 CMakeFiles/client.dir/networkplayer.cxx.o: ../algorithm.h
 CMakeFiles/client.dir/networkplayer.cxx.o: ../card.h
 CMakeFiles/client.dir/networkplayer.cxx.o: ../hand.h
-CMakeFiles/client.dir/networkplayer.cxx.o: ../networking/server.h
 CMakeFiles/client.dir/networkplayer.cxx.o: ../networkplayer.cxx
 CMakeFiles/client.dir/networkplayer.cxx.o: ../networkplayer.h
 
@@ -77,15 +82,4 @@ CMakeFiles/client.dir/programmerbot.cxx.o: ../card.h
 CMakeFiles/client.dir/programmerbot.cxx.o: ../hand.h
 CMakeFiles/client.dir/programmerbot.cxx.o: ../programmerbot.cxx
 CMakeFiles/client.dir/programmerbot.cxx.o: ../programmerbot.h
-
-CMakeFiles/client.dir/startgame.cxx.o: ../algorithm.h
-CMakeFiles/client.dir/startgame.cxx.o: ../card.h
-CMakeFiles/client.dir/startgame.cxx.o: ../config.h
-CMakeFiles/client.dir/startgame.cxx.o: ../deck.h
-CMakeFiles/client.dir/startgame.cxx.o: ../game.h
-CMakeFiles/client.dir/startgame.cxx.o: ../hand.h
-CMakeFiles/client.dir/startgame.cxx.o: ../lang.h
-CMakeFiles/client.dir/startgame.cxx.o: ../startgame.cxx
-CMakeFiles/client.dir/startgame.cxx.o: ../startgame.h
-CMakeFiles/client.dir/startgame.cxx.o: ../stdmcr.h
 

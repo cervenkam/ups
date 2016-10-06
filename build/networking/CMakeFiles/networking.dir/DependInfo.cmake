@@ -5,6 +5,7 @@ SET(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 SET(CMAKE_DEPENDS_CHECK_CXX
   "/home/martin/skola/UPS/SP/networking/client.cxx" "/home/martin/skola/UPS/SP/build/networking/CMakeFiles/networking.dir/client.cxx.o"
+  "/home/martin/skola/UPS/SP/networking/commands.cxx" "/home/martin/skola/UPS/SP/build/networking/CMakeFiles/networking.dir/commands.cxx.o"
   "/home/martin/skola/UPS/SP/networking/commonnetwork.cxx" "/home/martin/skola/UPS/SP/build/networking/CMakeFiles/networking.dir/commonnetwork.cxx.o"
   "/home/martin/skola/UPS/SP/networking/server.cxx" "/home/martin/skola/UPS/SP/build/networking/CMakeFiles/networking.dir/server.cxx.o"
   )
