@@ -30,6 +30,7 @@
 */
 ProgrammerBot::ProgrammerBot(const char* player,unsigned char ch): Algorithm(player,ch){
 	name="programmerBot";
+	SetReady();
 }
 
 /*

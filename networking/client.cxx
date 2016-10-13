@@ -8,19 +8,20 @@ using namespace std;
 Client::Client(char* hostname,unsigned port){
 	this->hostname = hostname;
 	this->port = port;
+	internal_storage[0]=' ';
 }
 
 void Client::Connect(){
 	this->sock = socket(AF_INET,SOCK_STREAM,IPPROTO_TCP);
 	TEST_ERR(this->sock<0,"Socket not created")
-	hent* host = gethostbyname(this->hostname);
+	hent* host = gethostbyname(this->hostname==NULL?"localhost":this->hostname);
 	TEST_ERR(host==NULL,"Host not resolved")
 	saddrin addr;
 	fill_saddrin(addr,this->port,*reinterpret_cast<inaddr*>(host->h_addr));
 	int cnt = connect(this->sock,reinterpret_cast<saddr*>(&addr),sizeof(saddrin));
 	TEST_ERR(cnt<0,"Failed to connect")
-	thread* thr = new thread(&Client::InfinitePrint,this);
-	//TODO housekeeping
+	thread thr(&Client::InfinitePrint,this);
+	thr.detach();
 }
 
 void Client::Send(char* message){
@@ -33,9 +34,9 @@ void Client::Send(char* message){
 }
 
 void Client::InfinitePrint(){
-	while(internal_storage[0]){
+	do{
 		cout << Receive() << endl;
-	}
+	}while(internal_storage[0]);
 }
 
 char* Client::Receive(){

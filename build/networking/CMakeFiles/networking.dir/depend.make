@@ -14,8 +14,10 @@ networking/CMakeFiles/networking.dir/commands.cxx.o: ../hand.h
 networking/CMakeFiles/networking.dir/commands.cxx.o: ../networking/commands.cxx
 networking/CMakeFiles/networking.dir/commands.cxx.o: ../networking/commands.h
 networking/CMakeFiles/networking.dir/commands.cxx.o: ../networking/commonnetwork.h
+networking/CMakeFiles/networking.dir/commands.cxx.o: ../networking/lang.h
 networking/CMakeFiles/networking.dir/commands.cxx.o: ../networking/server.h
 networking/CMakeFiles/networking.dir/commands.cxx.o: ../networkplayer.h
+networking/CMakeFiles/networking.dir/commands.cxx.o: ../semaphore.h
 
 networking/CMakeFiles/networking.dir/commonnetwork.cxx.o: ../networking/commonnetwork.cxx
 networking/CMakeFiles/networking.dir/commonnetwork.cxx.o: ../networking/commonnetwork.h
@@ -25,9 +27,12 @@ networking/CMakeFiles/networking.dir/server.cxx.o: ../card.h
 networking/CMakeFiles/networking.dir/server.cxx.o: ../deck.h
 networking/CMakeFiles/networking.dir/server.cxx.o: ../game.h
 networking/CMakeFiles/networking.dir/server.cxx.o: ../hand.h
+networking/CMakeFiles/networking.dir/server.cxx.o: ../lang.h
 networking/CMakeFiles/networking.dir/server.cxx.o: ../networking/commands.h
 networking/CMakeFiles/networking.dir/server.cxx.o: ../networking/commonnetwork.h
 networking/CMakeFiles/networking.dir/server.cxx.o: ../networking/server.cxx
 networking/CMakeFiles/networking.dir/server.cxx.o: ../networking/server.h
 networking/CMakeFiles/networking.dir/server.cxx.o: ../networkplayer.h
+networking/CMakeFiles/networking.dir/server.cxx.o: ../semaphore.h
+networking/CMakeFiles/networking.dir/server.cxx.o: ../stdmcr.h
 

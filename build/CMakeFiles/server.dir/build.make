@@ -49,9 +49,32 @@ include CMakeFiles/server.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/server.dir/flags.make
 
+CMakeFiles/server.dir/semaphore.cxx.o: CMakeFiles/server.dir/flags.make
+CMakeFiles/server.dir/semaphore.cxx.o: ../semaphore.cxx
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/martin/skola/UPS/SP/build/CMakeFiles $(CMAKE_PROGRESS_1)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/server.dir/semaphore.cxx.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/server.dir/semaphore.cxx.o -c /home/martin/skola/UPS/SP/semaphore.cxx
+
+CMakeFiles/server.dir/semaphore.cxx.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/server.dir/semaphore.cxx.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/martin/skola/UPS/SP/semaphore.cxx > CMakeFiles/server.dir/semaphore.cxx.i
+
+CMakeFiles/server.dir/semaphore.cxx.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/server.dir/semaphore.cxx.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/martin/skola/UPS/SP/semaphore.cxx -o CMakeFiles/server.dir/semaphore.cxx.s
+
+CMakeFiles/server.dir/semaphore.cxx.o.requires:
+.PHONY : CMakeFiles/server.dir/semaphore.cxx.o.requires
+
+CMakeFiles/server.dir/semaphore.cxx.o.provides: CMakeFiles/server.dir/semaphore.cxx.o.requires
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/semaphore.cxx.o.provides.build
+.PHONY : CMakeFiles/server.dir/semaphore.cxx.o.provides
+
+CMakeFiles/server.dir/semaphore.cxx.o.provides.build: CMakeFiles/server.dir/semaphore.cxx.o
+
 CMakeFiles/server.dir/config.cxx.o: CMakeFiles/server.dir/flags.make
 CMakeFiles/server.dir/config.cxx.o: ../config.cxx
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/martin/skola/UPS/SP/build/CMakeFiles $(CMAKE_PROGRESS_1)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/martin/skola/UPS/SP/build/CMakeFiles $(CMAKE_PROGRESS_2)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/server.dir/config.cxx.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/server.dir/config.cxx.o -c /home/martin/skola/UPS/SP/config.cxx
 
@@ -74,7 +97,7 @@ CMakeFiles/server.dir/config.cxx.o.provides.build: CMakeFiles/server.dir/config.
 
 CMakeFiles/server.dir/programmerbot.cxx.o: CMakeFiles/server.dir/flags.make
 CMakeFiles/server.dir/programmerbot.cxx.o: ../programmerbot.cxx
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/martin/skola/UPS/SP/build/CMakeFiles $(CMAKE_PROGRESS_2)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/martin/skola/UPS/SP/build/CMakeFiles $(CMAKE_PROGRESS_3)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/server.dir/programmerbot.cxx.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/server.dir/programmerbot.cxx.o -c /home/martin/skola/UPS/SP/programmerbot.cxx
 
@@ -97,7 +120,7 @@ CMakeFiles/server.dir/programmerbot.cxx.o.provides.build: CMakeFiles/server.dir/
 
 CMakeFiles/server.dir/networkplayer.cxx.o: CMakeFiles/server.dir/flags.make
 CMakeFiles/server.dir/networkplayer.cxx.o: ../networkplayer.cxx
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/martin/skola/UPS/SP/build/CMakeFiles $(CMAKE_PROGRESS_3)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/martin/skola/UPS/SP/build/CMakeFiles $(CMAKE_PROGRESS_4)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/server.dir/networkplayer.cxx.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/server.dir/networkplayer.cxx.o -c /home/martin/skola/UPS/SP/networkplayer.cxx
 
@@ -120,7 +143,7 @@ CMakeFiles/server.dir/networkplayer.cxx.o.provides.build: CMakeFiles/server.dir/
 
 CMakeFiles/server.dir/person.cxx.o: CMakeFiles/server.dir/flags.make
 CMakeFiles/server.dir/person.cxx.o: ../person.cxx
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/martin/skola/UPS/SP/build/CMakeFiles $(CMAKE_PROGRESS_4)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/martin/skola/UPS/SP/build/CMakeFiles $(CMAKE_PROGRESS_5)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/server.dir/person.cxx.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/server.dir/person.cxx.o -c /home/martin/skola/UPS/SP/person.cxx
 
@@ -143,7 +166,7 @@ CMakeFiles/server.dir/person.cxx.o.provides.build: CMakeFiles/server.dir/person.
 
 CMakeFiles/server.dir/algono.cxx.o: CMakeFiles/server.dir/flags.make
 CMakeFiles/server.dir/algono.cxx.o: ../algono.cxx
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/martin/skola/UPS/SP/build/CMakeFiles $(CMAKE_PROGRESS_5)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/martin/skola/UPS/SP/build/CMakeFiles $(CMAKE_PROGRESS_6)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/server.dir/algono.cxx.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/server.dir/algono.cxx.o -c /home/martin/skola/UPS/SP/algono.cxx
 
@@ -166,7 +189,7 @@ CMakeFiles/server.dir/algono.cxx.o.provides.build: CMakeFiles/server.dir/algono.
 
 CMakeFiles/server.dir/algorithm.cxx.o: CMakeFiles/server.dir/flags.make
 CMakeFiles/server.dir/algorithm.cxx.o: ../algorithm.cxx
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/martin/skola/UPS/SP/build/CMakeFiles $(CMAKE_PROGRESS_6)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/martin/skola/UPS/SP/build/CMakeFiles $(CMAKE_PROGRESS_7)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/server.dir/algorithm.cxx.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/server.dir/algorithm.cxx.o -c /home/martin/skola/UPS/SP/algorithm.cxx
 
@@ -189,7 +212,7 @@ CMakeFiles/server.dir/algorithm.cxx.o.provides.build: CMakeFiles/server.dir/algo
 
 CMakeFiles/server.dir/game.cxx.o: CMakeFiles/server.dir/flags.make
 CMakeFiles/server.dir/game.cxx.o: ../game.cxx
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/martin/skola/UPS/SP/build/CMakeFiles $(CMAKE_PROGRESS_7)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/martin/skola/UPS/SP/build/CMakeFiles $(CMAKE_PROGRESS_8)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/server.dir/game.cxx.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/server.dir/game.cxx.o -c /home/martin/skola/UPS/SP/game.cxx
 
@@ -212,7 +235,7 @@ CMakeFiles/server.dir/game.cxx.o.provides.build: CMakeFiles/server.dir/game.cxx.
 
 CMakeFiles/server.dir/hand.cxx.o: CMakeFiles/server.dir/flags.make
 CMakeFiles/server.dir/hand.cxx.o: ../hand.cxx
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/martin/skola/UPS/SP/build/CMakeFiles $(CMAKE_PROGRESS_8)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/martin/skola/UPS/SP/build/CMakeFiles $(CMAKE_PROGRESS_9)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/server.dir/hand.cxx.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/server.dir/hand.cxx.o -c /home/martin/skola/UPS/SP/hand.cxx
 
@@ -235,7 +258,7 @@ CMakeFiles/server.dir/hand.cxx.o.provides.build: CMakeFiles/server.dir/hand.cxx.
 
 CMakeFiles/server.dir/deck.cxx.o: CMakeFiles/server.dir/flags.make
 CMakeFiles/server.dir/deck.cxx.o: ../deck.cxx
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/martin/skola/UPS/SP/build/CMakeFiles $(CMAKE_PROGRESS_9)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/martin/skola/UPS/SP/build/CMakeFiles $(CMAKE_PROGRESS_10)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/server.dir/deck.cxx.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/server.dir/deck.cxx.o -c /home/martin/skola/UPS/SP/deck.cxx
 
@@ -258,7 +281,7 @@ CMakeFiles/server.dir/deck.cxx.o.provides.build: CMakeFiles/server.dir/deck.cxx.
 
 CMakeFiles/server.dir/card.cxx.o: CMakeFiles/server.dir/flags.make
 CMakeFiles/server.dir/card.cxx.o: ../card.cxx
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/martin/skola/UPS/SP/build/CMakeFiles $(CMAKE_PROGRESS_10)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/martin/skola/UPS/SP/build/CMakeFiles $(CMAKE_PROGRESS_11)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/server.dir/card.cxx.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/server.dir/card.cxx.o -c /home/martin/skola/UPS/SP/card.cxx
 
@@ -281,7 +304,7 @@ CMakeFiles/server.dir/card.cxx.o.provides.build: CMakeFiles/server.dir/card.cxx.
 
 CMakeFiles/server.dir/main.cxx.o: CMakeFiles/server.dir/flags.make
 CMakeFiles/server.dir/main.cxx.o: ../main.cxx
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/martin/skola/UPS/SP/build/CMakeFiles $(CMAKE_PROGRESS_11)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/martin/skola/UPS/SP/build/CMakeFiles $(CMAKE_PROGRESS_12)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/server.dir/main.cxx.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/server.dir/main.cxx.o -c /home/martin/skola/UPS/SP/main.cxx
 
@@ -304,6 +327,7 @@ CMakeFiles/server.dir/main.cxx.o.provides.build: CMakeFiles/server.dir/main.cxx.
 
 # Object files for target server
 server_OBJECTS = \
+"CMakeFiles/server.dir/semaphore.cxx.o" \
 "CMakeFiles/server.dir/config.cxx.o" \
 "CMakeFiles/server.dir/programmerbot.cxx.o" \
 "CMakeFiles/server.dir/networkplayer.cxx.o" \
@@ -319,6 +343,7 @@ server_OBJECTS = \
 # External object files for target server
 server_EXTERNAL_OBJECTS =
 
+server: CMakeFiles/server.dir/semaphore.cxx.o
 server: CMakeFiles/server.dir/config.cxx.o
 server: CMakeFiles/server.dir/programmerbot.cxx.o
 server: CMakeFiles/server.dir/networkplayer.cxx.o
@@ -340,6 +365,7 @@ server: CMakeFiles/server.dir/link.txt
 CMakeFiles/server.dir/build: server
 .PHONY : CMakeFiles/server.dir/build
 
+CMakeFiles/server.dir/requires: CMakeFiles/server.dir/semaphore.cxx.o.requires
 CMakeFiles/server.dir/requires: CMakeFiles/server.dir/config.cxx.o.requires
 CMakeFiles/server.dir/requires: CMakeFiles/server.dir/programmerbot.cxx.o.requires
 CMakeFiles/server.dir/requires: CMakeFiles/server.dir/networkplayer.cxx.o.requires

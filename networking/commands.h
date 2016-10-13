@@ -8,11 +8,16 @@
 #define COMMANDS 6
 
 class Server;
+class NetworkPlayer;
 class Commands{
 	typedef void (Commands::*funcptr)(char*);
 	public:
 		Commands();
 		Commands(int,Server*,NetworkPlayer*,Game*);
+		int GetSocket();
+		Server* GetServer();
+		NetworkPlayer* GetPlayer();
+		Game* GetGame();
 		void SetSocket(int);
 		void SetServer(Server*);
 		void SetPlayer(NetworkPlayer*);
@@ -26,7 +31,7 @@ class Commands{
 		void    SendCard(char*);
 		void  Disconnect(char*);  
 		void     MyCards(char*);
-		void        Ping(char*);
+		void     Welcome(char*);
 
 		Server* server;
 		int sock;
@@ -36,8 +41,6 @@ class Commands{
 
 		static funcptr commands[COMMANDS];
 		static const char* texts[COMMANDS];
-		static const char* ranks[8];
-		static const char* colors[4];
 };
 
 

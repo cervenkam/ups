@@ -19,6 +19,7 @@
 */
 Person::Person(const char* player,unsigned char ch): Algorithm(player,ch){
 	name="person";
+	SetReady();
 }
 
 /*

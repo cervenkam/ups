@@ -30,6 +30,10 @@ class Card{
 		*/
 		Card(unsigned char value);
 		/*
+			Card destructor
+		*/
+		~Card();
+		/*
 			Returns the color of this card
 				<= Color of the card
 		*/
@@ -62,11 +66,28 @@ class Card{
 				<= Is special
 		*/
 		bool IsSpecial() const;
+		/*
+			Converts number reprezentation to string
+				<= String reprezentation
+		*/
+		char* ToString();
+		/*
+			Converts string reprezentation to number reprezentation
+				=> str String reprezentation
+				<= Number reprezentation
+		*/
+		static unsigned char FromString(char* str);
 #ifndef TESTING
 	private:
 #endif
 		/* Value of this card (0-31)*/
 		unsigned char value;
+		/* Card name */
+		char* name;
+		/* Cards rank names */
+		static const char* ranks[8];
+		/* Card color names */
+		static const char* colors[4];
 };
 
 #endif

@@ -8,12 +8,16 @@
 #include <iostream>
 using namespace std;
 int main(int argc,char** argv){
+	int port = 0;
+	if(argc > 1){
+		port = atoi(argv[1]);
+	}
 #ifdef SERVER
-	Server* server = new Server(34567);
+	Server* server = new Server(port);
 	server->Start();
 	delete server;
 #else
-	Client client(argv[1],34567);
+	Client client(argc>2?argv[2]:NULL,port);
 	client.Connect();
 	char line[512];
 	while(fgets(line,512,stdin)){

@@ -8,6 +8,7 @@
 */
 #include "card.h"
 #include "hand.h"
+#include "lang.h"
 #include <vector>
 using namespace std;
 class Algorithm{
@@ -61,11 +62,19 @@ class Algorithm{
 		*/
 		void ClearPoints();
 		/*
+			Set this player ready
+		*/
+		void SetReady();
+		/*
+			Is this player ready to play
+		*/
+		bool IsReady();
+		/*
 			Identifies the algorithm
 		*/
 		void Identify();
 		/* Name of this player */
-		const char* player = "player";
+		const char* player = PLAYER;
 #ifndef TESTING
 	protected:
 #endif
@@ -88,6 +97,8 @@ class Algorithm{
 		Hand* hand;
 		/* Points of this player */
 		unsigned char points = 0;
+		/* Is player ready to start */
+		bool ready = false;
 };
 
 #endif

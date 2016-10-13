@@ -1,5 +1,6 @@
 #include "commands.h"
 #include "../config.h"
+#include "lang.h"
 #include <cstring>
 #include <iostream>
 #include <unistd.h>
@@ -10,32 +11,17 @@ Commands::funcptr Commands::commands[COMMANDS] = {
 	&Commands::SendCard,
 	&Commands::CreateGame,
 	&Commands::MyCards,
-	&Commands::Ping
+	&Commands::Welcome
 };
 //requires first letter distinct
-#ifdef LANG_CS
 const char* Commands::texts[COMMANDS] = {
-	"PRIHLASIT SE",
-	"ODPOJIT",
-	"ZAHRAT",
-	"VYTVORIT HRU",
-	"MOJE KARTY",
-	"PING"
+	LOGIN,
+	DISCONNECT,
+	PLAY,
+	CREATE_GAME,
+	MY_CARDS,
+	WELCOME
 };
-const char* Commands::ranks[8] = {"7","8","9","10","SPODEK","SVRSEK","KRAL","ESO"};
-const char* Commands::colors[4] = {"CERVENY", "ZELENY", "KULE", "ZALUDY"};
-#else
-const char* Commands::texts[COMMANDS] = {
-	"LOGIN",
-	"DISCONNECT",
-	"GIVE",
-	"CREATE GAME",
-	"MY CARDS",
-	"PING"
-};
-const char* Commands::ranks[8] = {"7","8","9","X","JACK","QUEEN","KING","ACE"};
-const char* Commands::colors[4] = {"HEART", "LEAF", "BELL", "ACORN"};
-#endif
 
 Commands::Commands(){
 	this->sock = -1;
@@ -52,8 +38,8 @@ Commands::Commands(int sock,Server* server,NetworkPlayer* player,Game* game){
 }
 
 void Commands::Start(){
+	Welcome(NULL);
 	while(1){
-		cout << "SOCKET: " << this->sock << ", SERVER: " << this->server << endl;
 		Call(this->server->Receive(this->sock));
 	}
 }
@@ -62,31 +48,41 @@ void Commands::SetSocket(int sock){
 	this->sock=sock;
 }
 
+int Commands::GetSocket(){
+	return this->sock;
+}
+
 void Commands::SetServer(Server* server){
 	this->server=server;
+}
+
+Server* Commands::GetServer(){
+	return this->server;
 }
 
 void Commands::SetPlayer(NetworkPlayer* player){
 	this->player=player;
 }
 
+NetworkPlayer* Commands::GetPlayer(){
+	return this->player;
+}
+
 void Commands::SetGame(Game* game){
 	this->game=game;
 }
 
-void Commands::Ping(char*){
-	this->server->Send(this->sock,"PONG");
+Game* Commands::GetGame(){
+	return this->game;
+}
+void Commands::Welcome(char*){
+	this->server->Send(this->sock,WELCOME);
 }
 
 void Commands::BadCommand(const char* command){
-#ifdef LANG_CS
-	cerr << "Spatny prikaz: " << command;
-#else
-	cerr << "Bad command: " << command;
-#endif
+	cerr << BAD_COMMAND << command;
 }
 void Commands::Call(char* command){
-	cout << "CALL: " << command << endl;
 	unsigned a;
 	for(a=0; a<COMMANDS; a++){
 		if(command[0] == texts[a][0]){
@@ -108,32 +104,62 @@ void Commands::Call(char* command){
 }
 
 void Commands::MyCards(char* message){
-	char buff[MAX_LEN];
-#ifdef LANG_CS
-	strcpy(buff,"TVOJE KARTY JSOU");
-	char* ptr = message+16;
-#else
-	strcpy(buff,"YOUR CARDS ARE");
-	char* ptr = message+14;
-#endif
+	char* buff = new char[MAX_LEN];
+	strcpy(buff,YOUR_CARDS);
+	char* ptr = buff+strlen(YOUR_CARDS);
 	unsigned cardcount = player->GetHand()->Size();
+	cout << "Count: " << cardcount << endl;
 	for(unsigned c=0; c<cardcount; c++){
 		Card* card = player->GetHand()->Get(c);
-		const char* clr = colors[card->GetColor()];
-		unsigned len_clr = strlen(clr);
+		char* str = card->ToString();
+		cout << str << endl;
 		ptr[0] = ' ';
-		strcpy(ptr++,clr);
-		ptr+=len_clr;
-		const char* rnk = ranks[card->GetRank()];
-		unsigned len_rnk = strlen(rnk);
-		ptr[0] = ' ';
-		strcpy(ptr++,rnk);
-		ptr+=len_rnk;
+		ptr++;
+		strcpy(ptr,str);
+		ptr+=strlen(str);
 	}
+	this->server->Send(this->sock,buff);
+	delete[] buff;
 }
 	
-void Commands::Login(char*){
-	
+void Commands::Login(char* message){
+	char* player_name = message;
+	unsigned games_len = server->GetCountOfGames();
+	for(unsigned a=0; a<games_len; a++){
+		Game* game = server->GetGame(a);
+		unsigned players_len = game->GetCountOfPlayers();
+		for(unsigned b=0; b<players_len; b++){
+			Algorithm* algo = game->GetAlgorithm(b);
+			if(!strcmp(algo->player,player_name)){
+				if((this->player = dynamic_cast<NetworkPlayer*>(algo))){	
+					this->player->SetCommands(this);
+					this->game = game;
+					this->server->Send(this->sock,A_GAME);
+					this->player->SetReady();
+					break;
+				}else{
+					this->server->Send(this->sock,NO_GAME);
+					return;
+				}
+			}
+		}
+	}
+	if(this->player == NULL){
+		this->server->Send(this->sock,NO_GAME);
+		return;
+	}else{
+		bool game_is_ready = true;
+		unsigned players_len = this->game->GetCountOfPlayers();
+		for(unsigned a=0; a<players_len; a++){
+			if(!game->GetAlgorithm(a)->IsReady()){
+				game_is_ready = false;
+				break;
+			}
+		}
+		if(game_is_ready){
+			game->StartParallel();
+		}
+	}
 }
 
 void Commands::Disconnect(char*){
@@ -142,46 +168,13 @@ void Commands::Disconnect(char*){
 
 void Commands::SendCard(char* message){
 	this->card_to_play = NULL;
-	char* message2 = message;
-	unsigned len = strlen(message);
-	for(unsigned a=0; a<len; a++){
-		if(message[a]==' '){
-			message[a]='\0';
-			message2 = message+a+1;
-		}
-	}
-	unsigned a=0;
-	char l1 = message[0];
-	char l2 = message2[0];
-#ifdef LANG_CS
-	unsigned len1 = strlen(message);
-	char m1 = len1=0?'\0':message[1];
-	a|=(m1!='E')? 2:0; //Kule, Zaludy
-	a|=(l1=='Z')? 1:0; //Zeleny, Zaludy
-#else
-	a|=(l1<='B')? 2:0; //Bell, Acorn
-	a|=(l1=='A' || l1=='L')? 1:0; //Leaf, Acorn
-#endif
-	if(!strcmp(colors[a],message)){
-		BadCommand("Bad card color");
+	//finding the card
+	unsigned value = Card::FromString(message);
+	if(value>>5){
 		return;
 	}
-	unsigned b=0;
-#ifdef LANG_CS
-	unsigned len2 = strlen(message2);
-	char m2 = len2=0?'\0':message2[1];
-	b|=(l2>='E')? 4:0; //Spodek, Svrsek, Kral, Eso
-	b|=(l2!='S' && l2!='7' && l2!='8')? 2:0; //9, 10, Kral, Eso
-	b|=(m2>='S' || l2=='8' || l2=='1')? 1:0; //8, 10, Svrsek, Eso
-#else
-	b|=(l2>='A')? 4:0; //Jack, Queen, King, Ace
-	b|=(l2>='9' && l2!='J' && l2!='Q')? 2:0; //9, X, King, Ace
-	b|=((l2&2)==0 && l2!='9')? 1:0; //8, X, Queen, Ace //TODO
-#endif
-	if(!strcmp(ranks[b],message)){
-		BadCommand("Bad card rank");
-	}
-	//finding the card
+	unsigned a = value&3;
+	unsigned b = value>>2;
 	unsigned cardcount = player->GetHand()->Size();
 	for(unsigned c=0; c<cardcount; c++){
 		Card* card = player->GetHand()->Get(c);
@@ -190,11 +183,24 @@ void Commands::SendCard(char* message){
 			return;
 		}
 	}
+	player->SetCard(card_to_play);
+	player->GetSemaphore()->Notify();
 }
 
 void Commands::CreateGame(char* message){
-	Configuration* conf = Configuration::GetConfiguration(message);
+	unsigned length = strlen(message);
+	char* game_name = message;
+	char* params = message;
+	for(unsigned a=1; a<length; a++){
+		if(message[a-1]==' '){
+			message[a-1]='\0';
+			params=message+a;	
+			break;
+		}
+	}
+	Configuration* conf = Configuration::GetConfiguration(params);
 	Game* game = new Game(conf->GetCount(),conf->GetAlgorithms());
+	game->SetName(game_name);
 	server->AddGame(game);
-	game->Start();
+	this->server->Send(this->sock,GAME_CREATED);
 }

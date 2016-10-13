@@ -14,6 +14,7 @@
 #include "person.h"
 #include <iostream>
 #include <fstream>
+#include <thread>
 unsigned counter_of_same_cards = 0;
 /* Determines the player which started this round */
 unsigned char Game::started = 0;
@@ -39,6 +40,23 @@ void Game::SetStarted(unsigned char ID){
 unsigned char Game::GetStarted(){
 	return started;
 }
+
+/*
+	Sets the name of this game
+		<= name Name of this game
+*/
+void Game::SetName(char* name){
+	this->name = name;
+}
+
+/*
+	Gets the name of this game
+		<= Name of this game
+*/
+char* Game::GetName(){
+	return this->name;
+}
+
 /*
 	Creates new game
 		=> players Number of players
@@ -59,6 +77,25 @@ Game::Game(unsigned char players,Algorithm** algos){
 	}
 	deck = new Deck();
 }
+
+/*
+	Returns the game algorithm
+		=> player Player ID
+		<= Player algorithm
+*/
+
+Algorithm* Game::GetAlgorithm(unsigned player){
+	return algos[player];
+}
+
+/*
+	Returns number of players
+		<= Number of players
+*/
+unsigned Game::GetCountOfPlayers(){
+	return players;
+}
+
 #ifdef TESTING
 /*
 	Creates new game
@@ -120,9 +157,17 @@ void Game::End(){
 	Starts the game
 */
 void Game::Start(){
+	cout << "Game started" << endl;
 	if(Prepare()){
 		Loop();
 	}
+}
+/*
+	Game in new thread
+*/
+void Game::StartParallel(){
+	thread thr(&Game::Start,this);
+	thr.detach();
 }
 /*
 	Prepares the game

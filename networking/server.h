@@ -13,7 +13,7 @@ class Server{
 		char* Receive(int sock);
 		Server(unsigned port);
 		~Server();
-		void Send(int sock,char* message);
+		void Send(int sock,const char* message);
 		unsigned GetCountOfGames();
 		Game* GetGame(unsigned index);
 		void AddGame(Game* game);

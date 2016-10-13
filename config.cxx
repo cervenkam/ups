@@ -57,32 +57,51 @@ void Configuration::Load(string in_str){
 		OUT(ERR_NOT_FOUND << endl);
 		exit(1);
 	}
-	char str[512];
+	char* str = new char[512];
+	char* strtmp = str;
 	char* command = new char[512];
 	char* parameter = new char[512];
 	char* name = new char[512];
+	strcpy(name,PLAYER);
 	unsigned counter = 0;
 	while(in.getline(str,512)){
-		sscanf(str,"%511[^=]=%511s",command,parameter);
-		if(!strcmp(command,PLAYER_COUNT)){
-			SetCount(atoi(parameter));	
-			algos = new Algorithm*[GetCount()];
-		}else if(!strcmp(command,DEFAULT)){
-			def = parameter;
-		}else if(!strcmp(command,PLAYER)){
-			algos[counter] = GetAlgorithm(parameter,name,counter);
-			name = new char[512];
-			counter++;
-		}else if(!strcmp(command,NAME)){
-			strcpy(name,parameter);
-		}else if(!strcmp(command,RULES)){
-			rules=true;
+		while(sscanf(strtmp,"%511[^=]=%511s",command,parameter)){
+			if(!strcmp(command,PLAYER_COUNT)){
+				SetCount(atoi(parameter));	
+				algos = new Algorithm*[GetCount()];
+				cout << "Vytvoreno " << GetCount() << " hracu" << endl;
+			}else if(!strcmp(command,DEFAULT)){
+				def = parameter;
+				cout << "Vychozi hrac nastaven na " << parameter << endl;
+			}else if(!strcmp(command,PLAYER)){
+				if(algos != NULL && counter < GetCount()){
+					cout << "Pridan rucne definovany hrac " << counter << endl;
+					algos[counter] = GetAlgorithm(parameter,name,counter);
+					name = new char[512];
+					strcpy(name,PLAYER);
+					counter++;
+				}
+			}else if(!strcmp(command,NAME)){
+				strcpy(name,parameter);
+				cout << "Jmeno nastaveno na " << name << endl;
+			}else if(!strcmp(command,RULES)){
+				rules=true;
+				cout << "Nastavena vlastni pravidla" << endl;
+			}
+			while(strtmp[0]!=' ' && strtmp[0]!='\0'){
+				strtmp++;
+			}
+			if(strtmp[0]=='\0'){
+				break;
+			}
+			strtmp++;
 		}
 	}
 	for(unsigned a=counter; a<count; a++){
 		algos[a] = GetAlgorithm(def,name,a);
 	}
 	delete[] command;
+	delete[] str;
 }
 /*
 	Sets count of players

@@ -7,14 +7,21 @@
 	Version: 06.10.2016
 */
 #include "algorithm.h"
+#include "semaphore.h"
+#include "networking/commands.h"
+class Commands;
 class NetworkPlayer: public Algorithm{
 	public:
 		/*
-			Simple bot constructor
+			Network player constructor
 				=> ch ID of this player
 				=> player Name of the player
 		*/
 		NetworkPlayer(const char* player,unsigned char ch);
+		/*
+			Destroys this player
+		*/
+		~NetworkPlayer();
 		/*
 			Is called when a card is used (with any player)
 				=> card Player card
@@ -27,6 +34,23 @@ class NetworkPlayer: public Algorithm{
 				<= Card which will player use
 		*/
 		Card* Play(bool force);
+		/*
+			Sets the commands for this player
+				=> commands Commands for player
+		*/
+		void SetCommands(Commands* commands);
+		/*
+			Gets semapohore for this object
+		*/
+		Semaphore* GetSemaphore();
+		/*
+			Sets the card which should player use
+		*/
+		void SetCard(Card* card);
+	private:
+		Commands* commands;
+		Semaphore* semaphore;
+		Card* card;
 };
 
 #endif

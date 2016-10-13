@@ -15,13 +15,9 @@ SET(CMAKE_DEPENDS_CHECK_CXX
   "/home/martin/skola/UPS/SP/networkplayer.cxx" "/home/martin/skola/UPS/SP/build/CMakeFiles/client.dir/networkplayer.cxx.o"
   "/home/martin/skola/UPS/SP/person.cxx" "/home/martin/skola/UPS/SP/build/CMakeFiles/client.dir/person.cxx.o"
   "/home/martin/skola/UPS/SP/programmerbot.cxx" "/home/martin/skola/UPS/SP/build/CMakeFiles/client.dir/programmerbot.cxx.o"
+  "/home/martin/skola/UPS/SP/semaphore.cxx" "/home/martin/skola/UPS/SP/build/CMakeFiles/client.dir/semaphore.cxx.o"
   )
 SET(CMAKE_CXX_COMPILER_ID "GNU")
-
-# Preprocessor definitions for this target.
-SET(CMAKE_TARGET_DEFINITIONS
-  "LANG_CZ"
-  )
 
 # Targets to which this target links.
 SET(CMAKE_TARGET_LINKED_INFO_FILES

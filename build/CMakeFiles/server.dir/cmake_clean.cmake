@@ -1,4 +1,5 @@
 FILE(REMOVE_RECURSE
+  "CMakeFiles/server.dir/semaphore.cxx.o"
   "CMakeFiles/server.dir/config.cxx.o"
   "CMakeFiles/server.dir/programmerbot.cxx.o"
   "CMakeFiles/server.dir/networkplayer.cxx.o"

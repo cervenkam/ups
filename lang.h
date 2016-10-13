@@ -31,7 +31,8 @@
 	#define LAST_POINT "poslednich 10 bodu"
 	#define ERR_NOT_FOUND "Chyba - konfigurace nenalezena"
 	#define SAME_CARDS_HAND "ma v ruce 4 stejne karty"
-#elif LANG_EN
+	#define I_AM "Ja jsem "
+#else
 	#define PLAYER "Player"
 	#define DEFAULT "Default" PLAYER
 	#define PLAYER_COUNT "NumberOfPlayers"
@@ -58,4 +59,5 @@
 	#define LAST_POINT "last 10 points"
 	#define ERR_NOT_FOUND "Error - configuration not found"
 	#define SAME_CARDS_HAND "has 4 same cards"
+	#define I_AM "I am "
 #endif

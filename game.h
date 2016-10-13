@@ -24,6 +24,19 @@ class Game{
 		Game(unsigned char players);
 #endif
 		/*
+			Returns the game algorithm
+				=> player Player ID
+				<= Player algorithm
+		*/
+		Algorithm* GetAlgorithm(unsigned player);
+
+		/*
+			Returns number of players
+				<= Number of players
+		*/
+		unsigned GetCountOfPlayers();
+
+		/*
 			Starts the game
 		*/
 		void Start();
@@ -42,6 +55,16 @@ class Game{
 		*/
 		bool IsHeStarted(unsigned char ID);
 		/*
+			Sets the name of this game
+				=> name Name of this game
+		*/
+		void SetName(char* name);
+		/*
+			Gets the name of this game
+				<= Name of this game
+		*/
+		char* GetName();
+		/*
 			Sets the starting player of this round
 				=> ID Starting player's ID
 		*/
@@ -51,6 +74,10 @@ class Game{
 				<= Starting player's ID
 		*/
 		static unsigned char GetStarted();
+		/*
+			Game in new thread
+		*/
+		void StartParallel();
 #ifndef TESTING
 	private:
 #endif
@@ -114,6 +141,8 @@ class Game{
 		Algorithm** algos;
 		/* Number of points on table */
 		unsigned char points = 0;
+		/* Name of the game */
+		char* name;
 };
 
 #endif

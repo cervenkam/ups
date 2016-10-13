@@ -10,3 +10,4 @@ set(SRCS
 )
 
 add_library(networking STATIC ${SRCS})
+#target_compile_definitions(networking PRIVATE LANG_CZ)

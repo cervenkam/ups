@@ -95,5 +95,17 @@ void Algorithm::ClearPoints(){
 	Identifies the algorithm
 */
 void Algorithm::Identify(){
-	OUT("I am " << name << endl);
+	OUT(I_AM << name << endl);
+}
+/*
+	Set this player ready
+*/
+void Algorithm::SetReady(){
+	this->ready = true;
+}
+/*
+	Is this player ready to start
+*/
+bool Algorithm::IsReady(){
+	return this->ready;
 }

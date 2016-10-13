@@ -1,4 +1,5 @@
 #include "server.h"
+#include "../stdmcr.h"
 #include <unistd.h>
 #include <iostream>
 #include <cstring>
@@ -32,20 +33,20 @@ void Server::Start(){
 	TEST_ERR(bnd<0,"Socket not binded")
 	int lsn = listen(sock, 10);
 	TEST_ERR(lsn<0,"Cannot listen")
+	STDMSG("0;36","Listening:\tport " << this->port);
 	while(1){
 		unsigned len = sizeof(saddrin);
 		errno = 0;
 		int sckt = accept(sock,reinterpret_cast<saddr*>(&in_addr),&len);
 		TEST_ERR(errno>0,strerror(errno));
 		TEST_ERR_DO(sckt<0,"Cannot accept socket",close(sock))
-		cout << "Connection from " << inet_ntoa(in_addr.sin_addr) << ":" << ntohs(in_addr.sin_port) << endl;
+		STDMSG("0;36","Connection:\t" << inet_ntoa(in_addr.sin_addr) << ":" << ntohs(in_addr.sin_port));
 		Commands* cmd = new Commands();
 		cmd->SetServer(this);
 		cmd->SetSocket(sckt);
 		this->commands.push_back(cmd);
-		thread* thr = new thread(&Commands::Start,cmd);
-		//TODO housekeeping
-		//close(sckt);
+		thread thr(&Commands::Start,cmd);
+		thr.detach();
 	}
 }
 char* Server::Receive(int sock){
@@ -57,9 +58,11 @@ char* Server::Receive(int sock){
 	rcv = recv(sock,&internal_storage,sizeof(char)*MAX_LEN,0);
 	TEST_ERR_RET(rcv<0,"Cannot get message",NULL)
 	internal_storage[length]='\0';
+	STDMSG("1;33","Received:\t" << internal_storage);
 	return internal_storage;
 }
-void Server::Send(int sock,char* message){
+void Server::Send(int sock,const char* message){
+	STDMSG("0;32","Sending:\t" << message);
 	unsigned length = strlen(message);
 	uint32_t netlen = htonl(length);
 	int snd = send(sock,&netlen,sizeof(uint32_t),0);

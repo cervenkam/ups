@@ -15,12 +15,12 @@ SET(CMAKE_DEPENDS_CHECK_CXX
   "/home/martin/skola/UPS/SP/networkplayer.cxx" "/home/martin/skola/UPS/SP/build/CMakeFiles/server.dir/networkplayer.cxx.o"
   "/home/martin/skola/UPS/SP/person.cxx" "/home/martin/skola/UPS/SP/build/CMakeFiles/server.dir/person.cxx.o"
   "/home/martin/skola/UPS/SP/programmerbot.cxx" "/home/martin/skola/UPS/SP/build/CMakeFiles/server.dir/programmerbot.cxx.o"
+  "/home/martin/skola/UPS/SP/semaphore.cxx" "/home/martin/skola/UPS/SP/build/CMakeFiles/server.dir/semaphore.cxx.o"
   )
 SET(CMAKE_CXX_COMPILER_ID "GNU")
 
 # Preprocessor definitions for this target.
 SET(CMAKE_TARGET_DEFINITIONS
-  "LANG_CZ"
   "SERVER"
   )
 

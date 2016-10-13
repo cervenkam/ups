@@ -4,5 +4,5 @@
 # compile CXX with /usr/bin/c++
 CXX_FLAGS = -Wl,--no-as-needed -std=c++11 -Wall -Wextra -Wno-conversion-null -g -lpthread  
 
-CXX_DEFINES = -DLANG_CZ
+CXX_DEFINES = 
 

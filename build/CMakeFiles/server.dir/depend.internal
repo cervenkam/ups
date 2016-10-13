@@ -7,11 +7,13 @@ CMakeFiles/server.dir/algono.cxx.o
  /home/martin/skola/UPS/SP/algorithm.h
  /home/martin/skola/UPS/SP/card.h
  /home/martin/skola/UPS/SP/hand.h
+ /home/martin/skola/UPS/SP/lang.h
 CMakeFiles/server.dir/algorithm.cxx.o
  /home/martin/skola/UPS/SP/algorithm.cxx
  /home/martin/skola/UPS/SP/algorithm.h
  /home/martin/skola/UPS/SP/card.h
  /home/martin/skola/UPS/SP/hand.h
+ /home/martin/skola/UPS/SP/lang.h
  /home/martin/skola/UPS/SP/stdmcr.h
 CMakeFiles/server.dir/card.cxx.o
  /home/martin/skola/UPS/SP/card.cxx
@@ -23,11 +25,17 @@ CMakeFiles/server.dir/config.cxx.o
  /home/martin/skola/UPS/SP/card.h
  /home/martin/skola/UPS/SP/config.cxx
  /home/martin/skola/UPS/SP/config.h
+ /home/martin/skola/UPS/SP/deck.h
+ /home/martin/skola/UPS/SP/game.h
  /home/martin/skola/UPS/SP/hand.h
  /home/martin/skola/UPS/SP/lang.h
+ /home/martin/skola/UPS/SP/networking/commands.h
+ /home/martin/skola/UPS/SP/networking/commonnetwork.h
+ /home/martin/skola/UPS/SP/networking/server.h
  /home/martin/skola/UPS/SP/networkplayer.h
  /home/martin/skola/UPS/SP/person.h
  /home/martin/skola/UPS/SP/programmerbot.h
+ /home/martin/skola/UPS/SP/semaphore.h
  /home/martin/skola/UPS/SP/stdmcr.h
 CMakeFiles/server.dir/deck.cxx.o
  /home/martin/skola/UPS/SP/card.h
@@ -57,18 +65,28 @@ CMakeFiles/server.dir/main.cxx.o
  /home/martin/skola/UPS/SP/deck.h
  /home/martin/skola/UPS/SP/game.h
  /home/martin/skola/UPS/SP/hand.h
+ /home/martin/skola/UPS/SP/lang.h
  /home/martin/skola/UPS/SP/main.cxx
  /home/martin/skola/UPS/SP/networking/client.h
  /home/martin/skola/UPS/SP/networking/commands.h
  /home/martin/skola/UPS/SP/networking/commonnetwork.h
  /home/martin/skola/UPS/SP/networking/server.h
  /home/martin/skola/UPS/SP/networkplayer.h
+ /home/martin/skola/UPS/SP/semaphore.h
 CMakeFiles/server.dir/networkplayer.cxx.o
  /home/martin/skola/UPS/SP/algorithm.h
  /home/martin/skola/UPS/SP/card.h
+ /home/martin/skola/UPS/SP/deck.h
+ /home/martin/skola/UPS/SP/game.h
  /home/martin/skola/UPS/SP/hand.h
+ /home/martin/skola/UPS/SP/lang.h
+ /home/martin/skola/UPS/SP/networking/commands.h
+ /home/martin/skola/UPS/SP/networking/commonnetwork.h
+ /home/martin/skola/UPS/SP/networking/lang.h
+ /home/martin/skola/UPS/SP/networking/server.h
  /home/martin/skola/UPS/SP/networkplayer.cxx
  /home/martin/skola/UPS/SP/networkplayer.h
+ /home/martin/skola/UPS/SP/semaphore.h
 CMakeFiles/server.dir/person.cxx.o
  /home/martin/skola/UPS/SP/algorithm.h
  /home/martin/skola/UPS/SP/card.h
@@ -81,5 +99,9 @@ CMakeFiles/server.dir/programmerbot.cxx.o
  /home/martin/skola/UPS/SP/algorithm.h
  /home/martin/skola/UPS/SP/card.h
  /home/martin/skola/UPS/SP/hand.h
+ /home/martin/skola/UPS/SP/lang.h
  /home/martin/skola/UPS/SP/programmerbot.cxx
  /home/martin/skola/UPS/SP/programmerbot.h
+CMakeFiles/server.dir/semaphore.cxx.o
+ /home/martin/skola/UPS/SP/semaphore.cxx
+ /home/martin/skola/UPS/SP/semaphore.h

@@ -15,6 +15,7 @@
 */
 AlgoNo::AlgoNo(const char* player,unsigned char ch): Algorithm(player,ch){
 	name="algono";
+	SetReady();
 }
 
 /*

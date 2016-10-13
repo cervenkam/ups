@@ -6,11 +6,13 @@ CMakeFiles/client.dir/algono.cxx.o: ../algono.h
 CMakeFiles/client.dir/algono.cxx.o: ../algorithm.h
 CMakeFiles/client.dir/algono.cxx.o: ../card.h
 CMakeFiles/client.dir/algono.cxx.o: ../hand.h
+CMakeFiles/client.dir/algono.cxx.o: ../lang.h
 
 CMakeFiles/client.dir/algorithm.cxx.o: ../algorithm.cxx
 CMakeFiles/client.dir/algorithm.cxx.o: ../algorithm.h
 CMakeFiles/client.dir/algorithm.cxx.o: ../card.h
 CMakeFiles/client.dir/algorithm.cxx.o: ../hand.h
+CMakeFiles/client.dir/algorithm.cxx.o: ../lang.h
 CMakeFiles/client.dir/algorithm.cxx.o: ../stdmcr.h
 
 CMakeFiles/client.dir/card.cxx.o: ../card.cxx
@@ -22,11 +24,17 @@ CMakeFiles/client.dir/config.cxx.o: ../algorithm.h
 CMakeFiles/client.dir/config.cxx.o: ../card.h
 CMakeFiles/client.dir/config.cxx.o: ../config.cxx
 CMakeFiles/client.dir/config.cxx.o: ../config.h
+CMakeFiles/client.dir/config.cxx.o: ../deck.h
+CMakeFiles/client.dir/config.cxx.o: ../game.h
 CMakeFiles/client.dir/config.cxx.o: ../hand.h
 CMakeFiles/client.dir/config.cxx.o: ../lang.h
+CMakeFiles/client.dir/config.cxx.o: ../networking/commands.h
+CMakeFiles/client.dir/config.cxx.o: ../networking/commonnetwork.h
+CMakeFiles/client.dir/config.cxx.o: ../networking/server.h
 CMakeFiles/client.dir/config.cxx.o: ../networkplayer.h
 CMakeFiles/client.dir/config.cxx.o: ../person.h
 CMakeFiles/client.dir/config.cxx.o: ../programmerbot.h
+CMakeFiles/client.dir/config.cxx.o: ../semaphore.h
 CMakeFiles/client.dir/config.cxx.o: ../stdmcr.h
 
 CMakeFiles/client.dir/deck.cxx.o: ../card.h
@@ -56,18 +64,28 @@ CMakeFiles/client.dir/main.cxx.o: ../card.h
 CMakeFiles/client.dir/main.cxx.o: ../deck.h
 CMakeFiles/client.dir/main.cxx.o: ../game.h
 CMakeFiles/client.dir/main.cxx.o: ../hand.h
+CMakeFiles/client.dir/main.cxx.o: ../lang.h
 CMakeFiles/client.dir/main.cxx.o: ../main.cxx
 CMakeFiles/client.dir/main.cxx.o: ../networking/client.h
 CMakeFiles/client.dir/main.cxx.o: ../networking/commands.h
 CMakeFiles/client.dir/main.cxx.o: ../networking/commonnetwork.h
 CMakeFiles/client.dir/main.cxx.o: ../networking/server.h
 CMakeFiles/client.dir/main.cxx.o: ../networkplayer.h
+CMakeFiles/client.dir/main.cxx.o: ../semaphore.h
 
 CMakeFiles/client.dir/networkplayer.cxx.o: ../algorithm.h
 CMakeFiles/client.dir/networkplayer.cxx.o: ../card.h
+CMakeFiles/client.dir/networkplayer.cxx.o: ../deck.h
+CMakeFiles/client.dir/networkplayer.cxx.o: ../game.h
 CMakeFiles/client.dir/networkplayer.cxx.o: ../hand.h
+CMakeFiles/client.dir/networkplayer.cxx.o: ../lang.h
+CMakeFiles/client.dir/networkplayer.cxx.o: ../networking/commands.h
+CMakeFiles/client.dir/networkplayer.cxx.o: ../networking/commonnetwork.h
+CMakeFiles/client.dir/networkplayer.cxx.o: ../networking/lang.h
+CMakeFiles/client.dir/networkplayer.cxx.o: ../networking/server.h
 CMakeFiles/client.dir/networkplayer.cxx.o: ../networkplayer.cxx
 CMakeFiles/client.dir/networkplayer.cxx.o: ../networkplayer.h
+CMakeFiles/client.dir/networkplayer.cxx.o: ../semaphore.h
 
 CMakeFiles/client.dir/person.cxx.o: ../algorithm.h
 CMakeFiles/client.dir/person.cxx.o: ../card.h
@@ -80,6 +98,10 @@ CMakeFiles/client.dir/person.cxx.o: ../stdmcr.h
 CMakeFiles/client.dir/programmerbot.cxx.o: ../algorithm.h
 CMakeFiles/client.dir/programmerbot.cxx.o: ../card.h
 CMakeFiles/client.dir/programmerbot.cxx.o: ../hand.h
+CMakeFiles/client.dir/programmerbot.cxx.o: ../lang.h
 CMakeFiles/client.dir/programmerbot.cxx.o: ../programmerbot.cxx
 CMakeFiles/client.dir/programmerbot.cxx.o: ../programmerbot.h
+
+CMakeFiles/client.dir/semaphore.cxx.o: ../semaphore.cxx
+CMakeFiles/client.dir/semaphore.cxx.o: ../semaphore.h
 

@@ -434,6 +434,33 @@ programmerbot.cxx.s:
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/programmerbot.cxx.s
 .PHONY : programmerbot.cxx.s
 
+semaphore.o: semaphore.cxx.o
+.PHONY : semaphore.o
+
+# target to build an object file
+semaphore.cxx.o:
+	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/semaphore.cxx.o
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/semaphore.cxx.o
+.PHONY : semaphore.cxx.o
+
+semaphore.i: semaphore.cxx.i
+.PHONY : semaphore.i
+
+# target to preprocess a source file
+semaphore.cxx.i:
+	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/semaphore.cxx.i
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/semaphore.cxx.i
+.PHONY : semaphore.cxx.i
+
+semaphore.s: semaphore.cxx.s
+.PHONY : semaphore.s
+
+# target to generate assembly for a file
+semaphore.cxx.s:
+	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/semaphore.cxx.s
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/semaphore.cxx.s
+.PHONY : semaphore.cxx.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -478,6 +505,9 @@ help:
 	@echo "... programmerbot.o"
 	@echo "... programmerbot.i"
 	@echo "... programmerbot.s"
+	@echo "... semaphore.o"
+	@echo "... semaphore.i"
+	@echo "... semaphore.s"
 .PHONY : help
 
 
