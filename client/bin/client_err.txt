@@ -1,0 +1,4 @@
+java.lang.StringIndexOutOfBoundsException: String index out of range: -1
+	at java.lang.String.checkBounds(String.java:381)
+	at java.lang.String.<init>(String.java:545)
+	at cards.client.Client.run(Client.java:69)

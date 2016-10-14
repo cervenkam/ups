@@ -1,4 +1,4 @@
-package client;
+package cards.client;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.ConnectException;
@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
-import static client.Common.*;
+import static cards.client.Common.*;
 public class Client extends Thread{
 	private static final byte[] buffer = new byte[1024];
 	private String host;

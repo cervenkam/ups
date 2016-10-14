@@ -1,4 +1,4 @@
-package client;
+package cards.client;
 import javax.swing.*;
 import java.util.*;
 import java.awt.Insets;
@@ -7,7 +7,7 @@ import java.awt.Container;
 import java.awt.Component;
 import java.awt.event.*;
 import javax.swing.border.EmptyBorder;
-import static client.Common.*;
+import static cards.client.Common.*;
 import static javax.swing.JSlider.HORIZONTAL;
 import static java.util.ResourceBundle.getBundle;
 import static javax.swing.SwingUtilities.invokeLater;
@@ -30,7 +30,7 @@ public class LoginWindow extends JFrame implements Runnable{
 		connection_server.setText("127.0.0.1");
 		JLabel connection_port_label =   new JLabel(BUNDLE.getString("Port")+":");
 		JTextField connection_port =     new JTextField(5);
-		connection_port.setText("43158");
+		connection_port.setText("43158"); //TODO debug (maybe)
 		JLabel connection_name_label =   new JLabel(BUNDLE.getString("Name")+":");
 		JTextField connection_name =     new JTextField(20);
 		connection_name.setText(System.getProperty("user.name"));
@@ -54,6 +54,7 @@ public class LoginWindow extends JFrame implements Runnable{
 		//size
 		setSize(d);
 		//onclick
+		getRootPane().setDefaultButton(connection_button);
 		connection_button.addActionListener((x)->{
 			int port = -1;
 			try{

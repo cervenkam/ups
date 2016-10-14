@@ -1,4 +1,4 @@
-package client;
+package cards.client;
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.awt.Container;
 import java.awt.Dimension;
 import javax.swing.border.EmptyBorder;
-import static client.Common.*;
+import static cards.client.Common.*;
 import static javax.swing.JSlider.HORIZONTAL;
 import static javax.swing.SwingUtilities.invokeLater;
 class CreateGameWindow extends JFrame implements Runnable{
@@ -26,7 +26,7 @@ class CreateGameWindow extends JFrame implements Runnable{
 		this.name=name;
 		this.client=client;
 		invokeLater(this);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(EXIT_ON_CLOSE); //TODO
 	}
 	public void run(){
 		createGUI();
@@ -38,6 +38,7 @@ class CreateGameWindow extends JFrame implements Runnable{
 		//create section
 		JLabel create_name_label = new JLabel(BUNDLE.getString("GameName")+":");
 		create_name = new JTextField(20);
+		create_name.setText("hra "+(int)(900*Math.random()+100));//TODO DEBUG
 		JLabel create_players_count_label = new JLabel(BUNDLE.getString("PlayersCount")+":");
 		create_players_count = new JSlider(HORIZONTAL,MIN_PLAYERS,MAX_PLAYERS,MIN_PLAYERS);
 		JButton create_players_button = new JButton(BUNDLE.getString("CreateGame"));
@@ -61,6 +62,7 @@ class CreateGameWindow extends JFrame implements Runnable{
 				refreshPlayers((int)create_players_count.getValue());
 			}
 		});
+		getRootPane().setDefaultButton(create_players_button);
 		refreshPlayers((int)create_players_count.getValue());
 		//border section
 		setSize(d);
@@ -101,11 +103,13 @@ class CreateGameWindow extends JFrame implements Runnable{
 		}
 	}
 	private void createPlayers(Container con){
+		String[] names = {"karel","franta","josef","venca","radek","richard"};//TODO debug
 		for(int a=0; a<MAX_PLAYERS; a++){
 			JLabel algorithm_label = new JLabel(BUNDLE.getString("PlayerType")+":");
 			JComboBox<String> algorithm = new JComboBox<String>(algorithms);
 			JLabel name_label = new JLabel(BUNDLE.getString("Name")+":");
 			JTextField name = new JTextField(20);
+			name.setText(names[a]);//TODO debug
 			players_algorithms.add(algorithm);
 			players_names.add(name);
 			//add section
@@ -123,6 +127,8 @@ class CreateGameWindow extends JFrame implements Runnable{
 				name.setText(this.name);
 				name.setEditable(false);
 				algorithm.setEnabled(false);
+			}else{
+				algorithm.setSelectedItem("AlgoNo");
 			}
 		}
 	}

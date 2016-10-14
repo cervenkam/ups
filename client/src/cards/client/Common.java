@@ -1,4 +1,4 @@
-package client;
+package cards.client;
 import java.awt.Dimension;
 import java.awt.Component;
 import java.util.ResourceBundle;
