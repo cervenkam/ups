@@ -29,7 +29,7 @@ public class Client extends Thread{
 		command = SERVER_BUNDLE.getString(command);
 		Set<Entry<String,Consumer<String>>> set = callbacks.entrySet();
 		for(Entry<String,Consumer<String>> ent: set){
-			if(command.startsWith(ent.getKey())){
+			if(command.equals(ent.getKey())){
 				callbacks.remove(ent.getKey());
 				break;
 			}

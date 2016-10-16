@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.awt.Graphics2D;
+import static java.awt.Color.*;
 public class LayerManager{
 	private static final int width = 800; //TODO
 	private static final int height = 600; //TODO
@@ -53,6 +54,7 @@ public class LayerManager{
 		split(new int[0]);
 	}
 	private void split(int[] position){
+		merges.clear();
 		if(position == null){
 			position = new int[0];
 		}
@@ -64,13 +66,18 @@ public class LayerManager{
 			for(int b=start; b<=end; b++){
 				to_merge[b-start] = layers.get(b);
 			}
-			merges.add(Layer.mergeLayers(width,height,to_merge));
+			if(to_merge.length > 0){
+				merges.add(Layer.mergeLayers(width,height,to_merge));
+			}
 			if(a!=position.length){
 				merges.add(layers.get(position[a]));
 			}
 		}
 	}
 	public void paint(Graphics2D g){
+		g.setColor(WHITE);
+		g.fillRect(0,0,width,height);
+		System.out.println("Drawing: "+merges.size());
 		for(int a=0; a<merges.size(); a++){
 			merges.get(a).paint(g);
 		}

@@ -7,6 +7,7 @@ public class PredefinedAnimations extends Animation{
 	private static final double ratio = 0.3;
 	public PredefinedAnimations(Layer layer,Component component){
 		super(layer,component);
+		LayerManager.getInstance().pushOnTop(layer);
 		LayerManager.getInstance().split(layer);
 	}
 	public PredefinedAnimations setPosition(int x,int y){
@@ -18,15 +19,11 @@ public class PredefinedAnimations extends Animation{
 		this.rotate = rotate;
 		return this;
 	}
-	private void motion(){
-		 andThen(x,(v)->setX(v),()->getX());
-		parallel(y,(v)->setY(v),()->getY());
-		parallel(rotate,(v)->setRotation(v),()->getRotation());
-	}
 	public boolean cardThrow(){
 		if(x<0 || y<0){
 			return false;
 		}
+		getLayer().setImage(0);
 		double tmp_rotate = rotate;
 		double first_rotate = Math.PI;
 		setRotation(getRotation()+first_rotate*ratio);
@@ -40,10 +37,11 @@ public class PredefinedAnimations extends Animation{
 		run();
 		return true;
 	}
-	public boolean getCard(){
+	public boolean getCard(boolean visible){
 		if(x<0 || y<0){
 			return false;
 		}
+		getLayer().setImage(visible?0:1);
 		 andThen(x,(v)->setX(v),()->getX());
 		parallel(y,(v)->setY(v),()->getY());
 		parallel(rotate,(v)->setRotation(v),()->getRotation());

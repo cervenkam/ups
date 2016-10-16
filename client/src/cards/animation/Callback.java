@@ -14,7 +14,7 @@ public class Callback{
 		this(end,consumer,supplier,2000);
 	}
 	public Callback(double end,DoubleConsumer consumer,DoubleSupplier supplier,int duration){
-		this(end,consumer,supplier,duration,100);
+		this(end,consumer,supplier,duration,10);
 	}
 	public Callback(double end,DoubleConsumer consumer,DoubleSupplier supplier,int duration,int sleep){
 		this.end=end;
@@ -22,5 +22,8 @@ public class Callback{
 		this.supplier=supplier;
 		this.duration=duration;
 		this.sleep=sleep;
+	}
+	public String toString(){
+		return "Callback: "+supplier.getAsDouble()+"->"+end;
 	}
 }

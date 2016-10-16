@@ -1,6 +1,7 @@
 package cards.animation;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -8,7 +9,12 @@ import java.io.IOException;
 public class LayerLoader{
 	public static List<Layer> loadCards(int x,int y,String path){
 		List<Layer> layers = loadLayers(path);
-		BufferedImage second_side = loadImage(path+"/second_side.png");
+		String second_side_path = path+"second_side/second_side.png";
+		BufferedImage second_side = loadImage(second_side_path);
+		if(second_side == null){
+			System.err.println("Image not found: "+second_side_path);
+			System.exit(1);
+		}
 		for(Layer layer:layers){
 			layer.addImage(second_side);
 			layer.setPosition(x,y);
@@ -19,9 +25,11 @@ public class LayerLoader{
 	public static List<Layer> loadLayers(String path){
 		List<Layer> layers = new ArrayList<Layer>();
 		File directory = new File(path);
-		for(File file: directory.listFiles()){
+		File[] list = directory.listFiles((f)->f.getAbsolutePath().endsWith(".png"));
+		Arrays.sort(list);
+		for(File file: list){
 			Layer layer = loadLayer(file);
-			if(layer != null){
+			if(layer.getImage() != null){
 				layers.add(layer);
 			}
 		}

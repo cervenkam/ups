@@ -5,6 +5,8 @@ import java.awt.geom.AffineTransform;
 import java.util.List;
 import java.util.ArrayList;
 public class Layer{
+	private static int instances = 0;
+	private int instance = instances++;
 	public static Layer mergeLayers(int width, int height, Layer... layers){
 		return mergeLayers(0,0,width,height,layers);
 	}
@@ -31,7 +33,9 @@ public class Layer{
 	private int center_y;
 	private int paint_x;
 	private int paint_y;
-	private double _sinr,_cosr,_pax,_pay;
+	private double _sinr = 0;
+	private double _cosr = 1;
+	private double _pax,_pay;
 
 	public Layer(){
 		this(null);
@@ -53,6 +57,9 @@ public class Layer{
 			image_position = image;
 			updateRatio();
 		}
+	}
+	public BufferedImage getImage(){
+		return getImage(image_position);
 	}
 	public BufferedImage getImage(int index){
 		return buf.get(index);
@@ -87,7 +94,7 @@ public class Layer{
 		setPosition(x,this.y);
 	}
 	public final void setY(int y){
-		setPosition(this.y,x);
+		setPosition(this.x,y);
 	}
 	public final void setPosition(int x, int y){
 		this.x=x;
@@ -95,13 +102,15 @@ public class Layer{
 		updateCenter();
 	}
 	private final void updateRatio(){
-		this._pax = -buf.get(image_position).getWidth()*px;
-		this._pay = -buf.get(image_position).getHeight()*py;
+		if(buf.get(image_position) != null){
+			this._pax = -buf.get(image_position).getWidth()*px;
+			this._pay = -buf.get(image_position).getHeight()*py;
+		}
 		updatePaint();
 	}
 	private final void updatePaint(){
-		this.paint_x = (int)(_pax*_cosr + _pay*_sinr);
-		this.paint_y = (int)(_pay*_cosr + _pax*_sinr);
+		this.paint_x = (int)_pax;
+		this.paint_y = (int)_pay;
 		updateCenter();
 	}
 	private final void updateCenter(){
@@ -116,5 +125,8 @@ public class Layer{
 			g.drawImage(buf.get(image_position),paint_x,paint_y,null);
 		}
 		g.setTransform(aft);
+	}
+	public String toString(){
+		return "Layer "+instance+": x="+center_x+", y="+center_y;
 	}
 }

@@ -76,7 +76,6 @@ public class LoginWindow extends JFrame implements Runnable{
 				return;
 			}
 			Client client = new Client(connection_server.getText(),port);
-			client.start();
 			client.addCallback("Welcome",(s)->{
 				client.removeCallback("Welcome");
 				client.send(SERVER_BUNDLE.getString("Login")+" "+connection_name.getText());
@@ -92,6 +91,10 @@ public class LoginWindow extends JFrame implements Runnable{
 				dispose();
 				new GameWindow(client).setVisible(true);
 			});
+			client.addCallback("PlayerExists",(s)->{
+				error("ErrorPlayerExists");
+			});
+			client.start();
 		});
 	}
 }

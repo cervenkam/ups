@@ -132,6 +132,10 @@ void Commands::Login(char* message){
 			Algorithm* algo = game->GetAlgorithm(b);
 			if(!strcmp(algo->player,player_name)){
 				if((this->player = dynamic_cast<NetworkPlayer*>(algo))){	
+					if(this->player->IsReady()){
+						this->server->Send(this->sock,PLAYER_EXISTS);
+						return;
+					}
 					this->player->SetCommands(this);
 					this->game = game;
 					this->server->Send(this->sock,A_GAME);

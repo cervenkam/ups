@@ -8,6 +8,7 @@ import java.util.function.DoubleSupplier;
 import java.util.function.DoubleUnaryOperator;
 public class Animation extends Thread{
 	private static int running_threads = 0;
+	private static Thread repaint_manager = null;
 	private final Layer layer;
 	private final Component component;
 	private LinkedList<List<Callback>> callbacks;
@@ -56,7 +57,9 @@ public class Animation extends Thread{
 			List<Thread> list_of_threads = new ArrayList<Thread>();
 			int min_sleep = Integer.MAX_VALUE;
 			for(Callback callback: list_of_callbacks){
-				if(callback.sleep < min_sleep){
+				if(callback.sleep < 0){
+					min_sleep = 10;
+				}else if(callback.sleep < min_sleep){
 					min_sleep = callback.sleep;
 				}
 				Thread thr = new Thread(()->{
@@ -68,9 +71,10 @@ public class Animation extends Thread{
 						start = callback.supplier.getAsDouble();
 					}
 					while((curr_time = System.currentTimeMillis()) < end_time){
-						double ratio = (curr_time-start_time)/(end_time-start_time);
+						double ratio = (double)(curr_time-start_time)/(end_time-start_time);
 						synchronized(this){
 							ratio = callback.operator.applyAsDouble(ratio);
+							//System.out.println(getName()+": <"+(int)start+";"+(int)callback.end+">: "+(start+ratio*(callback.end-start)));
 							callback.consumer.accept(start+ratio*(callback.end-start));
 						}
 						try{
@@ -85,23 +89,25 @@ public class Animation extends Thread{
 				running_threads++;
 				list_of_threads.add(thr);
 			}
-			final int final_min_sleep = min_sleep;
-			Thread repainter = new Thread(()->{
-				while(running_threads>0){
-					component.repaint();		
-					try{
-						sleep(final_min_sleep);
-					}catch(InterruptedException e){}
-				}
-			});
-			if(component != null){
-				repainter.start();
+			final int final_min_sleep = min_sleep>>1;
+			if(repaint_manager == null){
+				repaint_manager = new Thread(()->{
+					while(running_threads>0){
+						component.repaint();		
+						try{
+							sleep(final_min_sleep);
+						}catch(InterruptedException e){}
+					}
+					repaint_manager=null;
+				});
+				repaint_manager.start();
 			}
 			for(Thread thread: list_of_threads){
 				try{
 					thread.join();
 				}catch(InterruptedException e){}
 			}
+			component.repaint();		
 		}
 	}
 }

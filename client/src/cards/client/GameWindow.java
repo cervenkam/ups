@@ -20,7 +20,6 @@ public class GameWindow extends JFrame{
 		});
 		client.addCallback("Cards",(s)->{
 			setCards(s);
-			System.out.println("I've got cards ;)");
 		});
 		setDefaultCloseOperation(EXIT_ON_CLOSE); //TODO
 		setSize(WIDTH,HEIGHT);
@@ -49,19 +48,19 @@ public class GameWindow extends JFrame{
 		LayerManager lm = LayerManager.getInstance();
 		System.out.println(new_cards.size()+" new cards");
 		for(int a=0; a<new_cards.size(); a++){
-			PredefinedAnimations pa = new PredefinedAnimations(lm.getCard(new_cards.get(a)),this);
-			pa.setPosition(WIDTH>>1+(a-2)*20,HEIGHT-100);
-			pa.setRotate((a-2)*Math.PI/5);
-			pa.getCard();
+			Layer layer = lm.getCard(new_cards.get(a));
+			System.out.println(layer);
+			PredefinedAnimations pa = new PredefinedAnimations(layer,this);
+			pa.setPosition((WIDTH>>1)+(int)((a-1.5)*20),HEIGHT-100);
+			pa.setRotate((a-1.5)*Math.PI/10);
+			pa.getCard(true);
+			repaint();
 		}
 	}
 	private <T> List<T> substract(List<T> from, List<T> to){
 		List<T> list = new ArrayList<T>();
 		list.addAll(from);
 		list.removeAll(to);
-		System.out.println(Arrays.toString(from.toArray()));
-		System.out.println(Arrays.toString(to.toArray()));
-		System.out.println(Arrays.toString(list.toArray()));
 		return list;
 	}
 	public void paint(Graphics g){
