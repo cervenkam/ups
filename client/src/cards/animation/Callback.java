@@ -11,7 +11,7 @@ public class Callback{
 	public final int sleep;
 	public final double end;
 	public Callback(double end,DoubleConsumer consumer,DoubleSupplier supplier){
-		this(end,consumer,supplier,2000);
+		this(end,consumer,supplier,800);
 	}
 	public Callback(double end,DoubleConsumer consumer,DoubleSupplier supplier,int duration){
 		this(end,consumer,supplier,duration,10);

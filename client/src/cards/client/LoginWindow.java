@@ -12,8 +12,9 @@ import static javax.swing.JSlider.HORIZONTAL;
 import static java.util.ResourceBundle.getBundle;
 import static javax.swing.SwingUtilities.invokeLater;
 public class LoginWindow extends JFrame implements Runnable{
-
-	public LoginWindow(){
+	private String host;
+	public LoginWindow(String host){
+		this.host = host;
 		invokeLater(this);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
@@ -27,7 +28,7 @@ public class LoginWindow extends JFrame implements Runnable{
 		//create section
 		JLabel connection_server_label = new JLabel(BUNDLE.getString("Server")+":");
 		JTextField connection_server =   new JTextField(20);
-		connection_server.setText("127.0.0.1");
+		connection_server.setText(host);
 		JLabel connection_port_label =   new JLabel(BUNDLE.getString("Port")+":");
 		JTextField connection_port =     new JTextField(5);
 		connection_port.setText("43158"); //TODO debug (maybe)

@@ -5,7 +5,7 @@
 #include "../networkplayer.h"
 #include "../game.h"
 
-#define COMMANDS 6
+#define COMMANDS 7
 
 class Server;
 class NetworkPlayer;
@@ -25,13 +25,14 @@ class Commands{
 		void Call(char* command);
 		void Start();
 	private:
-		void  BadCommand(const char*);
-		void  CreateGame(char*);
-		void       Login(char*);
-		void    SendCard(char*);
-		void  Disconnect(char*);  
-		void     MyCards(char*);
-		void     Welcome(char*);
+		void      BadCommand(const char*);
+		void      CreateGame(char*);
+		void           Login(char*);
+		void        SendCard(char*);
+		void      Disconnect(char*);  
+		void         MyCards(char*);
+		void         Welcome(char*);
+		void GetCountOfCards(char*);
 
 		Server* server;
 		int sock;

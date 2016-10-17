@@ -18,7 +18,7 @@
 NetworkPlayer::NetworkPlayer(const char* player,unsigned char ch): Algorithm(player,ch){
 	name="networkplayer";
 	commands = NULL;
-	semaphore = new Semaphore(0);
+	semaphore = new Semaphore(1);
 }
 
 /*
@@ -37,8 +37,8 @@ void NetworkPlayer::Used(Card* card,unsigned char player){
 	if(commands && commands->GetServer()){
 		char* buff = new char[MAX_LEN];
 		char* tmp = buff;
-		strcpy(buff,USED_CARD);
-		tmp+=strlen(USED_CARD);
+		strcpy(buff,RESPONSE_USED_CARD);
+		tmp+=strlen(RESPONSE_USED_CARD);
 		tmp[0]=' ';
 		tmp++;
 		const char* text = "NULL";
@@ -47,7 +47,7 @@ void NetworkPlayer::Used(Card* card,unsigned char player){
 		}
 		strcpy(tmp,text);
 		tmp+=strlen(text);
-		sprintf(tmp++," %u",player); //automaticly appends '\0'
+		sprintf(tmp++," %s",this->commands->GetGame()->GetAlgorithm(player)->player); //automaticly appends '\0'
 		cout << "#" << buff << "#" << endl;
 		commands->GetServer()->Send(commands->GetSocket(),buff);
 		delete[] buff;
@@ -59,7 +59,7 @@ void NetworkPlayer::Used(Card* card,unsigned char player){
 		<= Card which will player use
 */
 Card* NetworkPlayer::Play(bool force){
-	commands->GetServer()->Send(commands->GetSocket(),PLAY);
+	commands->GetServer()->Send(commands->GetSocket(),RESPONSE_PLAY);
 	cout << "Waiting for a card" << endl;
 	semaphore->Wait();
 	cout << "I've got a card!" << endl;

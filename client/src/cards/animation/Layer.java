@@ -33,15 +33,21 @@ public class Layer{
 	private int center_y;
 	private int paint_x;
 	private int paint_y;
-	private double _sinr = 0;
-	private double _cosr = 1;
-	private double _pax,_pay;
 
 	public Layer(){
 		this(null);
 	}
 	public Layer(BufferedImage buf){
 		this(buf,0,0);
+	}
+	public void swap(Layer layer){
+		int tmp_x = x;
+		int tmp_y = y;
+		setPosition(layer.x,layer.y);
+		layer.setPosition(tmp_x,tmp_y);
+		double tmp_rotate = rotate;
+		setRotation(layer.rotate);
+		layer.setRotation(tmp_rotate);
 	}
 	public Layer(BufferedImage buf,int x,int y){
 		this.buf.add(buf);
@@ -75,9 +81,6 @@ public class Layer{
 	}
 	public final void setRotation(double rotate){
 		this.rotate = rotate;
-		this._sinr = Math.sin(rotate);
-		this._cosr = Math.cos(rotate);
-		updatePaint();
 	}
 	public final void setCenterX(double px){
 		setCenter(px,this.py);
@@ -103,14 +106,9 @@ public class Layer{
 	}
 	private final void updateRatio(){
 		if(buf.get(image_position) != null){
-			this._pax = -buf.get(image_position).getWidth()*px;
-			this._pay = -buf.get(image_position).getHeight()*py;
+			this.paint_x = (int)(-buf.get(image_position).getWidth()*px);
+			this.paint_x = (int)(-buf.get(image_position).getHeight()*py);
 		}
-		updatePaint();
-	}
-	private final void updatePaint(){
-		this.paint_x = (int)_pax;
-		this.paint_y = (int)_pay;
 		updateCenter();
 	}
 	private final void updateCenter(){

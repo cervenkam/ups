@@ -4,6 +4,7 @@
 	Version: 30.03.2016
 */
 #include <ostream>
+#include <iostream>
 #include <cstring>
 #include "card.h"
 #include "stdmcr.h"
@@ -110,27 +111,34 @@ char* Card::ToString(){
 		<= Number reprezentation
 */
 unsigned char Card::FromString(char* str){
-	char* sec = str;
-	unsigned len = strlen(str);
+	if(!strcmp(str,"NULL")){
+		return 1<<5;
+	}
+	char* copy_of_str = new char[strlen(str)+1];
+	strcpy(copy_of_str,str);
+	char* sec = copy_of_str;
+	unsigned len = strlen(copy_of_str);
 	for(unsigned a=0; a<len; a++){
-		if(str[a]==' '){
-			str[a]='\0';
-			sec = str+a+1;
+		if(copy_of_str[a]==' '){
+			copy_of_str[a]='\0';
+			sec = copy_of_str+a+1;
 		}
 	}
 	unsigned a=0;
-	char l1 = str[0];
+	char l1 = copy_of_str[0];
 	char l2 = sec[0];
+	cout << l1 << "," << l2 << endl;
 #ifdef LANG_CZ
-	unsigned len1 = strlen(str);
-	char m1 = len1=0?'\0':str[1];
+	unsigned len1 = strlen(copy_of_str);
+	char m1 = len1=0?'\0':copy_of_str[1];
 	a|=(m1!='E')? 2:0; //Kule, Zaludy
 	a|=(l1=='Z')? 1:0; //Zeleny, Zaludy
 #else
 	a|=(l1<='B')? 2:0; //Bell, Acorn
 	a|=(l1=='A' || l1=='L')? 1:0; //Leaf, Acorn
 #endif
-	if(!strcmp(colors[a],str)){
+	if(strcmp(colors[a],copy_of_str)){
+		cout << colors[a] << " != " << copy_of_str << endl;
 		return 1<<5;
 	}
 	unsigned b=0;
@@ -145,8 +153,10 @@ unsigned char Card::FromString(char* str){
 	b|=(l2>='9' && l2!='J' && l2!='Q')? 2:0; //9, X, King, Ace
 	b|=((l2&2)==0 && l2!='9')? 1:0; //8, X, Queen, Ace //TODO
 #endif
-	if(!strcmp(ranks[b],sec)){
+	if(strcmp(ranks[b],sec)){
+		cout << ranks[a] << " != " << sec << endl;
 		return 1<<5;
 	}
+	delete[] copy_of_str;
 	return (b|(a<<2));
 }

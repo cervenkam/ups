@@ -41,11 +41,11 @@ public class PredefinedAnimations extends Animation{
 		if(x<0 || y<0){
 			return false;
 		}
-		getLayer().setImage(visible?0:1);
 		 andThen(x,(v)->setX(v),()->getX());
 		parallel(y,(v)->setY(v),()->getY());
 		parallel(rotate,(v)->setRotation(v),()->getRotation());
 		run();
+		getLayer().setImage(visible?0:1);
 		return true;
 	}
 	private int getX(){

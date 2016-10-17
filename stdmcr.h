@@ -25,6 +25,6 @@
 #define MOVEB(x) __MOVE_D__(x,"B")
 #define MOVEC(x) __MOVE_D__(x,"C")
 #define MOVED(x) __MOVE_D__(x,"D")
-#define STDMSG(X,Y) COLOR(X,"[ " << (long int)(time(0)*1000) << " ] " << Y << endl)
+#define STDMSG(X,Y) COLOR(X,"[ " << (long int)(time(0)) << " ] " << Y << endl)
 
 #endif

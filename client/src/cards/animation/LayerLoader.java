@@ -15,10 +15,12 @@ public class LayerLoader{
 			System.err.println("Image not found: "+second_side_path);
 			System.exit(1);
 		}
+		int count = 0;
 		for(Layer layer:layers){
 			layer.addImage(second_side);
-			layer.setPosition(x,y);
+			layer.setPosition(x-(count>>2),y-(count>>2));
 			layer.setImage(1);
+			count++;
 		}
 		return layers;
 	}

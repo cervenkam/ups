@@ -3,6 +3,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import static java.awt.RenderingHints.*;
 import static java.awt.Color.*;
 public class LayerManager{
 	private static final int width = 800; //TODO
@@ -75,9 +77,9 @@ public class LayerManager{
 		}
 	}
 	public void paint(Graphics2D g){
+		g.setRenderingHints(new RenderingHints(KEY_ANTIALIASING,VALUE_ANTIALIAS_ON));
 		g.setColor(WHITE);
 		g.fillRect(0,0,width,height);
-		System.out.println("Drawing: "+merges.size());
 		for(int a=0; a<merges.size(); a++){
 			merges.get(a).paint(g);
 		}
