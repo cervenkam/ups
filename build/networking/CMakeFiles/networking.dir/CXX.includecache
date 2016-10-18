@@ -20,10 +20,6 @@ vector
 ostream
 -
 
-/home/martin/skola/UPS/SP/config.h
-algorithm.h
-/home/martin/skola/UPS/SP/algorithm.h
-
 /home/martin/skola/UPS/SP/deck.h
 card.h
 /home/martin/skola/UPS/SP/card.h
@@ -40,25 +36,13 @@ card.h
 
 /home/martin/skola/UPS/SP/lang.h
 
-/home/martin/skola/UPS/SP/networking/commands.cxx
-commands.h
-/home/martin/skola/UPS/SP/networking/commands.h
-../config.h
-/home/martin/skola/UPS/SP/config.h
-lang.h
-/home/martin/skola/UPS/SP/networking/lang.h
-cstring
--
-iostream
--
-unistd.h
--
-
 /home/martin/skola/UPS/SP/networking/commands.h
 server.h
 /home/martin/skola/UPS/SP/networking/server.h
 ../networkplayer.h
 /home/martin/skola/UPS/SP/networkplayer.h
+thread
+-
 ../game.h
 /home/martin/skola/UPS/SP/game.h
 
@@ -73,8 +57,6 @@ netinet/in.h
 -
 netdb.h
 -
-
-/home/martin/skola/UPS/SP/networking/lang.h
 
 /home/martin/skola/UPS/SP/networking/server.cxx
 server.h
@@ -101,6 +83,10 @@ commonnetwork.h
 /home/martin/skola/UPS/SP/game.h
 vector
 -
+thread
+-
+../semaphore.h
+/home/martin/skola/UPS/SP/semaphore.h
 
 /home/martin/skola/UPS/SP/networkplayer.h
 algorithm.h

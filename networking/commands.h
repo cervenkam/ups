@@ -3,6 +3,7 @@
 
 #include "server.h"
 #include "../networkplayer.h"
+#include <thread>
 #include "../game.h"
 
 #define COMMANDS 8
@@ -24,6 +25,8 @@ class Commands{
 		void SetGame(Game*);
 		void Call(char* command);
 		void Start();
+		void SetThread(thread*);
+		thread* GetThread();
 	private:
 		void      BadCommand(const char*);
 		void      CreateGame(char*);
@@ -40,6 +43,7 @@ class Commands{
 		NetworkPlayer* m_player;
 		Game* m_game;
 		Card* m_card_to_play;
+		thread* m_thread;
 
 		static funcptr ms_commands[COMMANDS];
 		static const char* ms_texts[COMMANDS];

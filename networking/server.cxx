@@ -8,46 +8,68 @@
 
 using namespace std;
 Server::Server(unsigned port){
+	m_semaphore = new Semaphore(0);
 	m_port = port;
 }
 
 Server::~Server(){
-	unsigned len = m_commands.size();
-	for(unsigned a=0; a<len; a++){
-		delete m_commands[a];
-	}
-	len = m_games.size();
+	unsigned len = m_games.size();
 	for(unsigned a=0; a<len; a++){
 		delete m_games[a];
 	}
+	delete m_semaphore;
 }
 
 void Server::Start(){
-	int sock = socket(AF_INET,SOCK_STREAM,IPPROTO_TCP);	
-	TEST_ERR(sock<0,"Socket not created")
+	m_sock = socket(AF_INET,SOCK_STREAM,IPPROTO_TCP);	
+	TEST_ERR(m_sock<0,"Socket not created")
 	int opt = 1;
-	setsockopt(sock,SOL_SOCKET,SO_REUSEADDR,&opt,sizeof(opt));
+	setsockopt(m_sock,SOL_SOCKET,SO_REUSEADDR,&opt,sizeof(opt));
 	saddrin addr, in_addr;
 	fill_saddrin_any(addr,m_port);
-	int bnd = bind(sock,reinterpret_cast<saddr*>(&addr),sizeof(saddrin));
+	int bnd = bind(m_sock,reinterpret_cast<saddr*>(&addr),sizeof(saddrin));
 	TEST_ERR(bnd<0,"Socket not binded")
-	int lsn = listen(sock, 10);
+	int lsn = listen(m_sock, 10);
 	TEST_ERR(lsn<0,"Cannot listen")
 	STDMSG("0;36","Listen:     port " << m_port);
+	m_garbage_collector = new thread(&Server::GarbageCollector,this);
 	while(1){
 		unsigned len = sizeof(saddrin);
 		errno = 0;
-		int sckt = accept(sock,reinterpret_cast<saddr*>(&in_addr),&len);
-		TEST_ERR(errno>0,strerror(errno));
-		TEST_ERR_DO(sckt<0,"Cannot accept socket",close(sock))
+		int sckt = accept(m_sock,reinterpret_cast<saddr*>(&in_addr),&len);
+		TEST_ERR_DO(errno>0,STDMSG("0;36","Stopping"),break);
+		TEST_ERR_DO(sckt<0,"Cannot accept socket",close(m_sock))
 		STDMSG("0;36","Connection: " << inet_ntoa(in_addr.sin_addr) << ":" << ntohs(in_addr.sin_port));
 		Commands* cmd = new Commands();
 		cmd->SetServer(this);
 		cmd->SetSocket(sckt);
+		thread* thr = new thread(&Commands::Start,cmd);
+		cmd->SetThread(thr);
 		m_commands.push_back(cmd);
-		thread thr(&Commands::Start,cmd);
-		thr.detach();
 	}
+	m_cmds = nullptr;
+	m_port = 0;
+	m_semaphore->Notify();
+	m_garbage_collector->join();
+	delete m_garbage_collector;
+}
+void Server::GarbageCollector(){
+	while(m_port){
+		m_semaphore->Wait();
+		if(m_cmds != nullptr){
+			m_cmds->GetThread()->join();
+			delete m_cmds->GetThread();
+			delete m_cmds;
+			STDMSG("0;36","Disconnected");
+		}
+	}
+}
+void Server::Stop(){
+	close(m_sock);
+}
+void Server::TidyUp(Commands* cmds){
+	m_cmds=cmds;
+	m_semaphore->Notify();
 }
 char* Server::Receive(int sock){
 	uint32_t netlen;

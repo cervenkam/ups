@@ -71,6 +71,13 @@ Game::Game(unsigned char players,Algorithm** algos){
 	m_deck = new Deck();
 }
 
+Game::~Game(){
+	for(unsigned a=0; a<m_players; a++){
+		delete m_algos[a];
+	}
+	delete[] m_algos;
+	delete m_deck;
+}
 /*
 	Returns the game algorithm
 		=> player Player ID

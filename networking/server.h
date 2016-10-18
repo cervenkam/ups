@@ -5,11 +5,14 @@
 #include "commonnetwork.h"
 #include "../game.h"
 #include <vector>
+#include <thread>
+#include "../semaphore.h"
 
 class Commands;
 class Server{
 	public:
 		void Start();
+		void Stop();
 		char* Receive(int sock);
 		Server(unsigned port);
 		~Server();
@@ -20,11 +23,17 @@ class Server{
 		unsigned GetCountOfCommands();
 		Commands* GetCommands(unsigned index);
 		void AddCommands(Commands* command);
+		void GarbageCollector();
+		void TidyUp(Commands* commands);
 	private:
 		unsigned m_port;
 		char m_internal_storage[MAX_LEN];
 		vector<Commands*> m_commands;
 		vector<Game*> m_games;
+		thread* m_garbage_collector;
+		Semaphore* m_semaphore;
+		Commands* m_cmds;
+		int m_sock;
 };
 
 #endif

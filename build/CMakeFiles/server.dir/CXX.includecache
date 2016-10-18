@@ -6,6 +6,10 @@
 
 #IncludeRegexTransform: 
 
+/home/martin/skola/UPS/SP/algono.h
+algorithm.h
+/home/martin/skola/UPS/SP/algorithm.h
+
 /home/martin/skola/UPS/SP/algorithm.h
 card.h
 /home/martin/skola/UPS/SP/card.h
@@ -20,9 +24,65 @@ vector
 ostream
 -
 
+/home/martin/skola/UPS/SP/config.cxx
+config.h
+/home/martin/skola/UPS/SP/config.h
+lang.h
+/home/martin/skola/UPS/SP/lang.h
+stdmcr.h
+/home/martin/skola/UPS/SP/stdmcr.h
+algorithm.h
+/home/martin/skola/UPS/SP/algorithm.h
+person.h
+/home/martin/skola/UPS/SP/person.h
+algono.h
+/home/martin/skola/UPS/SP/algono.h
+programmerbot.h
+/home/martin/skola/UPS/SP/programmerbot.h
+networkplayer.h
+/home/martin/skola/UPS/SP/networkplayer.h
+cstring
+-
+sstream
+-
+iostream
+-
+fstream
+-
+
+/home/martin/skola/UPS/SP/config.h
+algorithm.h
+/home/martin/skola/UPS/SP/algorithm.h
+
 /home/martin/skola/UPS/SP/deck.h
 card.h
 /home/martin/skola/UPS/SP/card.h
+
+/home/martin/skola/UPS/SP/game.cxx
+lang.h
+/home/martin/skola/UPS/SP/lang.h
+config.h
+/home/martin/skola/UPS/SP/config.h
+stdmcr.h
+/home/martin/skola/UPS/SP/stdmcr.h
+game.h
+/home/martin/skola/UPS/SP/game.h
+hand.h
+/home/martin/skola/UPS/SP/hand.h
+deck.h
+/home/martin/skola/UPS/SP/deck.h
+algono.h
+/home/martin/skola/UPS/SP/algono.h
+programmerbot.h
+/home/martin/skola/UPS/SP/programmerbot.h
+person.h
+/home/martin/skola/UPS/SP/person.h
+iostream
+-
+fstream
+-
+thread
+-
 
 /home/martin/skola/UPS/SP/game.h
 deck.h
@@ -41,6 +101,8 @@ server.h
 /home/martin/skola/UPS/SP/networking/server.h
 ../networkplayer.h
 /home/martin/skola/UPS/SP/networkplayer.h
+thread
+-
 ../game.h
 /home/martin/skola/UPS/SP/game.h
 
@@ -56,8 +118,6 @@ netinet/in.h
 netdb.h
 -
 
-/home/martin/skola/UPS/SP/networking/lang.h
-
 /home/martin/skola/UPS/SP/networking/server.h
 commands.h
 /home/martin/skola/UPS/SP/networking/commands.h
@@ -67,20 +127,10 @@ commonnetwork.h
 /home/martin/skola/UPS/SP/game.h
 vector
 -
-
-/home/martin/skola/UPS/SP/networkplayer.cxx
-networkplayer.h
-/home/martin/skola/UPS/SP/networkplayer.h
-networking/lang.h
-/home/martin/skola/UPS/SP/networking/lang.h
-card.h
-/home/martin/skola/UPS/SP/card.h
-hand.h
-/home/martin/skola/UPS/SP/hand.h
-iostream
+thread
 -
-cstring
--
+../semaphore.h
+/home/martin/skola/UPS/SP/semaphore.h
 
 /home/martin/skola/UPS/SP/networkplayer.h
 algorithm.h
@@ -90,9 +140,21 @@ semaphore.h
 networking/commands.h
 /home/martin/skola/UPS/SP/networking/commands.h
 
+/home/martin/skola/UPS/SP/person.h
+algorithm.h
+/home/martin/skola/UPS/SP/algorithm.h
+
+/home/martin/skola/UPS/SP/programmerbot.h
+algorithm.h
+/home/martin/skola/UPS/SP/algorithm.h
+
 /home/martin/skola/UPS/SP/semaphore.h
 mutex
 -
 condition_variable
+-
+
+/home/martin/skola/UPS/SP/stdmcr.h
+ctime
 -
 

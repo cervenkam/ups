@@ -17,6 +17,10 @@ class Game{
 		*/
 		Game(unsigned char players,Algorithm** algos);
 		/*
+			Destruct the game
+		*/
+		~Game();
+		/*
 			Returns the game algorithm
 				=> player Player ID
 				<= Player algorithm

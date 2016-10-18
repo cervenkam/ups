@@ -66,7 +66,6 @@ CMakeFiles/server.dir/main.cxx.o: ../game.h
 CMakeFiles/server.dir/main.cxx.o: ../hand.h
 CMakeFiles/server.dir/main.cxx.o: ../lang.h
 CMakeFiles/server.dir/main.cxx.o: ../main.cxx
-CMakeFiles/server.dir/main.cxx.o: ../networking/client.h
 CMakeFiles/server.dir/main.cxx.o: ../networking/commands.h
 CMakeFiles/server.dir/main.cxx.o: ../networking/commonnetwork.h
 CMakeFiles/server.dir/main.cxx.o: ../networking/server.h

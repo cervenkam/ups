@@ -17,7 +17,7 @@ class Configuration{
 				=> player_name Name of created player
 				=> id ID of new algorithm
 		*/
-		Algorithm* GetAlgorithm(char* name,char* player_name,unsigned id);
+		Algorithm* GetAlgorithm(const char* name,const char* player_name,unsigned id);
 		/*
 			Returns single configuration
 				=> Configuration string / empty string if already created
@@ -48,7 +48,7 @@ class Configuration{
 		/* sigle configuration instance */
 		static Configuration* ms_config;
 		/* default algorithm name */
-		static char* ms_def;
+		static const char* ms_def;
 		/*
 			Creates new algorithm
 				=> str string with configuration

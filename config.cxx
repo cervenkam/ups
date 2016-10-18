@@ -20,7 +20,7 @@
 
 using namespace std;
 /* default algorithm name */
-char* Configuration::ms_def = new char[14]{'P','r','o','g','r','a','m','m','e','r','B','o','t','\0'};
+const char* Configuration::ms_def = "ProgrammerBot";
 /* single instance of this class */
 Configuration* Configuration::ms_config = nullptr;
 
@@ -30,7 +30,7 @@ Configuration* Configuration::ms_config = nullptr;
 		=> player_name Name of created player
 		=> id ID of new algorithm
 */
-Algorithm* Configuration::GetAlgorithm(char* name,char* player_name,unsigned id){
+Algorithm* Configuration::GetAlgorithm(const char* name,const char* player_name,unsigned id){
 	CMP(ALGONO,"AlgoNo"){
 		return new AlgoNo(player_name,id);
 	}else CMP(PERSON,"Person"){

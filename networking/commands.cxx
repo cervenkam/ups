@@ -66,7 +66,7 @@ Commands::Commands(int sock,Server* server,NetworkPlayer* player,Game* game){
 
 void Commands::Start(){
 	Welcome(nullptr);
-	while(1){
+	while(m_sock){
 		Call(m_server->Receive(m_sock));
 	}
 }
@@ -102,14 +102,26 @@ void Commands::SetGame(Game* game){
 Game* Commands::GetGame(){
 	return m_game;
 }
+
+void Commands::SetThread(thread* thread){
+	m_thread = thread;
+}
+
+thread* Commands::GetThread(){
+	return m_thread;
+}
+
 void Commands::Welcome(char*){
 	m_server->Send(m_sock,RESPONSE_WELCOME);
 }
-
 void Commands::BadCommand(const char* command){
 	cerr << BAD_COMMAND << command << endl;
 }
 void Commands::Call(char* command){
+	if(command == nullptr){
+		Disconnect(nullptr);
+		return;
+	}
 	unsigned max_len = 0;
 	unsigned index = 0;
 	unsigned cmdlen = strlen(command);
@@ -218,6 +230,8 @@ void Commands::Login(char* message){
 
 void Commands::Disconnect(char*){
 	close(m_sock);
+	m_sock = 0;
+	m_server->TidyUp(this);
 }
 
 void Commands::SendCard(char* message){
