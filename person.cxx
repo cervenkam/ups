@@ -18,7 +18,7 @@
 		=> ch ID of this player
 */
 Person::Person(const char* player,unsigned char ch): Algorithm(player,ch){
-	name="person";
+	m_name="person";
 	SetReady();
 }
 
@@ -28,17 +28,11 @@ Person::Person(const char* player,unsigned char ch): Algorithm(player,ch){
 		=> player Player which used card
 */
 void Person::Used(Card* card,unsigned char player){
-#ifdef TESTING
-	ofstream cout("last_game.txt",ofstream::app);
-#endif
-	if(card==NULL){
-		OUT(algos[player]->player << " " << ENDS << endl);
+	if(card==nullptr){
+		OUT(ms_algos[player]->m_player << " " << ENDS << endl);
 	}else{
-		OUT(algos[player]->player << " " << USED << " " << *card << endl);
+		OUT(ms_algos[player]->m_player << " " << USED << " " << *card << endl);
 	}
-#ifdef TESTING
-	cout.close();
-#endif
 }
 void Person::Print(unsigned card,bool clear){
 	(void)clear;
@@ -48,7 +42,7 @@ void Person::Print(unsigned card,bool clear){
 	for(unsigned char b=0; b<size; b++){
 		OUT(*hand->Get(b));
 	}
-	for(unsigned char b=size; b<Hand::SIZE; b++){
+	for(unsigned char b=size; b<Hand::ms_SIZE; b++){
 		OUT("   ");
 	}
 	OUT(MOVEB(1) << MOVED(12));
@@ -103,8 +97,8 @@ Card* Person::Play(bool force){
 			if(force){
 				continue;
 			}
-			return NULL;
+			return nullptr;
 		}
 	}
-	return NULL;
+	return nullptr;
 }

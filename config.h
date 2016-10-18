@@ -44,13 +44,11 @@ class Configuration{
 				<= Count of players
 		*/
 		unsigned GetCount();
-#ifndef TESTING
 	private:
-#endif
 		/* sigle configuration instance */
-		static Configuration* config;
+		static Configuration* ms_config;
 		/* default algorithm name */
-		static char* def;
+		static char* ms_def;
 		/*
 			Creates new algorithm
 				=> str string with configuration
@@ -62,11 +60,11 @@ class Configuration{
 		*/
 		void Load(string str);
 		/* are own rules enabled */
-		bool rules = false;
+		bool m_rules = false;
 		/* count of the players */
-		unsigned count = 2;
+		unsigned m_count = 2;
 		/* array of algorithms */
-		Algorithm** algos;
+		Algorithm** m_algos;
 };
 
 #endif

@@ -1,6 +1,7 @@
 package cards.animation;
 import java.awt.image.BufferedImage;
 import java.awt.Graphics2D;
+import java.awt.Color;
 import java.awt.geom.AffineTransform;
 import java.util.List;
 import java.util.ArrayList;
@@ -48,6 +49,10 @@ public class Layer{
 		double tmp_rotate = rotate;
 		setRotation(layer.rotate);
 		layer.setRotation(tmp_rotate);
+		double tmp_center_x = center_x;
+		double tmp_center_y = center_y;
+		setCenter(layer.center_x,layer.center_y);
+		layer.setCenter(tmp_center_x,tmp_center_y);
 	}
 	public Layer(BufferedImage buf,int x,int y){
 		this.buf.add(buf);
@@ -107,7 +112,7 @@ public class Layer{
 	private final void updateRatio(){
 		if(buf.get(image_position) != null){
 			this.paint_x = (int)(-buf.get(image_position).getWidth()*px);
-			this.paint_x = (int)(-buf.get(image_position).getHeight()*py);
+			this.paint_y = (int)(-buf.get(image_position).getHeight()*py);
 		}
 		updateCenter();
 	}
@@ -122,6 +127,9 @@ public class Layer{
 		if(buf!=null){
 			g.drawImage(buf.get(image_position),paint_x,paint_y,null);
 		}
+		g.setColor(Color.RED); //TODO debug remove
+		g.drawLine(-5,-5,5,5); //TODO debug remove
+		g.drawLine(-5,5,5,-5); //TODO debug remove
 		g.setTransform(aft);
 	}
 	public String toString(){

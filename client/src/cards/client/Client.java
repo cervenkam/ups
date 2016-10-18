@@ -90,7 +90,11 @@ public class Client extends Thread{
 			//System.out.println("\""+Arrays.toString(command.getBytes())+"\".startsWith(\""+Arrays.toString(ent.getKey().getBytes())+"\")");
 			if(command.startsWith(ent.getKey())){
 				//System.out.println("OK");
-				ent.getValue().accept(removeStart(command,ent.getKey()));
+				try{
+					ent.getValue().accept(removeStart(command,ent.getKey()));
+				}catch(Exception e){
+					System.err.println("Bad parameters for command "+ent.getKey());
+				}
 				break;
 			}
 		}

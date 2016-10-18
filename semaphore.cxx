@@ -1,22 +1,20 @@
 #include "semaphore.h"
 
 Semaphore::Semaphore(unsigned count){
-	this->count = count;
-	this->max_count = count;
+	m_count = count;
+	m_max_count = count;
 }
 
 void Semaphore::Wait(){
-	unique_lock<mutex> lock(mtx);
-	while(!count){
-		cond.wait(lock);
+	unique_lock<mutex> lock(m_mtx);
+	while(!m_count){
+		m_cond.wait(lock);
 	}
-	count--;
+	m_count--;
 }
 
 void Semaphore::Notify(){
-	unique_lock<mutex> lock(mtx);
-	if(count<max_count){
-		count++;
-		cond.notify_one();
-	}
+	unique_lock<mutex> lock(m_mtx);
+	m_count++;
+	m_cond.notify_one();
 }

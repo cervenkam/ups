@@ -29,7 +29,7 @@
 		=> ch ID of this player
 */
 ProgrammerBot::ProgrammerBot(const char* player,unsigned char ch): Algorithm(player,ch){
-	name="programmerBot";
+	m_name="programmerBot";
 	SetReady();
 }
 
@@ -39,13 +39,13 @@ ProgrammerBot::ProgrammerBot(const char* player,unsigned char ch): Algorithm(pla
 		=> player ID of the player which played card
 */
 void ProgrammerBot::Used(Card* card,unsigned char player){
-	if(card==NULL){
+	if(card==nullptr){
 		return;
 	}
 	switch(card->GetRank()){
-		case CARD_7: counter7++; break;
-		case CARD_X: counterX++; break;
-		case CARD_E: counterE++; break;
+		case CARD_7: m_counter7++; break;
+		case CARD_X: m_counterX++; break;
+		case CARD_E: m_counterE++; break;
 	}
 	(void)player;
 }
@@ -59,7 +59,7 @@ Card* ProgrammerBot::Play(bool force){
 	unsigned char size = hand->Size();
 	if(force){
 		//I should put first card
-		if(FirstCard()==NULL){
+		if(FirstCard()==nullptr){
 			//find strong rank
 			unsigned count = 0;
 			unsigned index = 0;
@@ -84,11 +84,11 @@ Card* ProgrammerBot::Play(bool force){
 			//I'll have "count" number of cards to fight against
 			FIND_DO(card->GetRank()==FirstCard()->GetRank() || card->GetRank()==CARD_7,count++)
 			if(count>0){
-				unsigned alreadyPlayed = counter7;
+				unsigned alreadyPlayed = m_counter7;
 				if(FirstCard()->GetRank()==CARD_X){
-					alreadyPlayed += counterX;
+					alreadyPlayed += m_counterX;
 				}else{
-					alreadyPlayed += counterE;
+					alreadyPlayed += m_counterE;
 				}
 				int rest = 8 - alreadyPlayed - count;
 				if(rest-HAZARD<count){
@@ -112,12 +112,12 @@ Card* ProgrammerBot::Play(bool force){
 	}else{
 		//I can collect values - do it
 		if(FirstCard()->IsValuable()){
-			return NULL;
+			return nullptr;
 		}else if(!FirstCard()->IsSpecial()){
 			//force next loop with non-valuable card
 			FIND(card->GetRank()==FirstCard()->GetRank())
 		}
 		//do not continue
-		return NULL;
+		return nullptr;
 	}
 }

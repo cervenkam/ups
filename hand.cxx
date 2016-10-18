@@ -13,9 +13,9 @@
 		=> card Card which will be pushed on this position
 */
 bool Hand::Set(unsigned char position,Card* card){
-	if(position<SIZE){
-		cards[position]=card;
-		count = position+1;
+	if(position<ms_SIZE){
+		m_cards[position]=card;
+		m_count = position+1;
 		return true;
 	}
 	return false;
@@ -25,7 +25,7 @@ bool Hand::Set(unsigned char position,Card* card){
 		<= Number of cards in hand
 */
 unsigned char Hand::Size(){
-	return count;
+	return m_count;
 }
 /*
 	Returns the card on specified position
@@ -33,10 +33,10 @@ unsigned char Hand::Size(){
 		=> Card on position
 */
 Card* Hand::Get(unsigned char index){
-	if(index>=count){
-		return NULL;
+	if(index>=m_count){
+		return nullptr;
 	}else{
-		return cards[index];
+		return m_cards[index];
 	}
 }
 /*
@@ -45,12 +45,12 @@ Card* Hand::Get(unsigned char index){
 		<= Card to be used
 */
 Card* Hand::Use(unsigned char index){
-	if(index>=count){
+	if(index>=m_count){
 		cerr << "Card does not exists" << endl;
-		return NULL;
+		return nullptr;
 	}
-	Card* tmp = cards[index];
-	cards[index]=cards[--count];
+	Card* tmp = m_cards[index];
+	m_cards[index]=m_cards[--m_count];
 	return tmp;
 }
 /*
@@ -59,15 +59,15 @@ Card* Hand::Use(unsigned char index){
 		<= Has been added?
 */
 bool Hand::Add(Card* card){
-	if(count==SIZE){
+	if(m_count==ms_SIZE){
 		return false;
 	}
-	cards[count++]=card;
+	m_cards[m_count++]=card;
 	return true;
 }
 /*
 	Clears the hand
 */
 void Hand::Clear(){
-	count = 0;
+	m_count = 0;
 }

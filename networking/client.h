@@ -10,10 +10,10 @@ class Client{
 		char* Receive();
 	private:
 		void InfinitePrint();
-		char* hostname;
-		unsigned port;
-		int sock;
-		char internal_storage[MAX_LEN];
+		char* m_hostname;
+		unsigned m_port;
+		int m_sock;
+		char m_internal_storage[MAX_LEN];
 };
 
 #endif

@@ -14,7 +14,7 @@ using namespace std;
 class Algorithm{
 	public:
 		/* Static list of all algorithms in the play */
-		static vector<Algorithm*> algos;
+		static vector<Algorithm*> ms_algos;
 		/*
 			Defines the card which this player will use
 				=> force Forces the player to play
@@ -74,10 +74,8 @@ class Algorithm{
 		*/
 		void Identify();
 		/* Name of this player */
-		const char* player = PLAYER;
-#ifndef TESTING
+		const char* m_player = PLAYER;
 	protected:
-#endif
 		/*
 			Is called when a card is used (with any player)
 				=> card Player card
@@ -85,20 +83,18 @@ class Algorithm{
 		*/
 		virtual void Used(Card* card,unsigned char player) = 0;
 		/* Defines ID of this player */
-		unsigned char myID;
+		unsigned char m_myID;
 		/* Name of this algoritm */
-		const char* name = "algorithm";
-#ifndef TESTING
+		const char* m_name = "algorithm";
 	private:
-#endif
 		/* Card which should another player react on */
-		static Card* first;
+		static Card* m_first;
 		/* Player's hand */
-		Hand* hand;
+		Hand* m_hand;
 		/* Points of this player */
-		unsigned char points = 0;
+		unsigned char m_points = 0;
 		/* Is player ready to start */
-		bool ready = false;
+		bool m_ready = false;
 };
 
 #endif

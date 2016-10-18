@@ -17,28 +17,28 @@
 #include <thread>
 unsigned counter_of_same_cards = 0;
 /* Determines the player which started this round */
-unsigned char Game::started = 0;
+unsigned char Game::ms_started = 0;
 /*
 	Is a player with given ID a starting player of this round?
 		=> ID Id of player
 		<= Is he?
 */
 bool Game::IsHeStarted(unsigned char ID){
-	return ID==started;
+	return ID==ms_started;
 }
 /*
 	Sets the starting player of this round
 		=> ID Starting player's ID
 */
 void Game::SetStarted(unsigned char ID){
-	started=ID;
+	ms_started=ID;
 }
 /*
 	Returns the starting player of this round
 		<= Starting player's ID
 */
 unsigned char Game::GetStarted(){
-	return started;
+	return ms_started;
 }
 
 /*
@@ -46,7 +46,7 @@ unsigned char Game::GetStarted(){
 		<= name Name of this game
 */
 void Game::SetName(char* name){
-	this->name = name;
+	m_name = name;
 }
 
 /*
@@ -54,7 +54,7 @@ void Game::SetName(char* name){
 		<= Name of this game
 */
 char* Game::GetName(){
-	return this->name;
+	return m_name;
 }
 
 /*
@@ -63,19 +63,12 @@ char* Game::GetName(){
 		=> algos Players algos
 */
 Game::Game(unsigned char players,Algorithm** algos){
-#ifdef TESTING
-	//clear file
-	ofstream fout("last_game.txt");
-	fout << endl;
-	fout.close();
-	//end of clear file
-#endif
-	this->players=players;
-	this->algos = new Algorithm*[players];
+	m_players=players;
+	m_algos = new Algorithm*[players];
 	for(unsigned a=0; a<players; a++){
-		this->algos[a] = algos[a];
+		m_algos[a] = algos[a];
 	}
-	deck = new Deck();
+	m_deck = new Deck();
 }
 
 /*
@@ -85,7 +78,7 @@ Game::Game(unsigned char players,Algorithm** algos){
 */
 
 Algorithm* Game::GetAlgorithm(unsigned player){
-	return algos[player];
+	return m_algos[player];
 }
 
 /*
@@ -93,40 +86,22 @@ Algorithm* Game::GetAlgorithm(unsigned player){
 		<= Number of players
 */
 unsigned Game::GetCountOfPlayers(){
-	return players;
+	return m_players;
 }
 
-#ifdef TESTING
-/*
-	Creates new game
-		=> players Number of players
-*/
-Game::Game(unsigned char players){
-	this->players=players;
-	algos = new Algorithm*[players];
-	algos[0]=new Person("FOR_TESTING_ONLY",0);
-	for(unsigned int a=1; a<players; a++){
-		algos[a]=new ProgrammerBot("FOR_TESTING_ONLY",a);
-	}
-	deck = new Deck();
-}
-#endif
 /*
 	Ends the game
 */
 void Game::End(){
-#ifdef TESTING
-	ofstream cout("last_game.txt",ofstream::app);
-#endif
 	OUT(END_GAME << endl);
 	//Find max
 	unsigned max_value = 0;
 	unsigned count = 0;
-	for(unsigned a=0; a<players; a++){
-		if(algos[a]->GetPoints() > max_value){
-			max_value = algos[a]->GetPoints();
+	for(unsigned a=0; a<m_players; a++){
+		if(m_algos[a]->GetPoints() > max_value){
+			max_value = m_algos[a]->GetPoints();
 			count = 1;
-		}else if(algos[a]->GetPoints() == max_value){
+		}else if(m_algos[a]->GetPoints() == max_value){
 			count++;
 		}
 	}
@@ -135,29 +110,25 @@ void Game::End(){
 	}else{
 		OUT(WINNER << ": " << endl);
 	}
-	for(unsigned a=0; a<players; a++){
-		if(algos[a]->GetPoints() == max_value){
+	for(unsigned a=0; a<m_players; a++){
+		if(m_algos[a]->GetPoints() == max_value){
 			OUT("\t");
-			COLOR("1;41",algos[a]->player);
+			COLOR("1;41",m_algos[a]->m_player);
 			OUT(endl);
 		}
 	}
-	for(unsigned a=0; a<players; a++){
-		OUT(Algorithm::algos[a]->player << " " << HAS << " " << (unsigned)algos[a]->GetPoints() <<
-			((algos[a]->GetPoints()==0)?"":"0") << " " << POINTS << endl);
+	for(unsigned a=0; a<m_players; a++){
+		OUT(Algorithm::ms_algos[a]->m_player << " " << HAS << " " << (unsigned)m_algos[a]->GetPoints() <<
+			((m_algos[a]->GetPoints()==0)?"":"0") << " " << POINTS << endl);
 	}
 	//reinitialize static variables
-	Algorithm::SetFirstCard(NULL);
+	Algorithm::SetFirstCard(nullptr);
 	SetStarted(0);
-#ifdef TESTING
-	cout.close();
-#endif
 }
 /*
 	Starts the game
 */
 void Game::Start(){
-	cout << "Game started" << endl;
 	if(Prepare()){
 		Loop();
 	}
@@ -175,17 +146,15 @@ void Game::StartParallel(){
 */
 bool Game::Prepare(){
 	//Preparing deck
-	deck->ThrowAway(Deck::COUNT%players);
-#ifndef TESING
-	deck->Shuffle();
-#endif
+	m_deck->ThrowAway(Deck::ms_COUNT%m_players);
+	m_deck->Shuffle();
 	if(FillHands()){
 		return false;
 	}
 
 	//Clear points
-	for(unsigned char a=0; a<players;a++){
-		algos[a]->ClearPoints();
+	for(unsigned char a=0; a<m_players;a++){
+		m_algos[a]->ClearPoints();
 	}
 	return true;
 }
@@ -197,24 +166,11 @@ void Game::Loop(){
 	unsigned winner = 0;
 	SetStarted(0);
 	//lets start the game
-	for(unsigned a=0;;a++,a%=players){
+	for(unsigned a=0;;a++,a%=m_players){
 		//card which player plays
 		if(!OneHand(winner,a)){
 			break;
 		}
-#ifdef TESTING
-		ofstream cout("last_game.txt",ofstream::app);
-		for(unsigned a=0; a<players; a++){
-			Hand* hand = algos[a]->GetHand();
-			OUT("Player " << (a+1) << " ");
-			for(unsigned b=0; b<hand->Size(); b++){
-				OUT(*hand->Get(b));
-			}
-			OUT(endl);
-		}
-		deck->Print();
-		cout.close();
-#endif
 	}
 }
 /*
@@ -226,35 +182,29 @@ void Game::Loop(){
 		<= Is end of game?
 */
 bool Game::ChooseCard(unsigned& player,unsigned& winner,Card*& card, bool& started){
-#ifdef TESTING
-	ofstream cout("last_game.txt",ofstream::app);
-#endif
 	started = IsHeStarted(player);
 	//select the card
-	card = algos[player]->Play(!started || !Algorithm::FirstCard());
+	card = m_algos[player]->Play(!started || !Algorithm::FirstCard());
 	//if he is making the next loop
 	if(started && card){
 		//check the card if it is compatible
 		if(Algorithm::FirstCard() && !Algorithm::FirstCard()->IsPlayable(card)){
 			//force next loop
-			card = NULL;
+			card = nullptr;
 			started = false;
-			OUT(Algorithm::algos[player]->player << " " << CANT_FORCE << endl);
+			STDMSG("0;31","Game:       " << Algorithm::ms_algos[player]->m_player << " " << CANT_FORCE);
 			return false;		
 		} 
-		COLOR("0;32",Algorithm::algos[player]->player << " " << LEADS << endl);
+		STDMSG("0;31","Game:       " << Algorithm::ms_algos[player]->m_player << " " << LEADS);
 		winner = player;
 	//if player started and do not want to continue
 	}else if(started){
-		algos[winner]->AddPoints(points);
-		if(points){
-			OUT(Algorithm::algos[winner]->player << " " << RECEIVED << " " << (unsigned)(points*10) << " " << POINTS << endl);
+		m_algos[winner]->AddPoints(m_points);
+		if(m_points){
+			STDMSG("0;31","Game:       " << Algorithm::ms_algos[winner]->m_player << " " << RECEIVED << " " << (unsigned)(m_points*10) << " " << POINTS);
 		}
-		points=0;
+		m_points=0;
 	}
-#ifdef TESTING
-	cout.close();
-#endif
 	return true;
 }
 /*
@@ -263,10 +213,10 @@ bool Game::ChooseCard(unsigned& player,unsigned& winner,Card*& card, bool& start
 */
 bool Game::FillHands(){
 	//fill the hands
-	for(unsigned y=0;; y++, y%=players){
-		unsigned char b = (y+GetStarted())%players;
-		if(deck->Size()>0 && algos[b]->GetHand()->Add(deck->Peek())){
-			deck->Pop();
+	for(unsigned y=0;; y++, y%=m_players){
+		unsigned char b = (y+GetStarted())%m_players;
+		if(m_deck->Size()>0 && m_algos[b]->GetHand()->Add(m_deck->Peek())){
+			m_deck->Pop();
 		}else{
 			break;
 		}
@@ -284,7 +234,7 @@ bool Game::FillHands(){
 		<= Is end of game?
 */
 bool Game::OneHand(unsigned& winner,unsigned& player){
-	Card* card = NULL;
+	Card* card = nullptr;
 	bool started;
 	do{
 		if(!ChooseCard(player,winner,card,started)){
@@ -306,26 +256,20 @@ bool Game::OneHand(unsigned& winner,unsigned& player){
 */
 bool Game::UseCard(Card* card,unsigned& player, unsigned& winner){
 	//use the card
-	algos[player]->Send(card);
+	m_algos[player]->Send(card);
 	if(!card){
 		counter_of_same_cards = 0;
 		//end of the hand
 		SetStarted(winner);
 		//set actual player as previous (because loop header moves it to proper value)
-		player = (winner+(players-1))%players;
+		player = (winner+(m_players-1))%m_players;
 		if(FillHands()){
 			return true;
 		}
 		//end of game
-		if(!algos[GetStarted()]->GetHand()->Size()){
-#ifdef TESTING
-	ofstream cout("last_game.txt",ofstream::app);
-#endif
-			OUT(algos[GetStarted()]->player << " " << RECEIVED << " " << LAST_POINT << endl);
-#ifdef TESTING
-	cout.close();
-#endif
-			algos[GetStarted()]->AddPoints(1);
+		if(!m_algos[GetStarted()]->GetHand()->Size()){
+			OUT(m_algos[GetStarted()]->m_player << " " << RECEIVED << " " << LAST_POINT << endl);
+			m_algos[GetStarted()]->AddPoints(1);
 			End();
 			return true;
 		}
@@ -336,10 +280,10 @@ bool Game::UseCard(Card* card,unsigned& player, unsigned& winner){
 			counter_of_same_cards = 0;
 		}
 		if(counter_of_same_cards==4 && Configuration::GetConfiguration()->AreOwnRules()){
-			for(unsigned c=0; c<players; c++){
-				algos[c]->ClearPoints();
+			for(unsigned c=0; c<m_players; c++){
+				m_algos[c]->ClearPoints();
 			}
-			algos[player]->AddPoints(10);
+			m_algos[player]->AddPoints(10);
 			End();
 			return true;	
 		}
@@ -353,12 +297,12 @@ bool Game::UseCard(Card* card,unsigned& player, unsigned& winner){
 */
 bool Game::SameCards(){
 	//check the same cards
-	for(unsigned y=0; y<players; y++){
-		unsigned char b = (y+GetStarted())%players;
-		Hand* hand = algos[b]->GetHand();
+	for(unsigned y=0; y<m_players; y++){
+		unsigned char b = (y+GetStarted())%m_players;
+		Hand* hand = m_algos[b]->GetHand();
 		unsigned size = hand->Size();
 		//not full hand of same cards
-		if(size!=Hand::SIZE){
+		if(size!=Hand::ms_SIZE){
 			return false;
 		}
 		//check only full hand
@@ -367,14 +311,14 @@ bool Game::SameCards(){
 				goto outer;
 			}
 		}
-		for(unsigned c=0; c<players; c++){
-			algos[c]->ClearPoints();
+		for(unsigned c=0; c<m_players; c++){
+			m_algos[c]->ClearPoints();
 		}
-		algos[b]->AddPoints(10);
-		for(unsigned c=0; c<players; c++){
-			algos[c]->GetHand()->Clear();
+		m_algos[b]->AddPoints(10);
+		for(unsigned c=0; c<m_players; c++){
+			m_algos[c]->GetHand()->Clear();
 		}
-		OUT(algos[b]->player << " " << SAME_CARDS_HAND << endl);
+		OUT(m_algos[b]->m_player << " " << SAME_CARDS_HAND << endl);
 		End();
 		return true;
 		outer:;
@@ -388,39 +332,33 @@ bool Game::SameCards(){
 		=> winner Actual winner
 */
 void Game::DetermineWinner(Card* card,unsigned& player, unsigned& winner){
-#ifdef TESTING
-	ofstream cout("last_game.txt",ofstream::app);
-#endif
 	if(card->IsValuable()){
-		points++;
+		m_points++;
 	}
 	//Determine the winner
 	if(Algorithm::FirstCard()->IsPlayable(card)){
-		COLOR("0;31",NOW << " " << algos[player]->player << " " << LEADS << endl);
+		STDMSG("0;31","Game:       " << NOW << " " << m_algos[player]->m_player << " " << LEADS);
 		winner = player;
 		//player = (winner+(players-1))%players;
 	}
 	//Search for the card
-	Hand* hand = algos[player]->GetHand();
+	Hand* hand = m_algos[player]->GetHand();
 	unsigned char handsize = hand->Size();
 	for(unsigned char b=0; b<handsize; b++){
 		if(hand->Get(b)==card){
 			hand->Use(b);
 		}
 	}
-#ifdef TESTING
-	cout.close();
-#endif
 }
 /*
 	Prints the game
 */
 void Game::Print(){
 	OUT("Deck content:" << endl);
-	deck->Print();
+	m_deck->Print();
 	OUT(endl);
-	for(unsigned char a=0; a<players; a++){
-		Algorithm* alg = algos[a];
+	for(unsigned char a=0; a<m_players; a++){
+		Algorithm* alg = m_algos[a];
 		unsigned char size = alg->GetHand()->Size();
 		for(unsigned char b=0; b<size; b++){
 			OUT(*alg->GetHand()->Get(b));

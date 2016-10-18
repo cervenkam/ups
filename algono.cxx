@@ -14,7 +14,7 @@
 		=> player Name of the player
 */
 AlgoNo::AlgoNo(const char* player,unsigned char ch): Algorithm(player,ch){
-	name="algono";
+	m_name="algono";
 	SetReady();
 }
 
@@ -31,13 +31,13 @@ void AlgoNo::Used(Card* card,unsigned char player){ (void)card; (void)player; }
 */
 Card* AlgoNo::Play(bool force){
 	if(!force){
-		return NULL;
+		return nullptr;
 	}
 	Hand* hand = GetHand();
 	Card* first = FirstCard();
 	unsigned char size = hand->Size();
 	for(unsigned char a=0; a<size; a++){
-		if(first==NULL || hand->Get(a)->IsPlayable(first)){
+		if(first==nullptr || hand->Get(a)->IsPlayable(first)){
 			return hand->Get(a);
 		}
 	}

@@ -13,9 +13,9 @@
 using namespace std;
 
 /* Static list of all algorithms in the play */
-vector<Algorithm*> Algorithm::algos;
+vector<Algorithm*> Algorithm::ms_algos;
 /* Card which should another player react on */
-Card* Algorithm::first = NULL;
+Card* Algorithm::m_first = nullptr;
 
 /*
 	Abstract algorithm constructor
@@ -23,20 +23,20 @@ Card* Algorithm::first = NULL;
 		=> ch ID of this player
 */
 Algorithm::Algorithm(const char* player,unsigned char myID){
-	this->player = player;
-	this->myID=myID;
-	this->hand = new Hand();
-	algos.push_back(this);
+	m_player = player;
+	m_myID=myID;
+	m_hand = new Hand();
+	ms_algos.push_back(this);
 }
 /*
 	Lays down the card from player to table
 		=> card Played card
 */
 bool Algorithm::Send(Card* card){
-	bool ok = (card==NULL);
-	unsigned char count = hand->Size();
+	bool ok = (card==nullptr);
+	unsigned char count = m_hand->Size();
 	for(unsigned char a=0; !ok && a<count; a++){
-		if(hand->Get(a)==card){
+		if(m_hand->Get(a)==card){
 			ok=true;
 			break;
 		}
@@ -44,9 +44,9 @@ bool Algorithm::Send(Card* card){
 	if(!ok){
 		return false;
 	}
-	count = algos.size();
+	count = ms_algos.size();
 	for(unsigned char a=0; a<count; a++){
-		algos[a]->Used(card,myID);
+		ms_algos[a]->Used(card,m_myID);
 	}
 	return true;
 }
@@ -55,57 +55,57 @@ bool Algorithm::Send(Card* card){
 		<= Card to be reacted on
 */
 Card* Algorithm::FirstCard(){
-	return first;
+	return m_first;
 }
 /*
 	Returns the player's hand
 		<= Player's card 
 */
 Hand* Algorithm::GetHand(){
-	return hand;
+	return m_hand;
 }
 /*
 	Sets the card which should another player react on
 		=> card Card to be reacted on
 */
 void Algorithm::SetFirstCard(Card* card){
-	first=card;
+	m_first=card;
 }
 /*
 	Adds points to this player
 		=> points Points to add
 */
 void Algorithm::AddPoints(unsigned char points){
-	this->points += points;
+	m_points += points;
 }
 /*
 	Gets points of this player
 		<= Points of this player
 */
 unsigned char Algorithm::GetPoints(){
-	return points;
+	return m_points;
 }
 /*
 	Clears points of this player
 */
 void Algorithm::ClearPoints(){
-	points = 0;
+	m_points = 0;
 }
 /*
 	Identifies the algorithm
 */
 void Algorithm::Identify(){
-	OUT(I_AM << name << endl);
+	OUT(I_AM << m_name << endl);
 }
 /*
 	Set this player ready
 */
 void Algorithm::SetReady(){
-	this->ready = true;
+	m_ready = true;
 }
 /*
 	Is this player ready to start
 */
 bool Algorithm::IsReady(){
-	return this->ready;
+	return m_ready;
 }

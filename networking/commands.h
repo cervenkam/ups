@@ -5,7 +5,7 @@
 #include "../networkplayer.h"
 #include "../game.h"
 
-#define COMMANDS 7
+#define COMMANDS 8
 
 class Server;
 class NetworkPlayer;
@@ -33,15 +33,16 @@ class Commands{
 		void         MyCards(char*);
 		void         Welcome(char*);
 		void GetCountOfCards(char*);
+		void     SendMessage(char*);
 
-		Server* server;
-		int sock;
-		NetworkPlayer* player;
-		Game* game;
-		Card* card_to_play;
+		Server* m_server;
+		int m_sock;
+		NetworkPlayer* m_player;
+		Game* m_game;
+		Card* m_card_to_play;
 
-		static funcptr commands[COMMANDS];
-		static const char* texts[COMMANDS];
+		static funcptr ms_commands[COMMANDS];
+		static const char* ms_texts[COMMANDS];
 };
 
 

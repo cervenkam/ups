@@ -8,17 +8,17 @@
 
 using namespace std;
 Server::Server(unsigned port){
-	this->port = port;
+	m_port = port;
 }
 
 Server::~Server(){
-	unsigned len = commands.size();
+	unsigned len = m_commands.size();
 	for(unsigned a=0; a<len; a++){
-		delete commands[a];
+		delete m_commands[a];
 	}
-	len = games.size();
+	len = m_games.size();
 	for(unsigned a=0; a<len; a++){
-		delete games[a];
+		delete m_games[a];
 	}
 }
 
@@ -28,23 +28,23 @@ void Server::Start(){
 	int opt = 1;
 	setsockopt(sock,SOL_SOCKET,SO_REUSEADDR,&opt,sizeof(opt));
 	saddrin addr, in_addr;
-	fill_saddrin_any(addr,this->port);
+	fill_saddrin_any(addr,m_port);
 	int bnd = bind(sock,reinterpret_cast<saddr*>(&addr),sizeof(saddrin));
 	TEST_ERR(bnd<0,"Socket not binded")
 	int lsn = listen(sock, 10);
 	TEST_ERR(lsn<0,"Cannot listen")
-	STDMSG("0;36","Listening:\tport " << this->port);
+	STDMSG("0;36","Listen:     port " << m_port);
 	while(1){
 		unsigned len = sizeof(saddrin);
 		errno = 0;
 		int sckt = accept(sock,reinterpret_cast<saddr*>(&in_addr),&len);
 		TEST_ERR(errno>0,strerror(errno));
 		TEST_ERR_DO(sckt<0,"Cannot accept socket",close(sock))
-		STDMSG("0;36","Connection:\t" << inet_ntoa(in_addr.sin_addr) << ":" << ntohs(in_addr.sin_port));
+		STDMSG("0;36","Connection: " << inet_ntoa(in_addr.sin_addr) << ":" << ntohs(in_addr.sin_port));
 		Commands* cmd = new Commands();
 		cmd->SetServer(this);
 		cmd->SetSocket(sckt);
-		this->commands.push_back(cmd);
+		m_commands.push_back(cmd);
 		thread thr(&Commands::Start,cmd);
 		thr.detach();
 	}
@@ -52,17 +52,17 @@ void Server::Start(){
 char* Server::Receive(int sock){
 	uint32_t netlen;
 	int rcv = recv(sock,&netlen,sizeof(uint32_t),0);
-	TEST_ERR_RET(rcv<0,"Cannot get message length",NULL)
+	TEST_ERR_RET(rcv<0,"Cannot get message length",nullptr)
 	unsigned length = ntohl(netlen);
-	TEST_ERR_RET(length>=MAX_LEN,"Message too long",NULL)
-	rcv = recv(sock,&internal_storage,sizeof(char)*MAX_LEN,0);
-	TEST_ERR_RET(rcv<0,"Cannot get message",NULL)
-	internal_storage[length]='\0';
-	STDMSG("1;33","Received:\t" << internal_storage);
-	return internal_storage;
+	TEST_ERR_RET(length>=MAX_LEN,"Message too long",nullptr)
+	rcv = recv(sock,&m_internal_storage,sizeof(char)*MAX_LEN,0);
+	TEST_ERR_RET(rcv<0,"Cannot get message",nullptr)
+	m_internal_storage[length]='\0';
+	STDMSG("1;33","Received:   " << m_internal_storage);
+	return m_internal_storage;
 }
 void Server::Send(int sock,const char* message){
-	STDMSG("0;32","Sending:\t" << message);
+	STDMSG("0;32","Sending:    " << message);
 	unsigned length = strlen(message);
 	uint32_t netlen = htonl(length);
 	int snd = send(sock,&netlen,sizeof(uint32_t),0);
@@ -72,25 +72,25 @@ void Server::Send(int sock,const char* message){
 }
 
 unsigned Server::GetCountOfGames(){
-	return games.size();
+	return m_games.size();
 }
 
 Game* Server::GetGame(unsigned index){
-	return games[index];
+	return m_games[index];
 }
 
 void Server::AddGame(Game* game){
-	games.push_back(game);
+	m_games.push_back(game);
 }
 
 unsigned Server::GetCountOfCommands(){
-	return commands.size();
+	return m_commands.size();
 }
 
 Commands* Server::GetCommands(unsigned index){
-	return commands[index];
+	return m_commands[index];
 }
 
 void Server::AddCommands(Commands* command){
-	commands.push_back(command);
+	m_commands.push_back(command);
 }

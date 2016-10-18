@@ -5,17 +5,18 @@
 #include <iostream>
 #include <unistd.h>
 
-Commands::funcptr Commands::commands[COMMANDS] = {
+Commands::funcptr Commands::ms_commands[COMMANDS] = {
 	&Commands::Login,
 	&Commands::Disconnect,
 	&Commands::SendCard,
 	&Commands::CreateGame,
 	&Commands::MyCards,
 	&Commands::Welcome,
-	&Commands::GetCountOfCards
+	&Commands::GetCountOfCards,
+	&Commands::SendMessage
 };
 //requires first letter distinct
-const char* Commands::texts[COMMANDS] = {
+const char* Commands::ms_texts[COMMANDS] = {
 	QUERY_LOGIN,
 	QUERY_DISCONNECT,
 	QUERY_PLAY,
@@ -23,15 +24,39 @@ const char* Commands::texts[COMMANDS] = {
 	QUERY_MY_CARDS,
 	QUERY_WELCOME,
 	QUERY_COUNT_OF_CARDS,
+	QUERY_MESSAGE
 };
 
 Commands::Commands(){
-	this->sock = -1;
-	this->server = NULL;
-	this->player = NULL;
-	this->game = NULL;
+	m_sock = -1;
+	m_server = nullptr;
+	m_player = nullptr;
+	m_game = nullptr;
 }
 
+void Commands::SendMessage(char* message){
+	char buff[MAX_LEN];
+	strcpy(buff,RESPONSE_MESSAGE);
+	char* ptr = buff+strlen(RESPONSE_MESSAGE);
+	ptr[0] = ' ';
+	ptr++;
+	strcpy(ptr,m_player->m_player);
+	ptr+=strlen(m_player->m_player);
+	ptr[0] = ' ';
+	ptr++;
+	strcpy(ptr++,message);
+	unsigned count = m_game->GetCountOfPlayers();
+	for(unsigned a=0; a<count; a++){
+		Algorithm* algo = m_game->GetAlgorithm(a);
+		NetworkPlayer* np;
+		if((np = dynamic_cast<NetworkPlayer*>(algo))){
+			Commands* cmd = np->GetCommands();
+			if(cmd!=nullptr){
+				m_server->Send(cmd->m_sock,buff);
+			}
+		}
+	}
+}
 Commands::Commands(int sock,Server* server,NetworkPlayer* player,Game* game){
 	SetSocket(sock);
 	SetServer(server);
@@ -40,45 +65,45 @@ Commands::Commands(int sock,Server* server,NetworkPlayer* player,Game* game){
 }
 
 void Commands::Start(){
-	Welcome(NULL);
+	Welcome(nullptr);
 	while(1){
-		Call(this->server->Receive(this->sock));
+		Call(m_server->Receive(m_sock));
 	}
 }
 
 void Commands::SetSocket(int sock){
-	this->sock=sock;
+	m_sock=sock;
 }
 
 int Commands::GetSocket(){
-	return this->sock;
+	return m_sock;
 }
 
 void Commands::SetServer(Server* server){
-	this->server=server;
+	m_server=server;
 }
 
 Server* Commands::GetServer(){
-	return this->server;
+	return m_server;
 }
 
 void Commands::SetPlayer(NetworkPlayer* player){
-	this->player=player;
+	m_player=player;
 }
 
 NetworkPlayer* Commands::GetPlayer(){
-	return this->player;
+	return m_player;
 }
 
 void Commands::SetGame(Game* game){
-	this->game=game;
+	m_game=game;
 }
 
 Game* Commands::GetGame(){
-	return this->game;
+	return m_game;
 }
 void Commands::Welcome(char*){
-	this->server->Send(this->sock,RESPONSE_WELCOME);
+	m_server->Send(m_sock,RESPONSE_WELCOME);
 }
 
 void Commands::BadCommand(const char* command){
@@ -89,11 +114,11 @@ void Commands::Call(char* command){
 	unsigned index = 0;
 	unsigned cmdlen = strlen(command);
 	for(unsigned a=0; a<COMMANDS; a++){
-		unsigned len = strlen(texts[a]);
+		unsigned len = strlen(ms_texts[a]);
 		unsigned min_len = len > cmdlen ? cmdlen : len;
 		unsigned b;
 		for(b=0; b<min_len; b++){
-			if(command[b] != texts[a][b]){
+			if(command[b] != ms_texts[a][b]){
 				break;
 			}
 		}
@@ -103,8 +128,7 @@ void Commands::Call(char* command){
 		}
 	}
 	if(max_len > 0){
-		cout << (command+strlen(texts[index])+1) << endl;
-		(this->*commands[index])(command+strlen(texts[index])+1);
+		(this->*ms_commands[index])(command+strlen(ms_texts[index])+1);
 	}else{
 		BadCommand(command);
 	}
@@ -115,110 +139,105 @@ void Commands::MyCards(char*){
 	char* buff = new char[MAX_LEN];
 	strcpy(buff,RESPONSE_YOUR_CARDS);
 	char* ptr = buff+strlen(RESPONSE_YOUR_CARDS);
-	unsigned cardcount = player->GetHand()->Size();
-	cout << "Count: " << cardcount << endl;
+	unsigned cardcount = m_player->GetHand()->Size();
 	for(unsigned c=0; c<cardcount; c++){
-		Card* card = player->GetHand()->Get(c);
+		Card* card = m_player->GetHand()->Get(c);
 		char* str = card->ToString();
-		cout << str << endl;
 		ptr[0] = ' ';
 		ptr++;
 		strcpy(ptr,str);
 		ptr+=strlen(str);
 	}
-	this->server->Send(this->sock,buff);
+	m_server->Send(m_sock,buff);
 	delete[] buff;
 }
 void Commands::GetCountOfCards(char*){
 	char* buff = new char[MAX_LEN];
 	strcpy(buff,RESPONSE_COUNT_CARDS);
 	char* ptr = buff+strlen(RESPONSE_COUNT_CARDS);
-	unsigned playerscount = this->game->GetCountOfPlayers();
+	unsigned playerscount = m_game->GetCountOfPlayers();
 	for(unsigned c=0; c<playerscount; c++){
-		Algorithm* alg = this->game->GetAlgorithm(c);
-		if(alg != this->player){
+		Algorithm* alg = m_game->GetAlgorithm(c);
+		if(alg != m_player){
 			ptr[0] = ' ';
 			ptr++;
-			strcpy(ptr,alg->player);
-			ptr+=strlen(alg->player);
+			strcpy(ptr,alg->m_player);
+			ptr+=strlen(alg->m_player);
 			ptr[0] = ' ';
 			ptr++;
 			ptr+=sprintf(ptr,"%d",alg->GetHand()->Size());
 		}
 	}
-	this->server->Send(this->sock,buff);
+	m_server->Send(m_sock,buff);
 	delete[] buff;
 }
 	
 void Commands::Login(char* message){
 	char* player_name = message;
-	unsigned games_len = server->GetCountOfGames();
+	unsigned games_len = m_server->GetCountOfGames();
 	for(unsigned a=0; a<games_len; a++){
-		Game* game = server->GetGame(a);
+		Game* game = m_server->GetGame(a);
 		unsigned players_len = game->GetCountOfPlayers();
 		for(unsigned b=0; b<players_len; b++){
 			Algorithm* algo = game->GetAlgorithm(b);
-			if(!strcmp(algo->player,player_name)){
-				if((this->player = dynamic_cast<NetworkPlayer*>(algo))){	
-					if(this->player->IsReady()){
-						this->server->Send(this->sock,RESPONSE_PLAYER_EXISTS);
+			if(!strcmp(algo->m_player,player_name)){
+				if((m_player = dynamic_cast<NetworkPlayer*>(algo))){	
+					if(m_player->IsReady()){
+						m_server->Send(m_sock,RESPONSE_PLAYER_EXISTS);
 						return;
 					}
-					this->player->SetCommands(this);
-					this->game = game;
-					this->server->Send(this->sock,RESPONSE_A_GAME);
-					this->player->SetReady();
+					m_player->SetCommands(this);
+					m_game = game;
+					m_server->Send(m_sock,RESPONSE_A_GAME);
+					m_player->SetReady();
 					break;
 				}else{
-					this->server->Send(this->sock,RESPONSE_NO_GAME);
+					m_server->Send(m_sock,RESPONSE_NO_GAME);
 					return;
 				}
 			}
 		}
 	}
-	if(this->player == NULL){
-		this->server->Send(this->sock,RESPONSE_NO_GAME);
+	if(m_player == nullptr){
+		m_server->Send(m_sock,RESPONSE_NO_GAME);
 		return;
 	}else{
 		bool game_is_ready = true;
-		unsigned players_len = this->game->GetCountOfPlayers();
+		unsigned players_len = m_game->GetCountOfPlayers();
 		for(unsigned a=0; a<players_len; a++){
-			if(!game->GetAlgorithm(a)->IsReady()){
+			if(!m_game->GetAlgorithm(a)->IsReady()){
 				game_is_ready = false;
 				break;
 			}
 		}
 		if(game_is_ready){
-			game->StartParallel();
+			m_game->StartParallel();
 		}
 	}
 }
 
 void Commands::Disconnect(char*){
-	close(this->sock);
+	close(m_sock);
 }
 
 void Commands::SendCard(char* message){
-	this->card_to_play = NULL;
+	m_card_to_play = nullptr;
 	//finding the card
 	unsigned value = Card::FromString(message);
-	cout << message << " -> " << value << endl;
-	if(value>>5){
+	if(value>>6){
 		return;
 	}
 	unsigned a = value&3;
 	unsigned b = value>>2;
-	unsigned cardcount = player->GetHand()->Size();
+	unsigned cardcount = m_player->GetHand()->Size();
 	for(unsigned c=0; c<cardcount; c++){
-		Card* card = player->GetHand()->Get(c);
+		Card* card = m_player->GetHand()->Get(c);
 		if(card->GetColor()==a && card->GetRank()==b){
-			card_to_play = card;
-			return;
+			m_card_to_play = card;
 		}
 	}
-	player->SetCard(card_to_play);
-	cout << "NOTIFY" << endl;
-	player->GetSemaphore()->Notify();
+	m_player->SetCard(m_card_to_play);
+	m_player->GetSemaphore()->Notify();
 }
 
 void Commands::CreateGame(char* message){
@@ -235,6 +254,6 @@ void Commands::CreateGame(char* message){
 	Configuration* conf = Configuration::GetConfiguration(params);
 	Game* game = new Game(conf->GetCount(),conf->GetAlgorithms());
 	game->SetName(game_name);
-	server->AddGame(game);
-	this->server->Send(this->sock,RESPONSE_GAME_CREATED);
+	m_server->AddGame(game);
+	m_server->Send(m_sock,RESPONSE_GAME_CREATED);
 }

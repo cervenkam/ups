@@ -76,7 +76,7 @@ class CreateGameWindow extends JFrame implements Runnable{
 			client.addCallback("Game",(e)->{
 				client.removeCallback("Game");
 				dispose();
-				new GameWindow(client).setVisible(true);
+				new GameWindow(client,name).setVisible(true);
 			});
 		});
 	}

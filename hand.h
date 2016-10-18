@@ -10,7 +10,7 @@
 class Hand{
 	public:
 		/* Number of cards in hand */
-		static const unsigned char SIZE = 4;
+		static const unsigned char ms_SIZE = 4;
 		/*
 			Sets the card of specified position
 			DEPRECATED - do not use this method, use Add instead
@@ -45,13 +45,11 @@ class Hand{
 			Clears the hand
 		*/
 		void Clear();
-#ifndef TESTING
 	private:
-#endif
 		/* Cards in hand */
-		Card* cards[SIZE];
+		Card* m_cards[ms_SIZE];
 		/* Count of cards in hand */
-		unsigned char count = 0;
+		unsigned char m_count = 0;
 };
 
 #endif

@@ -13,25 +13,22 @@
 */
 void Deck::Shuffle(){
 	unsigned char size=Size();
-	srand(time(NULL));
+	srand(time(nullptr));
 	for(unsigned char a=0; a<size; a++){
 		unsigned char random = rand()%size;
 		//swap
-		Card* tmp = cards[random];
-		cards[random]=cards[a];
-		cards[a]=tmp;
+		Card* tmp = m_cards[random];
+		m_cards[random]=m_cards[a];
+		m_cards[a]=tmp;
 	}
 }
 /*
 	Prints this deck
 */
 void Deck::Print(){
-#ifdef TESTING
-	ofstream cout("last_game.txt",ofstream::app);
-#endif
 	unsigned char size=Size();
 	for(unsigned a=0; a<size; a++){
-		OUT(*cards[a]);
+		OUT(*m_cards[a]);
 		if((a&15)==15){
 			OUT(endl);
 		}else{
@@ -39,9 +36,6 @@ void Deck::Print(){
 		}
 	}
 	OUT(endl);
-#ifdef TESTING
-	cout.close();
-#endif
 }
 /*
 	Pops the first card from this deck
@@ -50,8 +44,8 @@ void Deck::Print(){
 */
 Card* Deck::Pop(){
 	unsigned char size=Size();
-	Card* popped = cards[size-1];
-	count--;
+	Card* popped = m_cards[size-1];
+	m_count--;
 	return popped;	
 }
 /*
@@ -60,7 +54,7 @@ Card* Deck::Pop(){
 		<= First card on this deck
 */
 Card* Deck::Peek(){
-	return cards[Size()-1];
+	return m_cards[Size()-1];
 }
 /*
 	Push the card to the deck
@@ -69,11 +63,11 @@ Card* Deck::Peek(){
 */
 bool Deck::Push(Card* card){
 	unsigned char size = Size();
-	if(size == COUNT){
+	if(size == ms_COUNT){
 		return false;
 	}else{
-		cards[count]=card;
-		count++;
+		m_cards[m_count]=card;
+		m_count++;
 		return true;
 	}
 }
@@ -82,14 +76,14 @@ bool Deck::Push(Card* card){
 		<= Size of this deck
 */
 unsigned char Deck::Size(){
-	return count;
+	return m_count;
 }
 /*
 	Fills the deck with the cards (in order)
 */
 void Deck::Fill(){
-	count=0;
-	for(unsigned char a=0; a<COUNT; a++){
+	m_count=0;
+	for(unsigned char a=0; a<ms_COUNT; a++){
 		Push(new Card(a));
 	}
 }
@@ -101,7 +95,7 @@ void Deck::ThrowAway(unsigned char count){
 	Fill();
 	for(unsigned char a=0; a<count; a++){
 		//4 because deck begins with 4 cards of rank 7
-		cards[a+4]=cards[COUNT-a-1];
+		m_cards[a+4]=m_cards[ms_COUNT-a-1];
 	}
-	this->count-=count;
+	m_count-=count;
 }

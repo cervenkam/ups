@@ -27,15 +27,13 @@ class ProgrammerBot: public Algorithm{
 				<= Card which will player use
 		*/
 		Card* Play(bool force);
-#ifndef TESTING
 	private:
-#endif
 		/* X cards counter */
-		unsigned counterX = 0;
+		unsigned m_counterX = 0;
 		/* E cards counter */
-		unsigned counterE = 0;
+		unsigned m_counterE = 0;
 		/* 7 cards counter */
-		unsigned counter7 = 0;
+		unsigned m_counter7 = 0;
 };
 
 #endif

@@ -17,7 +17,7 @@ int main(int argc,char** argv){
 	server->Start();
 	delete server;
 #else
-	Client client(argc>2?argv[2]:NULL,port);
+	Client client(argc>2?argv[2]:nullptr,port);
 	client.Connect();
 	char line[512];
 	while(fgets(line,512,stdin)){

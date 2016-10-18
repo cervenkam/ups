@@ -16,13 +16,6 @@ class Game{
 				=> algos Players algos
 		*/
 		Game(unsigned char players,Algorithm** algos);
-#ifdef TESTING
-		/*
-			Creates new game
-				=> players Number of players
-		*/
-		Game(unsigned char players);
-#endif
 		/*
 			Returns the game algorithm
 				=> player Player ID
@@ -78,9 +71,7 @@ class Game{
 			Game in new thread
 		*/
 		void StartParallel();
-#ifndef TESTING
 	private:
-#endif
 		/*
 			Prepares the game
 				<= Can we continue?
@@ -132,17 +123,17 @@ class Game{
 		*/
 		void DetermineWinner(Card* card,unsigned& player, unsigned& winner);
 		/* Count of players in this game */
-		unsigned char players;
+		unsigned char m_players;
 		/* Determines the player which started this round */
-		static unsigned char started;
+		static unsigned char ms_started;
 		/* Deck of not used card */
-		Deck* deck;
+		Deck* m_deck;
 		/* Array of player algorithms */
-		Algorithm** algos;
+		Algorithm** m_algos;
 		/* Number of points on table */
-		unsigned char points = 0;
+		unsigned char m_points = 0;
 		/* Name of the game */
-		char* name;
+		char* m_name;
 };
 
 #endif

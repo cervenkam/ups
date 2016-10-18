@@ -40,6 +40,11 @@ class NetworkPlayer: public Algorithm{
 		*/
 		void SetCommands(Commands* commands);
 		/*
+			Gets the commands from this player
+				<= commands Commands from player
+		*/
+		Commands* GetCommands();
+		/*
 			Gets semapohore for this object
 		*/
 		Semaphore* GetSemaphore();
@@ -48,9 +53,9 @@ class NetworkPlayer: public Algorithm{
 		*/
 		void SetCard(Card* card);
 	private:
-		Commands* commands;
-		Semaphore* semaphore;
-		Card* card;
+		Commands* m_commands;
+		Semaphore* m_semaphore;
+		Card* m_card;
 };
 
 #endif

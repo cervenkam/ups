@@ -16,16 +16,17 @@
 		=> player Name of the player
 */
 NetworkPlayer::NetworkPlayer(const char* player,unsigned char ch): Algorithm(player,ch){
-	name="networkplayer";
-	commands = NULL;
-	semaphore = new Semaphore(1);
+	m_name="networkplayer";
+	m_commands = nullptr;
+	m_card = nullptr;
+	m_semaphore = new Semaphore(0);
 }
 
 /*
 	Destroys this player
 */
 NetworkPlayer::~NetworkPlayer(){
-	delete semaphore;
+	delete m_semaphore;
 }
 
 /*
@@ -34,7 +35,7 @@ NetworkPlayer::~NetworkPlayer(){
 		=> player ID of the player which played card
 */
 void NetworkPlayer::Used(Card* card,unsigned char player){
-	if(commands && commands->GetServer()){
+	if(m_commands && m_commands->GetServer()){
 		char* buff = new char[MAX_LEN];
 		char* tmp = buff;
 		strcpy(buff,RESPONSE_USED_CARD);
@@ -42,14 +43,13 @@ void NetworkPlayer::Used(Card* card,unsigned char player){
 		tmp[0]=' ';
 		tmp++;
 		const char* text = "NULL";
-		if(card != NULL){
+		if(card != nullptr){
 			text = card->ToString();
 		}
 		strcpy(tmp,text);
 		tmp+=strlen(text);
-		sprintf(tmp++," %s",this->commands->GetGame()->GetAlgorithm(player)->player); //automaticly appends '\0'
-		cout << "#" << buff << "#" << endl;
-		commands->GetServer()->Send(commands->GetSocket(),buff);
+		sprintf(tmp++," %s",m_commands->GetGame()->GetAlgorithm(player)->m_player); //automaticly appends '\0'
+		m_commands->GetServer()->Send(m_commands->GetSocket(),buff);
 		delete[] buff;
 	}
 }
@@ -58,12 +58,18 @@ void NetworkPlayer::Used(Card* card,unsigned char player){
 		=> force Force the player to play? (he is not lay down the first card)
 		<= Card which will player use
 */
-Card* NetworkPlayer::Play(bool force){
-	commands->GetServer()->Send(commands->GetSocket(),RESPONSE_PLAY);
-	cout << "Waiting for a card" << endl;
-	semaphore->Wait();
-	cout << "I've got a card!" << endl;
-	return NULL;
+Card* NetworkPlayer::Play(bool){
+	m_commands->GetServer()->Send(m_commands->GetSocket(),RESPONSE_PLAY);
+	m_semaphore->Wait();
+	return m_card;
+}
+
+/*
+	Gets the commands from this player
+		<= commands Commands from player
+*/
+Commands* NetworkPlayer::GetCommands(){
+	return m_commands;
 }
 
 /*
@@ -71,19 +77,19 @@ Card* NetworkPlayer::Play(bool force){
 		=> commands Commands for player
 */
 void NetworkPlayer::SetCommands(Commands* commands){
-	this->commands = commands;
+	m_commands = commands;
 }
 
 /*
 	Gets semapohore for this object
 */
 Semaphore* NetworkPlayer::GetSemaphore(){
-	return semaphore;
+	return m_semaphore;
 }
 
 /*
 	Sets the card which should player use
 */
 void NetworkPlayer::SetCard(Card* card){
-	this->card = card;
+	m_card = card;
 }

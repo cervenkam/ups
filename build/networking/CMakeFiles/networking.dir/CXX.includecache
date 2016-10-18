@@ -38,6 +38,8 @@ algorithm.h
 card.h
 /home/martin/skola/UPS/SP/card.h
 
+/home/martin/skola/UPS/SP/lang.h
+
 /home/martin/skola/UPS/SP/networking/commands.cxx
 commands.h
 /home/martin/skola/UPS/SP/networking/commands.h
@@ -74,6 +76,22 @@ netdb.h
 
 /home/martin/skola/UPS/SP/networking/lang.h
 
+/home/martin/skola/UPS/SP/networking/server.cxx
+server.h
+/home/martin/skola/UPS/SP/networking/server.h
+../stdmcr.h
+/home/martin/skola/UPS/SP/stdmcr.h
+unistd.h
+-
+iostream
+-
+cstring
+-
+thread
+-
+commonnetwork.h
+/home/martin/skola/UPS/SP/networking/commonnetwork.h
+
 /home/martin/skola/UPS/SP/networking/server.h
 commands.h
 /home/martin/skola/UPS/SP/networking/commands.h
@@ -96,5 +114,9 @@ networking/commands.h
 mutex
 -
 condition_variable
+-
+
+/home/martin/skola/UPS/SP/stdmcr.h
+ctime
 -
 

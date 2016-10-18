@@ -10,7 +10,7 @@
 class Deck{
 	public:
 		/* Count of the card */
-		static const unsigned char COUNT = 32; //HACK do not change
+		static const unsigned char ms_COUNT = 32; //HACK do not change
 		/*
 			Shuffles this deck
 		*/
@@ -51,13 +51,11 @@ class Deck{
 				=> count Count of the card which will be throwed away from this deck
 		*/
 		void ThrowAway(unsigned char count);
-#ifndef TESTING
 	private:
-#endif
 		/* Array of cards */
-		Card* cards[COUNT];
+		Card* m_cards[ms_COUNT];
 		/* Count of cards in hand */
-		unsigned char count = 0;
+		unsigned char m_count = 0;
 };
 
 #endif

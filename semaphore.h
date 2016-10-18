@@ -11,10 +11,10 @@ class Semaphore{
 		void Notify();
 		void Wait();
 	private:
-		mutex mtx;
-		condition_variable cond;
-		unsigned count;
-		unsigned max_count;
+		mutex m_mtx;
+		condition_variable m_cond;
+		unsigned m_count;
+		unsigned m_max_count;
 };
 
 #endif

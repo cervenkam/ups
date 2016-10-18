@@ -77,17 +77,15 @@ class Card{
 				<= Number reprezentation
 		*/
 		static unsigned char FromString(char* str);
-#ifndef TESTING
 	private:
-#endif
 		/* Value of this card (0-31)*/
-		unsigned char value;
+		unsigned char m_value;
 		/* Card name */
-		char* name;
+		char* m_name;
 		/* Cards rank names */
-		static const char* ranks[8];
+		static const char* ms_ranks[8];
 		/* Card color names */
-		static const char* colors[4];
+		static const char* ms_colors[4];
 };
 
 #endif

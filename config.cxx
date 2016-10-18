@@ -7,22 +7,22 @@
 #include "config.h"
 #include "lang.h"
 #include "stdmcr.h"
-#include <fstream>
 #include "algorithm.h"
 #include "person.h"
 #include "algono.h"
 #include "programmerbot.h"
 #include "networkplayer.h"
-#include <string.h>
+#include <cstring>
 #include <sstream>
 #include <iostream>
+#include <fstream>
 #define CMP(MCR,NAME) if(!strcmp(name,MCR) || !strcmp(name,NAME))
 
 using namespace std;
 /* default algorithm name */
-char* Configuration::def = new char[14]{'P','r','o','g','r','a','m','m','e','r','B','o','t','\0'};
+char* Configuration::ms_def = new char[14]{'P','r','o','g','r','a','m','m','e','r','B','o','t','\0'};
 /* single instance of this class */
-Configuration* Configuration::config = NULL;
+Configuration* Configuration::ms_config = nullptr;
 
 /*
 	Returns the algorithm by its name
@@ -40,8 +40,8 @@ Algorithm* Configuration::GetAlgorithm(char* name,char* player_name,unsigned id)
 	}else CMP(NETWORKPLAYER,"NetworkPlayer"){
 		return new NetworkPlayer(player_name,id);
 	}
-	if(name!=def){
-		return GetAlgorithm(def,player_name,id);
+	if(!strcmp(name,ms_def)){
+		return GetAlgorithm(ms_def,player_name,id);
 	}else{
 		//SUPERDEFAULT value
 		return new ProgrammerBot(player_name,id);
@@ -68,25 +68,20 @@ void Configuration::Load(string in_str){
 		while(sscanf(strtmp,"%511[^=]=%511s",command,parameter)){
 			if(!strcmp(command,PLAYER_COUNT)){
 				SetCount(atoi(parameter));	
-				algos = new Algorithm*[GetCount()];
-				cout << "Vytvoreno " << GetCount() << " hracu" << endl;
+				m_algos = new Algorithm*[GetCount()];
 			}else if(!strcmp(command,DEFAULT)){
-				def = parameter;
-				cout << "Vychozi hrac nastaven na " << parameter << endl;
+				ms_def = parameter;
 			}else if(!strcmp(command,PLAYER)){
-				if(algos != NULL && counter < GetCount()){
-					cout << "Pridan rucne definovany hrac " << counter << endl;
-					algos[counter] = GetAlgorithm(parameter,name,counter);
+				if(m_algos != nullptr && counter < GetCount()){
+					m_algos[counter] = GetAlgorithm(parameter,name,counter);
 					name = new char[512];
 					strcpy(name,PLAYER);
 					counter++;
 				}
 			}else if(!strcmp(command,NAME)){
 				strcpy(name,parameter);
-				cout << "Jmeno nastaveno na " << name << endl;
 			}else if(!strcmp(command,RULES)){
-				rules=true;
-				cout << "Nastavena vlastni pravidla" << endl;
+				m_rules=true;
 			}
 			while(strtmp[0]!=' ' && strtmp[0]!='\0'){
 				strtmp++;
@@ -97,8 +92,8 @@ void Configuration::Load(string in_str){
 			strtmp++;
 		}
 	}
-	for(unsigned a=counter; a<count; a++){
-		algos[a] = GetAlgorithm(def,name,a);
+	for(unsigned a=counter; a<m_count; a++){
+		m_algos[a] = GetAlgorithm(ms_def,name,a);
 	}
 	delete[] command;
 	delete[] str;
@@ -108,21 +103,21 @@ void Configuration::Load(string in_str){
 		=> count Count of players
 */
 void Configuration::SetCount(unsigned count){
-	this->count = count;
+	m_count = count;
 }
 /*
 	Returns count of players
 		<= Count of players
 */
 unsigned Configuration::GetCount(){
-	return count;
+	return m_count;
 }
 /*
 	Returns all (array of) created algorithms
 		<= Array of created algorithms
 */
 Algorithm** Configuration::GetAlgorithms(){
-	return algos;
+	return m_algos;
 }
 /*
 	Returns single configuration
@@ -130,11 +125,10 @@ Algorithm** Configuration::GetAlgorithms(){
 		<= Configuration
 */
 Configuration* Configuration::GetConfiguration(string str){
-	if(config==NULL || str!=""){
-		cout << "Creating configuration by: " << endl << "\t#" << str << "#" << endl;
-		config = new Configuration(str);
+	if(ms_config==nullptr || str!=""){
+		ms_config = new Configuration(str);
 	}
-	return config;
+	return ms_config;
 }
 /*
 	Creates new algorithm
@@ -148,5 +142,5 @@ Configuration:: Configuration(string str){
 		<= Are own rules enabled
 */
 bool Configuration::AreOwnRules(){
-	return rules;
+	return m_rules;
 }

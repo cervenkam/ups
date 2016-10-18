@@ -21,10 +21,10 @@ class Server{
 		Commands* GetCommands(unsigned index);
 		void AddCommands(Commands* command);
 	private:
-		unsigned port;
-		char internal_storage[MAX_LEN];
-		vector<Commands*> commands;
-		vector<Game*> games;
+		unsigned m_port;
+		char m_internal_storage[MAX_LEN];
+		vector<Commands*> m_commands;
+		vector<Game*> m_games;
 };
 
 #endif

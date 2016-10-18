@@ -90,7 +90,8 @@ public class LoginWindow extends JFrame implements Runnable{
 			client.addCallback("Game",(s)->{
 				client.removeCallback("Game");
 				dispose();
-				new GameWindow(client).setVisible(true);
+				String name = connection_name.getText();
+				new GameWindow(client,name).setVisible(true);
 			});
 			client.addCallback("PlayerExists",(s)->{
 				error("ErrorPlayerExists");

@@ -99,19 +99,6 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named client
-
-# Build rule for target.
-client: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 client
-.PHONY : client
-
-# fast build rule for target.
-client/fast:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/build
-.PHONY : client/fast
-
-#=============================================================================
 # Target rules for targets named server
 
 # Build rule for target.
@@ -142,7 +129,6 @@ algono.o: algono.cxx.o
 
 # target to build an object file
 algono.cxx.o:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/algono.cxx.o
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/algono.cxx.o
 .PHONY : algono.cxx.o
 
@@ -151,7 +137,6 @@ algono.i: algono.cxx.i
 
 # target to preprocess a source file
 algono.cxx.i:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/algono.cxx.i
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/algono.cxx.i
 .PHONY : algono.cxx.i
 
@@ -160,7 +145,6 @@ algono.s: algono.cxx.s
 
 # target to generate assembly for a file
 algono.cxx.s:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/algono.cxx.s
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/algono.cxx.s
 .PHONY : algono.cxx.s
 
@@ -169,7 +153,6 @@ algorithm.o: algorithm.cxx.o
 
 # target to build an object file
 algorithm.cxx.o:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/algorithm.cxx.o
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/algorithm.cxx.o
 .PHONY : algorithm.cxx.o
 
@@ -178,7 +161,6 @@ algorithm.i: algorithm.cxx.i
 
 # target to preprocess a source file
 algorithm.cxx.i:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/algorithm.cxx.i
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/algorithm.cxx.i
 .PHONY : algorithm.cxx.i
 
@@ -187,7 +169,6 @@ algorithm.s: algorithm.cxx.s
 
 # target to generate assembly for a file
 algorithm.cxx.s:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/algorithm.cxx.s
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/algorithm.cxx.s
 .PHONY : algorithm.cxx.s
 
@@ -196,7 +177,6 @@ card.o: card.cxx.o
 
 # target to build an object file
 card.cxx.o:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/card.cxx.o
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/card.cxx.o
 .PHONY : card.cxx.o
 
@@ -205,7 +185,6 @@ card.i: card.cxx.i
 
 # target to preprocess a source file
 card.cxx.i:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/card.cxx.i
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/card.cxx.i
 .PHONY : card.cxx.i
 
@@ -214,7 +193,6 @@ card.s: card.cxx.s
 
 # target to generate assembly for a file
 card.cxx.s:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/card.cxx.s
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/card.cxx.s
 .PHONY : card.cxx.s
 
@@ -223,7 +201,6 @@ config.o: config.cxx.o
 
 # target to build an object file
 config.cxx.o:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/config.cxx.o
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/config.cxx.o
 .PHONY : config.cxx.o
 
@@ -232,7 +209,6 @@ config.i: config.cxx.i
 
 # target to preprocess a source file
 config.cxx.i:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/config.cxx.i
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/config.cxx.i
 .PHONY : config.cxx.i
 
@@ -241,7 +217,6 @@ config.s: config.cxx.s
 
 # target to generate assembly for a file
 config.cxx.s:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/config.cxx.s
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/config.cxx.s
 .PHONY : config.cxx.s
 
@@ -250,7 +225,6 @@ deck.o: deck.cxx.o
 
 # target to build an object file
 deck.cxx.o:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/deck.cxx.o
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/deck.cxx.o
 .PHONY : deck.cxx.o
 
@@ -259,7 +233,6 @@ deck.i: deck.cxx.i
 
 # target to preprocess a source file
 deck.cxx.i:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/deck.cxx.i
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/deck.cxx.i
 .PHONY : deck.cxx.i
 
@@ -268,7 +241,6 @@ deck.s: deck.cxx.s
 
 # target to generate assembly for a file
 deck.cxx.s:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/deck.cxx.s
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/deck.cxx.s
 .PHONY : deck.cxx.s
 
@@ -277,7 +249,6 @@ game.o: game.cxx.o
 
 # target to build an object file
 game.cxx.o:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/game.cxx.o
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/game.cxx.o
 .PHONY : game.cxx.o
 
@@ -286,7 +257,6 @@ game.i: game.cxx.i
 
 # target to preprocess a source file
 game.cxx.i:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/game.cxx.i
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/game.cxx.i
 .PHONY : game.cxx.i
 
@@ -295,7 +265,6 @@ game.s: game.cxx.s
 
 # target to generate assembly for a file
 game.cxx.s:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/game.cxx.s
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/game.cxx.s
 .PHONY : game.cxx.s
 
@@ -304,7 +273,6 @@ hand.o: hand.cxx.o
 
 # target to build an object file
 hand.cxx.o:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/hand.cxx.o
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/hand.cxx.o
 .PHONY : hand.cxx.o
 
@@ -313,7 +281,6 @@ hand.i: hand.cxx.i
 
 # target to preprocess a source file
 hand.cxx.i:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/hand.cxx.i
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/hand.cxx.i
 .PHONY : hand.cxx.i
 
@@ -322,7 +289,6 @@ hand.s: hand.cxx.s
 
 # target to generate assembly for a file
 hand.cxx.s:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/hand.cxx.s
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/hand.cxx.s
 .PHONY : hand.cxx.s
 
@@ -331,7 +297,6 @@ main.o: main.cxx.o
 
 # target to build an object file
 main.cxx.o:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/main.cxx.o
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/main.cxx.o
 .PHONY : main.cxx.o
 
@@ -340,7 +305,6 @@ main.i: main.cxx.i
 
 # target to preprocess a source file
 main.cxx.i:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/main.cxx.i
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/main.cxx.i
 .PHONY : main.cxx.i
 
@@ -349,7 +313,6 @@ main.s: main.cxx.s
 
 # target to generate assembly for a file
 main.cxx.s:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/main.cxx.s
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/main.cxx.s
 .PHONY : main.cxx.s
 
@@ -358,7 +321,6 @@ networkplayer.o: networkplayer.cxx.o
 
 # target to build an object file
 networkplayer.cxx.o:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/networkplayer.cxx.o
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/networkplayer.cxx.o
 .PHONY : networkplayer.cxx.o
 
@@ -367,7 +329,6 @@ networkplayer.i: networkplayer.cxx.i
 
 # target to preprocess a source file
 networkplayer.cxx.i:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/networkplayer.cxx.i
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/networkplayer.cxx.i
 .PHONY : networkplayer.cxx.i
 
@@ -376,7 +337,6 @@ networkplayer.s: networkplayer.cxx.s
 
 # target to generate assembly for a file
 networkplayer.cxx.s:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/networkplayer.cxx.s
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/networkplayer.cxx.s
 .PHONY : networkplayer.cxx.s
 
@@ -385,7 +345,6 @@ person.o: person.cxx.o
 
 # target to build an object file
 person.cxx.o:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/person.cxx.o
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/person.cxx.o
 .PHONY : person.cxx.o
 
@@ -394,7 +353,6 @@ person.i: person.cxx.i
 
 # target to preprocess a source file
 person.cxx.i:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/person.cxx.i
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/person.cxx.i
 .PHONY : person.cxx.i
 
@@ -403,7 +361,6 @@ person.s: person.cxx.s
 
 # target to generate assembly for a file
 person.cxx.s:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/person.cxx.s
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/person.cxx.s
 .PHONY : person.cxx.s
 
@@ -412,7 +369,6 @@ programmerbot.o: programmerbot.cxx.o
 
 # target to build an object file
 programmerbot.cxx.o:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/programmerbot.cxx.o
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/programmerbot.cxx.o
 .PHONY : programmerbot.cxx.o
 
@@ -421,7 +377,6 @@ programmerbot.i: programmerbot.cxx.i
 
 # target to preprocess a source file
 programmerbot.cxx.i:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/programmerbot.cxx.i
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/programmerbot.cxx.i
 .PHONY : programmerbot.cxx.i
 
@@ -430,7 +385,6 @@ programmerbot.s: programmerbot.cxx.s
 
 # target to generate assembly for a file
 programmerbot.cxx.s:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/programmerbot.cxx.s
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/programmerbot.cxx.s
 .PHONY : programmerbot.cxx.s
 
@@ -439,7 +393,6 @@ semaphore.o: semaphore.cxx.o
 
 # target to build an object file
 semaphore.cxx.o:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/semaphore.cxx.o
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/semaphore.cxx.o
 .PHONY : semaphore.cxx.o
 
@@ -448,7 +401,6 @@ semaphore.i: semaphore.cxx.i
 
 # target to preprocess a source file
 semaphore.cxx.i:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/semaphore.cxx.i
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/semaphore.cxx.i
 .PHONY : semaphore.cxx.i
 
@@ -457,7 +409,6 @@ semaphore.s: semaphore.cxx.s
 
 # target to generate assembly for a file
 semaphore.cxx.s:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/semaphore.cxx.s
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/semaphore.cxx.s
 .PHONY : semaphore.cxx.s
 
@@ -467,7 +418,6 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... client"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... server"
