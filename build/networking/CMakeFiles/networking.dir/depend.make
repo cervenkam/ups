@@ -13,6 +13,7 @@ networking/CMakeFiles/networking.dir/commands.cxx.o: ../networking/commonnetwork
 networking/CMakeFiles/networking.dir/commands.cxx.o: ../networking/lang.h
 networking/CMakeFiles/networking.dir/commands.cxx.o: ../networking/server.h
 networking/CMakeFiles/networking.dir/commands.cxx.o: ../networkplayer.h
+networking/CMakeFiles/networking.dir/commands.cxx.o: ../programmerbot.h
 networking/CMakeFiles/networking.dir/commands.cxx.o: ../semaphore.h
 
 networking/CMakeFiles/networking.dir/commonnetwork.cxx.o: ../networking/commonnetwork.cxx
@@ -30,6 +31,7 @@ networking/CMakeFiles/networking.dir/server.cxx.o: ../networking/commonnetwork.h
 networking/CMakeFiles/networking.dir/server.cxx.o: ../networking/server.cxx
 networking/CMakeFiles/networking.dir/server.cxx.o: ../networking/server.h
 networking/CMakeFiles/networking.dir/server.cxx.o: ../networkplayer.h
+networking/CMakeFiles/networking.dir/server.cxx.o: ../programmerbot.h
 networking/CMakeFiles/networking.dir/server.cxx.o: ../semaphore.h
 networking/CMakeFiles/networking.dir/server.cxx.o: ../stdmcr.h
 

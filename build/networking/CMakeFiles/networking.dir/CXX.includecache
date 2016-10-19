@@ -81,6 +81,8 @@ cstring
 -
 thread
 -
+vector
+-
 commonnetwork.h
 /home/martin/skola/UPS/SP/networking/commonnetwork.h
 
@@ -101,8 +103,14 @@ thread
 /home/martin/skola/UPS/SP/networkplayer.h
 algorithm.h
 /home/martin/skola/UPS/SP/algorithm.h
+programmerbot.h
+/home/martin/skola/UPS/SP/programmerbot.h
 networking/commands.h
 /home/martin/skola/UPS/SP/networking/commands.h
+
+/home/martin/skola/UPS/SP/programmerbot.h
+algorithm.h
+/home/martin/skola/UPS/SP/algorithm.h
 
 /home/martin/skola/UPS/SP/semaphore.h
 mutex

@@ -26,6 +26,8 @@ class Server{
 		void GarbageCollector();
 		void TidyUp(Commands* commands);
 	private:
+		void StopGame();
+
 		unsigned m_port;
 		char m_internal_storage[MAX_LEN];
 		vector<Commands*> m_commands;

@@ -74,6 +74,7 @@ CMakeFiles/server.dir/main.cxx.o: ../networking/commands.h
 CMakeFiles/server.dir/main.cxx.o: ../networking/commonnetwork.h
 CMakeFiles/server.dir/main.cxx.o: ../networking/server.h
 CMakeFiles/server.dir/main.cxx.o: ../networkplayer.h
+CMakeFiles/server.dir/main.cxx.o: ../programmerbot.h
 CMakeFiles/server.dir/main.cxx.o: ../semaphore.h
 
 CMakeFiles/server.dir/networkplayer.cxx.o: ../algorithm.h
@@ -89,6 +90,7 @@ CMakeFiles/server.dir/networkplayer.cxx.o: ../networking/lang.h
 CMakeFiles/server.dir/networkplayer.cxx.o: ../networking/server.h
 CMakeFiles/server.dir/networkplayer.cxx.o: ../networkplayer.cxx
 CMakeFiles/server.dir/networkplayer.cxx.o: ../networkplayer.h
+CMakeFiles/server.dir/networkplayer.cxx.o: ../programmerbot.h
 CMakeFiles/server.dir/networkplayer.cxx.o: ../semaphore.h
 
 CMakeFiles/server.dir/person.cxx.o: ../algorithm.h

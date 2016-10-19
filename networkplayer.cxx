@@ -19,12 +19,15 @@ NetworkPlayer::NetworkPlayer(const char* player,unsigned char ch): Algorithm(pla
 	m_name="networkplayer";
 	m_commands = nullptr;
 	m_card = nullptr;
+	m_bot = new ProgrammerBot(*this);
 }
 
 /*
 	Destroys this player
 */
-NetworkPlayer::~NetworkPlayer(){}
+NetworkPlayer::~NetworkPlayer(){
+	delete m_bot;
+}
 
 /*
 	Is called when a card is used (with any player)
@@ -32,6 +35,7 @@ NetworkPlayer::~NetworkPlayer(){}
 		=> player ID of the player which played card
 */
 void NetworkPlayer::Used(Card* card,unsigned char player){
+	m_bot->Used(card,player);
 	if(m_commands && m_commands->GetServer()){
 		char* buff = new char[MAX_LEN];
 		char* tmp = buff;
@@ -55,7 +59,10 @@ void NetworkPlayer::Used(Card* card,unsigned char player){
 		=> force Force the player to play? (he is not lay down the first card)
 		<= Card which will player use
 */
-Card* NetworkPlayer::Play(bool){
+Card* NetworkPlayer::Play(bool force){
+	if(m_commands == nullptr){
+		return m_bot->Play(force);
+	}
 	m_commands->GetServer()->Send(m_commands->GetSocket(),RESPONSE_PLAY);
 	GetSemaphore()->Wait();
 	return m_card;
@@ -74,6 +81,9 @@ Commands* NetworkPlayer::GetCommands(){
 		=> commands Commands for player
 */
 void NetworkPlayer::SetCommands(Commands* commands){
+	if(commands == nullptr){
+		cout << "NULLPTR" << endl;
+	}
 	m_commands = commands;
 }
 

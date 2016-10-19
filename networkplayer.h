@@ -7,6 +7,7 @@
 	Version: 06.10.2016
 */
 #include "algorithm.h"
+#include "programmerbot.h"
 #include "networking/commands.h"
 class Commands;
 class NetworkPlayer: public Algorithm{
@@ -50,6 +51,8 @@ class NetworkPlayer: public Algorithm{
 	private:
 		Commands* m_commands;
 		Card* m_card;
+		/* Plays when player is disconnected */
+		ProgrammerBot* m_bot;
 };
 
 #endif

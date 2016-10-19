@@ -14,6 +14,7 @@ networking/CMakeFiles/networking.dir/commands.cxx.o
  /home/martin/skola/UPS/SP/networking/lang.h
  /home/martin/skola/UPS/SP/networking/server.h
  /home/martin/skola/UPS/SP/networkplayer.h
+ /home/martin/skola/UPS/SP/programmerbot.h
  /home/martin/skola/UPS/SP/semaphore.h
 networking/CMakeFiles/networking.dir/commonnetwork.cxx.o
  /home/martin/skola/UPS/SP/networking/commonnetwork.cxx
@@ -31,5 +32,6 @@ networking/CMakeFiles/networking.dir/server.cxx.o
  /home/martin/skola/UPS/SP/networking/server.cxx
  /home/martin/skola/UPS/SP/networking/server.h
  /home/martin/skola/UPS/SP/networkplayer.h
+ /home/martin/skola/UPS/SP/programmerbot.h
  /home/martin/skola/UPS/SP/semaphore.h
  /home/martin/skola/UPS/SP/stdmcr.h

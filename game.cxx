@@ -150,6 +150,7 @@ void Game::StopParallel(){
 	if(m_thr != nullptr){
 		m_thr->join();
 		delete m_thr;
+		m_thr = nullptr;
 	}
 }
 /*

@@ -33,6 +33,10 @@ ProgrammerBot::ProgrammerBot(const char* player,unsigned char ch): Algorithm(pla
 	SetReady();
 }
 
+ProgrammerBot::ProgrammerBot(const Algorithm& algo): Algorithm(algo){
+	m_name="programmerBot";
+	SetReady();
+}
 /*
 	Is called when a card is used (with any player)
 		=> card Player card

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cstring>
 #include <thread>
+#include <vector>
 #include "commonnetwork.h"
 
 using namespace std;
@@ -63,10 +64,53 @@ void Server::GarbageCollector(){
 	while(m_port){
 		m_semaphore->Wait();
 		if(m_cmds != nullptr){
+			unsigned len = m_commands.size();
+			for(unsigned a=0; a<len; a++){
+				if(m_commands[a]==m_cmds){
+					m_commands.erase(m_commands.begin()+a);
+					break;
+				}
+			}
+			
+			NetworkPlayer* player=m_cmds->GetPlayer();
 			m_cmds->GetThread()->join();
-			delete m_cmds->GetThread();
-			delete m_cmds;
+			if(player!=nullptr){
+				cout << "is NOT ready" << endl;
+				player->SetReady(false);
+				player->SetCommands(nullptr);
+			}
+			StopGame();
 			STDMSG("0;36","Disconnected");
+			delete m_cmds;
+			m_cmds = nullptr;
+		}
+	}
+}
+void Server::StopGame(){
+	Game* game = m_cmds->GetGame();
+	if(game!=nullptr){
+		unsigned len = game->GetCountOfPlayers();
+		bool should_be_stopped = true;
+		for(unsigned a=0; a<len; a++){
+			Algorithm* algo = game->GetAlgorithm(a);
+			NetworkPlayer* player = nullptr;
+			if((player = dynamic_cast<NetworkPlayer*>(algo))){	
+				if(player != nullptr && player->IsReady()){
+					should_be_stopped=false;
+					break;
+				}
+			}
+		}
+		if(should_be_stopped){
+			game->StopParallel();
+			len = m_games.size();
+			for(unsigned a=0; a<len; a++){
+				if(m_games[a]==game){
+					m_games.erase(m_games.begin()+a);
+					delete game;
+					break;
+				}
+			}
 		}
 	}
 }
@@ -76,6 +120,7 @@ void Server::Stop(){
 void Server::TidyUp(Commands* cmds){
 	m_cmds=cmds;
 	m_semaphore->Notify();
+	cmds=nullptr;
 }
 char* Server::Receive(int sock){
 	uint32_t netlen;

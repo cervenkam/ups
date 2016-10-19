@@ -75,6 +75,7 @@ CMakeFiles/server.dir/main.cxx.o
  /home/martin/skola/UPS/SP/networking/commonnetwork.h
  /home/martin/skola/UPS/SP/networking/server.h
  /home/martin/skola/UPS/SP/networkplayer.h
+ /home/martin/skola/UPS/SP/programmerbot.h
  /home/martin/skola/UPS/SP/semaphore.h
 CMakeFiles/server.dir/networkplayer.cxx.o
  /home/martin/skola/UPS/SP/algorithm.h
@@ -90,6 +91,7 @@ CMakeFiles/server.dir/networkplayer.cxx.o
  /home/martin/skola/UPS/SP/networking/server.h
  /home/martin/skola/UPS/SP/networkplayer.cxx
  /home/martin/skola/UPS/SP/networkplayer.h
+ /home/martin/skola/UPS/SP/programmerbot.h
  /home/martin/skola/UPS/SP/semaphore.h
 CMakeFiles/server.dir/person.cxx.o
  /home/martin/skola/UPS/SP/algorithm.h

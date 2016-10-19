@@ -30,6 +30,16 @@ Algorithm::Algorithm(const char* player,unsigned char myID){
 	m_semaphore = new Semaphore(0);
 }
 /*
+	Copy constructor
+*/
+Algorithm::Algorithm(const Algorithm& algorithm){
+	m_player = algorithm.m_player;
+	m_myID = algorithm.m_myID;
+	m_hand = algorithm.m_hand;
+	m_semaphore = algorithm.m_semaphore;
+	m_copy = true;
+}
+/*
 	Lays down the card from player to table
 		=> card Played card
 */
@@ -108,6 +118,12 @@ void Algorithm::Identify(){
 /*
 	Set this player ready
 */
+void Algorithm::SetReady(bool ready){
+	m_ready = ready;
+}
+/*
+	Set this player ready
+*/
 void Algorithm::SetReady(){
 	m_ready = true;
 }
@@ -121,7 +137,9 @@ bool Algorithm::IsReady(){
 	Destructor
 */
 Algorithm::~Algorithm(){
-	delete m_hand;
-	delete m_semaphore;
-	delete[] m_player;
+	if(!m_copy){
+		delete m_hand;
+		delete m_semaphore;
+		delete[] m_player;
+	}
 }

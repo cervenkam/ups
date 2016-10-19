@@ -16,6 +16,10 @@ class ProgrammerBot: public Algorithm{
 		*/
 		ProgrammerBot(const char* player,unsigned char ch);
 		/*
+			Copy constructor
+		*/
+		ProgrammerBot(const Algorithm& algo);
+		/*
 			Is called when a card is used (with any player)
 				=> card Player card
 				=> player ID of the player which played card

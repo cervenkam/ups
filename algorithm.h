@@ -29,6 +29,10 @@ class Algorithm{
 		*/
 		Algorithm(const char* player,unsigned char ch);
 		/*
+			Copy constructor
+		*/
+		Algorithm(const Algorithm& algorithm);
+		/*
 			Lays down the card from player to table
 				=> card Played card
 		*/
@@ -66,6 +70,11 @@ class Algorithm{
 			Set this player ready
 		*/
 		void SetReady();
+		/*
+			Set this player ready
+				=> Is player ready
+		*/
+		void SetReady(bool);
 		/*
 			Is this player ready to play
 		*/
@@ -106,6 +115,8 @@ class Algorithm{
 		bool m_ready = false;
 		/* Semaphore for all algorithms */
 		Semaphore* m_semaphore;
+		/* Is this algorithm only a copy? */
+		bool m_copy = false;
 };
 
 #endif
