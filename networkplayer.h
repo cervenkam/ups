@@ -7,7 +7,6 @@
 	Version: 06.10.2016
 */
 #include "algorithm.h"
-#include "semaphore.h"
 #include "networking/commands.h"
 class Commands;
 class NetworkPlayer: public Algorithm{
@@ -45,16 +44,11 @@ class NetworkPlayer: public Algorithm{
 		*/
 		Commands* GetCommands();
 		/*
-			Gets semapohore for this object
-		*/
-		Semaphore* GetSemaphore();
-		/*
 			Sets the card which should player use
 		*/
 		void SetCard(Card* card);
 	private:
 		Commands* m_commands;
-		Semaphore* m_semaphore;
 		Card* m_card;
 };
 

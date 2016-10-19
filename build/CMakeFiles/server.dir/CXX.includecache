@@ -19,6 +19,8 @@ lang.h
 /home/martin/skola/UPS/SP/lang.h
 vector
 -
+semaphore.h
+/home/martin/skola/UPS/SP/semaphore.h
 
 /home/martin/skola/UPS/SP/card.h
 ostream
@@ -58,43 +60,33 @@ algorithm.h
 card.h
 /home/martin/skola/UPS/SP/card.h
 
-/home/martin/skola/UPS/SP/game.cxx
-lang.h
-/home/martin/skola/UPS/SP/lang.h
-config.h
-/home/martin/skola/UPS/SP/config.h
-stdmcr.h
-/home/martin/skola/UPS/SP/stdmcr.h
-game.h
-/home/martin/skola/UPS/SP/game.h
-hand.h
-/home/martin/skola/UPS/SP/hand.h
-deck.h
-/home/martin/skola/UPS/SP/deck.h
-algono.h
-/home/martin/skola/UPS/SP/algono.h
-programmerbot.h
-/home/martin/skola/UPS/SP/programmerbot.h
-person.h
-/home/martin/skola/UPS/SP/person.h
-iostream
--
-fstream
--
-thread
--
-
 /home/martin/skola/UPS/SP/game.h
 deck.h
 /home/martin/skola/UPS/SP/deck.h
 algorithm.h
 /home/martin/skola/UPS/SP/algorithm.h
+config.h
+/home/martin/skola/UPS/SP/config.h
+thread
+-
 
 /home/martin/skola/UPS/SP/hand.h
 card.h
 /home/martin/skola/UPS/SP/card.h
 
 /home/martin/skola/UPS/SP/lang.h
+
+/home/martin/skola/UPS/SP/main.cxx
+networking/server.h
+/home/martin/skola/UPS/SP/networking/server.h
+cstdlib
+-
+cstdio
+-
+iostream
+-
+signal.h
+-
 
 /home/martin/skola/UPS/SP/networking/commands.h
 server.h
@@ -118,6 +110,8 @@ netinet/in.h
 netdb.h
 -
 
+/home/martin/skola/UPS/SP/networking/lang.h
+
 /home/martin/skola/UPS/SP/networking/server.h
 commands.h
 /home/martin/skola/UPS/SP/networking/commands.h
@@ -132,11 +126,23 @@ thread
 ../semaphore.h
 /home/martin/skola/UPS/SP/semaphore.h
 
+/home/martin/skola/UPS/SP/networkplayer.cxx
+networkplayer.h
+/home/martin/skola/UPS/SP/networkplayer.h
+networking/lang.h
+/home/martin/skola/UPS/SP/networking/lang.h
+card.h
+/home/martin/skola/UPS/SP/card.h
+hand.h
+/home/martin/skola/UPS/SP/hand.h
+iostream
+-
+cstring
+-
+
 /home/martin/skola/UPS/SP/networkplayer.h
 algorithm.h
 /home/martin/skola/UPS/SP/algorithm.h
-semaphore.h
-/home/martin/skola/UPS/SP/semaphore.h
 networking/commands.h
 /home/martin/skola/UPS/SP/networking/commands.h
 

@@ -27,6 +27,7 @@ Algorithm::Algorithm(const char* player,unsigned char myID){
 	m_myID=myID;
 	m_hand = new Hand();
 	ms_algos.push_back(this);
+	m_semaphore = new Semaphore(0);
 }
 /*
 	Lays down the card from player to table
@@ -57,6 +58,13 @@ bool Algorithm::Send(Card* card){
 Card* Algorithm::FirstCard(){
 	return m_first;
 }
+/*
+	Gets semapohore for this object
+*/
+Semaphore* Algorithm::GetSemaphore(){
+	return m_semaphore;
+}
+
 /*
 	Returns the player's hand
 		<= Player's card 
@@ -108,4 +116,12 @@ void Algorithm::SetReady(){
 */
 bool Algorithm::IsReady(){
 	return m_ready;
+}
+/*
+	Destructor
+*/
+Algorithm::~Algorithm(){
+	delete m_hand;
+	delete m_semaphore;
+	delete[] m_player;
 }

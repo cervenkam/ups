@@ -265,9 +265,11 @@ void Commands::CreateGame(char* message){
 			break;
 		}
 	}
-	Configuration* conf = Configuration::GetConfiguration(params);
-	Game* game = new Game(conf->GetCount(),conf->GetAlgorithms());
+	Game* game = new Game(new Configuration(params));
 	game->SetName(game_name);
 	m_server->AddGame(game);
 	m_server->Send(m_sock,RESPONSE_GAME_CREATED);
+}
+Commands::~Commands(){
+	delete m_thread;
 }

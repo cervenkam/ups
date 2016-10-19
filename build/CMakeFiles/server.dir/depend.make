@@ -7,12 +7,14 @@ CMakeFiles/server.dir/algono.cxx.o: ../algorithm.h
 CMakeFiles/server.dir/algono.cxx.o: ../card.h
 CMakeFiles/server.dir/algono.cxx.o: ../hand.h
 CMakeFiles/server.dir/algono.cxx.o: ../lang.h
+CMakeFiles/server.dir/algono.cxx.o: ../semaphore.h
 
 CMakeFiles/server.dir/algorithm.cxx.o: ../algorithm.cxx
 CMakeFiles/server.dir/algorithm.cxx.o: ../algorithm.h
 CMakeFiles/server.dir/algorithm.cxx.o: ../card.h
 CMakeFiles/server.dir/algorithm.cxx.o: ../hand.h
 CMakeFiles/server.dir/algorithm.cxx.o: ../lang.h
+CMakeFiles/server.dir/algorithm.cxx.o: ../semaphore.h
 CMakeFiles/server.dir/algorithm.cxx.o: ../stdmcr.h
 
 CMakeFiles/server.dir/card.cxx.o: ../card.cxx
@@ -53,6 +55,7 @@ CMakeFiles/server.dir/game.cxx.o: ../hand.h
 CMakeFiles/server.dir/game.cxx.o: ../lang.h
 CMakeFiles/server.dir/game.cxx.o: ../person.h
 CMakeFiles/server.dir/game.cxx.o: ../programmerbot.h
+CMakeFiles/server.dir/game.cxx.o: ../semaphore.h
 CMakeFiles/server.dir/game.cxx.o: ../stdmcr.h
 
 CMakeFiles/server.dir/hand.cxx.o: ../card.h
@@ -61,6 +64,7 @@ CMakeFiles/server.dir/hand.cxx.o: ../hand.h
 
 CMakeFiles/server.dir/main.cxx.o: ../algorithm.h
 CMakeFiles/server.dir/main.cxx.o: ../card.h
+CMakeFiles/server.dir/main.cxx.o: ../config.h
 CMakeFiles/server.dir/main.cxx.o: ../deck.h
 CMakeFiles/server.dir/main.cxx.o: ../game.h
 CMakeFiles/server.dir/main.cxx.o: ../hand.h
@@ -74,6 +78,7 @@ CMakeFiles/server.dir/main.cxx.o: ../semaphore.h
 
 CMakeFiles/server.dir/networkplayer.cxx.o: ../algorithm.h
 CMakeFiles/server.dir/networkplayer.cxx.o: ../card.h
+CMakeFiles/server.dir/networkplayer.cxx.o: ../config.h
 CMakeFiles/server.dir/networkplayer.cxx.o: ../deck.h
 CMakeFiles/server.dir/networkplayer.cxx.o: ../game.h
 CMakeFiles/server.dir/networkplayer.cxx.o: ../hand.h
@@ -92,6 +97,7 @@ CMakeFiles/server.dir/person.cxx.o: ../hand.h
 CMakeFiles/server.dir/person.cxx.o: ../lang.h
 CMakeFiles/server.dir/person.cxx.o: ../person.cxx
 CMakeFiles/server.dir/person.cxx.o: ../person.h
+CMakeFiles/server.dir/person.cxx.o: ../semaphore.h
 CMakeFiles/server.dir/person.cxx.o: ../stdmcr.h
 
 CMakeFiles/server.dir/programmerbot.cxx.o: ../algorithm.h
@@ -100,6 +106,7 @@ CMakeFiles/server.dir/programmerbot.cxx.o: ../hand.h
 CMakeFiles/server.dir/programmerbot.cxx.o: ../lang.h
 CMakeFiles/server.dir/programmerbot.cxx.o: ../programmerbot.cxx
 CMakeFiles/server.dir/programmerbot.cxx.o: ../programmerbot.h
+CMakeFiles/server.dir/programmerbot.cxx.o: ../semaphore.h
 
 CMakeFiles/server.dir/semaphore.cxx.o: ../semaphore.cxx
 CMakeFiles/server.dir/semaphore.cxx.o: ../semaphore.h

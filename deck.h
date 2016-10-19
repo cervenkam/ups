@@ -51,6 +51,10 @@ class Deck{
 				=> count Count of the card which will be throwed away from this deck
 		*/
 		void ThrowAway(unsigned char count);
+		/*
+			Destruct the deck
+		*/
+		~Deck();
 	private:
 		/* Array of cards */
 		Card* m_cards[ms_COUNT];

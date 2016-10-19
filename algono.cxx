@@ -43,3 +43,6 @@ Card* AlgoNo::Play(bool force){
 	}
 	return hand->Get(0); //HACK dangerous
 }
+AlgoNo::~AlgoNo(){
+
+}

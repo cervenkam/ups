@@ -13,7 +13,13 @@ Server::Server(unsigned port){
 }
 
 Server::~Server(){
-	unsigned len = m_games.size();
+	unsigned len=m_commands.size();
+	for(unsigned a=0; a<len; a++){
+		m_commands[a]->SetSocket(0);
+		m_commands[a]->GetThread()->join();
+		delete m_commands[a];
+	}
+	len = m_games.size();
 	for(unsigned a=0; a<len; a++){
 		delete m_games[a];
 	}

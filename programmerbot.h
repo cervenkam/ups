@@ -27,6 +27,10 @@ class ProgrammerBot: public Algorithm{
 				<= Card which will player use
 		*/
 		Card* Play(bool force);
+		/*
+			Destructor
+		*/
+		~ProgrammerBot();
 	private:
 		/* X cards counter */
 		unsigned m_counterX = 0;

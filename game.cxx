@@ -59,23 +59,22 @@ char* Game::GetName(){
 
 /*
 	Creates new game
-		=> players Number of players
-		=> algos Players algos
+		=> conf Game configuration
 */
-Game::Game(unsigned char players,Algorithm** algos){
-	m_players=players;
-	m_algos = new Algorithm*[players];
+Game::Game(Configuration* conf){
+	m_conf=conf;
+	m_players=conf->GetCount();
+	m_algos=conf->GetAlgorithms();
+	/*m_algos = new Algorithm*[players];
 	for(unsigned a=0; a<players; a++){
 		m_algos[a] = algos[a];
-	}
+	}*/
 	m_deck = new Deck();
 }
 
 Game::~Game(){
-	for(unsigned a=0; a<m_players; a++){
-		delete m_algos[a];
-	}
-	delete[] m_algos;
+	StopParallel();
+	delete m_conf;
 	delete m_deck;
 }
 /*
@@ -141,11 +140,23 @@ void Game::Start(){
 	}
 }
 /*
+	Stops the game in new thread
+*/
+void Game::StopParallel(){
+	m_end_of_game = true;
+	for(unsigned a=0; a<m_players; a++){
+		m_algos[a]->GetSemaphore()->Notify();
+	}
+	if(m_thr != nullptr){
+		m_thr->join();
+		delete m_thr;
+	}
+}
+/*
 	Game in new thread
 */
 void Game::StartParallel(){
-	thread thr(&Game::Start,this);
-	thr.detach();
+	m_thr = new thread(&Game::Start,this);
 }
 /*
 	Prepares the game
@@ -178,6 +189,10 @@ void Game::Loop(){
 		if(!OneHand(winner,a)){
 			break;
 		}
+		//if it is end of game
+		if(m_end_of_game){
+			return;
+		}
 	}
 }
 /*
@@ -192,6 +207,10 @@ bool Game::ChooseCard(unsigned& player,unsigned& winner,Card*& card, bool& start
 	started = IsHeStarted(player);
 	//select the card
 	card = m_algos[player]->Play(!started || !Algorithm::FirstCard());
+	//if the game ends
+	if(m_end_of_game){
+		return true; //END
+	}
 	//if he is making the next loop
 	if(started && card){
 		//check the card if it is compatible
@@ -229,7 +248,7 @@ bool Game::FillHands(){
 		}
 	}
 	//checks own rule - 4 same cards in hand
-	if(Configuration::GetConfiguration()->AreOwnRules() && SameCards()){
+	if(m_conf->AreOwnRules() && SameCards()){
 		return true;
 	}
 	return false;
@@ -247,7 +266,11 @@ bool Game::OneHand(unsigned& winner,unsigned& player){
 		if(!ChooseCard(player,winner,card,started)){
 			continue;
 		}
-	}while(!card && !started);
+	}while(!card && !started && !m_end_of_game);
+	//if it is end of game
+	if(m_end_of_game){
+		return true;
+	}
 	//sets the first card
 	if((card && !Algorithm::FirstCard()) || (!card && Algorithm::FirstCard())){
 		Algorithm::SetFirstCard(card);
@@ -286,7 +309,7 @@ bool Game::UseCard(Card* card,unsigned& player, unsigned& winner){
 		}else{
 			counter_of_same_cards = 0;
 		}
-		if(counter_of_same_cards==4 && Configuration::GetConfiguration()->AreOwnRules()){
+		if(counter_of_same_cards==4 && m_conf->AreOwnRules()){
 			for(unsigned c=0; c<m_players; c++){
 				m_algos[c]->ClearPoints();
 			}

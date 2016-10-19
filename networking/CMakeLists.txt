@@ -6,7 +6,6 @@ set(SRCS
 	commands.cxx
 	commonnetwork.cxx
 	server.cxx
-	client.cxx
 )
 
 add_library(networking STATIC ${SRCS})

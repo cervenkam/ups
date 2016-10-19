@@ -12,18 +12,21 @@ using namespace std;
 class Configuration{
 	public:
 		/*
+			Creates new algorithm
+				=> str string with configuration
+		*/
+		Configuration(string str);
+		/*
+			Destruct this configuration
+		*/
+		~Configuration();
+		/*
 			Returns the algorithm by its name
 				=> name Class name of the algorithm
 				=> player_name Name of created player
 				=> id ID of new algorithm
 		*/
 		Algorithm* GetAlgorithm(const char* name,const char* player_name,unsigned id);
-		/*
-			Returns single configuration
-				=> Configuration string / empty string if already created
-				<= Configuration
-		*/
-		static Configuration* GetConfiguration(string str="");
 		/*
 			Returns if own rules are enabled
 				<= Are own rules enabled
@@ -45,15 +48,8 @@ class Configuration{
 		*/
 		unsigned GetCount();
 	private:
-		/* sigle configuration instance */
-		static Configuration* ms_config;
 		/* default algorithm name */
 		static const char* ms_def;
-		/*
-			Creates new algorithm
-				=> str string with configuration
-		*/
-		Configuration(string str);
 		/*
 			Loads the settings from string
 				=> str string with configuration

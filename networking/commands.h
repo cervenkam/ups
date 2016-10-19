@@ -14,6 +14,7 @@ class Commands{
 	typedef void (Commands::*funcptr)(char*);
 	public:
 		Commands();
+		~Commands();
 		Commands(int,Server*,NetworkPlayer*,Game*);
 		int GetSocket();
 		Server* GetServer();

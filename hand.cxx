@@ -69,5 +69,17 @@ bool Hand::Add(Card* card){
 	Clears the hand
 */
 void Hand::Clear(){
+	for(unsigned a=0; a<m_count; a++){
+		delete m_cards[a];
+	}
 	m_count = 0;
+}
+
+/*
+	Destruct the hand
+*/
+Hand::~Hand(){
+	for(unsigned a=0; a<m_count; a++){
+		delete m_cards[a];
+	}
 }

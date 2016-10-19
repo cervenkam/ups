@@ -118,35 +118,11 @@ networking/CMakeFiles/networking.dir/server.cxx.o.provides: networking/CMakeFile
 
 networking/CMakeFiles/networking.dir/server.cxx.o.provides.build: networking/CMakeFiles/networking.dir/server.cxx.o
 
-networking/CMakeFiles/networking.dir/client.cxx.o: networking/CMakeFiles/networking.dir/flags.make
-networking/CMakeFiles/networking.dir/client.cxx.o: ../networking/client.cxx
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/martin/skola/UPS/SP/build/CMakeFiles $(CMAKE_PROGRESS_4)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object networking/CMakeFiles/networking.dir/client.cxx.o"
-	cd /home/martin/skola/UPS/SP/build/networking && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/networking.dir/client.cxx.o -c /home/martin/skola/UPS/SP/networking/client.cxx
-
-networking/CMakeFiles/networking.dir/client.cxx.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/networking.dir/client.cxx.i"
-	cd /home/martin/skola/UPS/SP/build/networking && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/martin/skola/UPS/SP/networking/client.cxx > CMakeFiles/networking.dir/client.cxx.i
-
-networking/CMakeFiles/networking.dir/client.cxx.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/networking.dir/client.cxx.s"
-	cd /home/martin/skola/UPS/SP/build/networking && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/martin/skola/UPS/SP/networking/client.cxx -o CMakeFiles/networking.dir/client.cxx.s
-
-networking/CMakeFiles/networking.dir/client.cxx.o.requires:
-.PHONY : networking/CMakeFiles/networking.dir/client.cxx.o.requires
-
-networking/CMakeFiles/networking.dir/client.cxx.o.provides: networking/CMakeFiles/networking.dir/client.cxx.o.requires
-	$(MAKE) -f networking/CMakeFiles/networking.dir/build.make networking/CMakeFiles/networking.dir/client.cxx.o.provides.build
-.PHONY : networking/CMakeFiles/networking.dir/client.cxx.o.provides
-
-networking/CMakeFiles/networking.dir/client.cxx.o.provides.build: networking/CMakeFiles/networking.dir/client.cxx.o
-
 # Object files for target networking
 networking_OBJECTS = \
 "CMakeFiles/networking.dir/commands.cxx.o" \
 "CMakeFiles/networking.dir/commonnetwork.cxx.o" \
-"CMakeFiles/networking.dir/server.cxx.o" \
-"CMakeFiles/networking.dir/client.cxx.o"
+"CMakeFiles/networking.dir/server.cxx.o"
 
 # External object files for target networking
 networking_EXTERNAL_OBJECTS =
@@ -154,7 +130,6 @@ networking_EXTERNAL_OBJECTS =
 networking/libnetworking.a: networking/CMakeFiles/networking.dir/commands.cxx.o
 networking/libnetworking.a: networking/CMakeFiles/networking.dir/commonnetwork.cxx.o
 networking/libnetworking.a: networking/CMakeFiles/networking.dir/server.cxx.o
-networking/libnetworking.a: networking/CMakeFiles/networking.dir/client.cxx.o
 networking/libnetworking.a: networking/CMakeFiles/networking.dir/build.make
 networking/libnetworking.a: networking/CMakeFiles/networking.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX static library libnetworking.a"
@@ -168,7 +143,6 @@ networking/CMakeFiles/networking.dir/build: networking/libnetworking.a
 networking/CMakeFiles/networking.dir/requires: networking/CMakeFiles/networking.dir/commands.cxx.o.requires
 networking/CMakeFiles/networking.dir/requires: networking/CMakeFiles/networking.dir/commonnetwork.cxx.o.requires
 networking/CMakeFiles/networking.dir/requires: networking/CMakeFiles/networking.dir/server.cxx.o.requires
-networking/CMakeFiles/networking.dir/requires: networking/CMakeFiles/networking.dir/client.cxx.o.requires
 .PHONY : networking/CMakeFiles/networking.dir/requires
 
 networking/CMakeFiles/networking.dir/clean:

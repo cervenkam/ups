@@ -21,8 +21,6 @@
 using namespace std;
 /* default algorithm name */
 const char* Configuration::ms_def = "ProgrammerBot";
-/* single instance of this class */
-Configuration* Configuration::ms_config = nullptr;
 
 /*
 	Returns the algorithm by its name
@@ -95,8 +93,19 @@ void Configuration::Load(string in_str){
 	for(unsigned a=counter; a<m_count; a++){
 		m_algos[a] = GetAlgorithm(ms_def,name,a);
 	}
+	delete[] name;
+	delete[] parameter;
 	delete[] command;
 	delete[] str;
+}
+/*
+	Destruct this configuration
+*/
+Configuration::~Configuration(){
+	for(unsigned a=0; a<m_count; a++){
+		delete m_algos[a];
+	}
+	delete[] m_algos;
 }
 /*
 	Sets count of players
@@ -118,17 +127,6 @@ unsigned Configuration::GetCount(){
 */
 Algorithm** Configuration::GetAlgorithms(){
 	return m_algos;
-}
-/*
-	Returns single configuration
-		=> Configuration string / empty string if already created
-		<= Configuration
-*/
-Configuration* Configuration::GetConfiguration(string str){
-	if(ms_config==nullptr || str!=""){
-		ms_config = new Configuration(str);
-	}
-	return ms_config;
 }
 /*
 	Creates new algorithm

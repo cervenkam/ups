@@ -112,30 +112,6 @@ networking/fast:
 	cd /home/martin/skola/UPS/SP/build && $(MAKE) -f networking/CMakeFiles/networking.dir/build.make networking/CMakeFiles/networking.dir/build
 .PHONY : networking/fast
 
-client.o: client.cxx.o
-.PHONY : client.o
-
-# target to build an object file
-client.cxx.o:
-	cd /home/martin/skola/UPS/SP/build && $(MAKE) -f networking/CMakeFiles/networking.dir/build.make networking/CMakeFiles/networking.dir/client.cxx.o
-.PHONY : client.cxx.o
-
-client.i: client.cxx.i
-.PHONY : client.i
-
-# target to preprocess a source file
-client.cxx.i:
-	cd /home/martin/skola/UPS/SP/build && $(MAKE) -f networking/CMakeFiles/networking.dir/build.make networking/CMakeFiles/networking.dir/client.cxx.i
-.PHONY : client.cxx.i
-
-client.s: client.cxx.s
-.PHONY : client.s
-
-# target to generate assembly for a file
-client.cxx.s:
-	cd /home/martin/skola/UPS/SP/build && $(MAKE) -f networking/CMakeFiles/networking.dir/build.make networking/CMakeFiles/networking.dir/client.cxx.s
-.PHONY : client.cxx.s
-
 commands.o: commands.cxx.o
 .PHONY : commands.o
 
@@ -217,9 +193,6 @@ help:
 	@echo "... edit_cache"
 	@echo "... networking"
 	@echo "... rebuild_cache"
-	@echo "... client.o"
-	@echo "... client.i"
-	@echo "... client.s"
 	@echo "... commands.o"
 	@echo "... commands.i"
 	@echo "... commands.s"

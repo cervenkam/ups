@@ -10,6 +10,7 @@
 #include "hand.h"
 #include "lang.h"
 #include <vector>
+#include "semaphore.h"
 using namespace std;
 class Algorithm{
 	public:
@@ -73,8 +74,16 @@ class Algorithm{
 			Identifies the algorithm
 		*/
 		void Identify();
+		/*
+			Gets semapohore for this object
+		*/
+		Semaphore* GetSemaphore();
+		/*
+			Virtual destuctor
+		*/
+		virtual ~Algorithm();
 		/* Name of this player */
-		const char* m_player = PLAYER;
+		const char* m_player;
 	protected:
 		/*
 			Is called when a card is used (with any player)
@@ -95,6 +104,8 @@ class Algorithm{
 		unsigned char m_points = 0;
 		/* Is player ready to start */
 		bool m_ready = false;
+		/* Semaphore for all algorithms */
+		Semaphore* m_semaphore;
 };
 
 #endif

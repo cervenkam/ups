@@ -45,6 +45,10 @@ class Hand{
 			Clears the hand
 		*/
 		void Clear();
+		/*
+			Destruct the hand
+		*/
+		~Hand();
 	private:
 		/* Cards in hand */
 		Card* m_cards[ms_SIZE];

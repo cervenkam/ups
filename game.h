@@ -8,14 +8,15 @@
 */
 #include "deck.h"
 #include "algorithm.h"
+#include "config.h"
+#include <thread>
 class Game{
 	public:
 		/*
 			Creates new game
-				=> players Number of players
-				=> algos Players algos
+				=> conf Game configuration
 		*/
-		Game(unsigned char players,Algorithm** algos);
+		Game(Configuration* conf);
 		/*
 			Destruct the game
 		*/
@@ -75,6 +76,10 @@ class Game{
 			Game in new thread
 		*/
 		void StartParallel();
+		/*
+			Stops game in new thread
+		*/
+		void StopParallel();
 	private:
 		/*
 			Prepares the game
@@ -138,6 +143,12 @@ class Game{
 		unsigned char m_points = 0;
 		/* Name of the game */
 		char* m_name;
+		/* Configuration */
+		Configuration* m_conf;
+		/* Thread in which this game runs */
+		thread* m_thr = nullptr;
+		/* is the game running */
+		bool m_end_of_game = false;
 };
 
 #endif

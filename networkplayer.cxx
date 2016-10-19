@@ -19,15 +19,12 @@ NetworkPlayer::NetworkPlayer(const char* player,unsigned char ch): Algorithm(pla
 	m_name="networkplayer";
 	m_commands = nullptr;
 	m_card = nullptr;
-	m_semaphore = new Semaphore(0);
 }
 
 /*
 	Destroys this player
 */
-NetworkPlayer::~NetworkPlayer(){
-	delete m_semaphore;
-}
+NetworkPlayer::~NetworkPlayer(){}
 
 /*
 	Is called when a card is used (with any player)
@@ -60,7 +57,7 @@ void NetworkPlayer::Used(Card* card,unsigned char player){
 */
 Card* NetworkPlayer::Play(bool){
 	m_commands->GetServer()->Send(m_commands->GetSocket(),RESPONSE_PLAY);
-	m_semaphore->Wait();
+	GetSemaphore()->Wait();
 	return m_card;
 }
 
@@ -78,13 +75,6 @@ Commands* NetworkPlayer::GetCommands(){
 */
 void NetworkPlayer::SetCommands(Commands* commands){
 	m_commands = commands;
-}
-
-/*
-	Gets semapohore for this object
-*/
-Semaphore* NetworkPlayer::GetSemaphore(){
-	return m_semaphore;
 }
 
 /*

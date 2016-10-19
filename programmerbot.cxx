@@ -121,3 +121,9 @@ Card* ProgrammerBot::Play(bool force){
 		return nullptr;
 	}
 }
+/*
+	Destructor
+*/
+ProgrammerBot::~ProgrammerBot(){
+
+}

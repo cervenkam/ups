@@ -99,3 +99,12 @@ void Deck::ThrowAway(unsigned char count){
 	}
 	m_count-=count;
 }
+
+/*
+	Destruct the deck
+*/
+Deck::~Deck(){
+	for(unsigned char a=0; a<m_count; a++){
+		delete m_cards[a];
+	}
+}

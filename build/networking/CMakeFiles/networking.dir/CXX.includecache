@@ -15,10 +15,16 @@ lang.h
 /home/martin/skola/UPS/SP/lang.h
 vector
 -
+semaphore.h
+/home/martin/skola/UPS/SP/semaphore.h
 
 /home/martin/skola/UPS/SP/card.h
 ostream
 -
+
+/home/martin/skola/UPS/SP/config.h
+algorithm.h
+/home/martin/skola/UPS/SP/algorithm.h
 
 /home/martin/skola/UPS/SP/deck.h
 card.h
@@ -29,6 +35,10 @@ deck.h
 /home/martin/skola/UPS/SP/deck.h
 algorithm.h
 /home/martin/skola/UPS/SP/algorithm.h
+config.h
+/home/martin/skola/UPS/SP/config.h
+thread
+-
 
 /home/martin/skola/UPS/SP/hand.h
 card.h
@@ -91,8 +101,6 @@ thread
 /home/martin/skola/UPS/SP/networkplayer.h
 algorithm.h
 /home/martin/skola/UPS/SP/algorithm.h
-semaphore.h
-/home/martin/skola/UPS/SP/semaphore.h
 networking/commands.h
 /home/martin/skola/UPS/SP/networking/commands.h
 

@@ -27,6 +27,10 @@ class AlgoNo: public Algorithm{
 				<= Card which will player use
 		*/
 		Card* Play(bool force);
+		/*
+			Destructor
+		*/
+		~AlgoNo();
 };
 
 #endif
