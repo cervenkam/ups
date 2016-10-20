@@ -131,11 +131,13 @@ void Server::TidyUp(Commands* cmds){
 	m_semaphore->Notify();
 	cmds=nullptr;
 }
-char* Server::Receive(int sock){
+char* Server::Receive(Commands* cmds,int sock){
 	uint32_t netlen;
 	int rcv = recv(sock,&netlen,sizeof(uint32_t),0);
 	if(errno==EAGAIN || errno==EWOULDBLOCK){
-		STDMSG("0;36","Disconnect: timenout exceeded");
+		STDMSG("0;36","Disconnect: timeout exceeded");
+		cmds->Disconnect(nullptr);
+		TidyUp(cmds);
 		return nullptr;
 	}else{
 		TEST_ERR_RET(rcv<0,STDMSG("0;36","Connection: waiting for client to reconnect"),nullptr)

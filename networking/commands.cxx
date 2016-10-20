@@ -70,7 +70,7 @@ void Commands::Start(){
 	Welcome(nullptr);
 	while(m_running){
 		while(m_running && m_is_connected){
-			Call(m_server->Receive(m_sock));
+			Call(m_server->Receive(this,m_sock));
 		}
 		if(!m_running){
 			Disconnect(nullptr);
@@ -304,4 +304,5 @@ Semaphore* Commands::GetSemaphore(){
 Commands::~Commands(){
 	delete m_semaphore; //created in constructor
 	delete m_thread; //created in Server::Start
+	STDMSG("1;35","Deleted:    Commands");
 }

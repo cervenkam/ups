@@ -71,7 +71,7 @@ Game::Game(Configuration* conf){
 
 Game::~Game(){
 	StopParallel();
-	STDMSG("0;37","Game stopped");
+	STDMSG("1;35","Deleted:    Game");
 	delete m_conf; //creates Commands::CreateGame
 	delete m_deck; //created in constructor
 }

@@ -13,7 +13,7 @@ class Server{
 	public:
 		void Start();
 		void Stop();
-		char* Receive(int sock);
+		char* Receive(Commands*,int sock);
 		Server(unsigned port);
 		~Server();
 		void Send(int sock,const char* message);

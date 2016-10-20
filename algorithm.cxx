@@ -148,5 +148,6 @@ Algorithm::~Algorithm(){
 				break;
 			}
 		}
+		STDMSG("1;35","Deleted:    Algorithm");
 	}
 }

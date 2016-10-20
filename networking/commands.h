@@ -34,12 +34,13 @@ class Commands{
 		void SetRunning(bool);
 		bool IsRunning();
 		Semaphore* GetSemaphore();
+
+		void      Disconnect(char*);  
 	private:
 		void      BadCommand(const char*);
 		void      CreateGame(char*);
 		void           Login(char*);
 		void        SendCard(char*);
-		void      Disconnect(char*);  
 		void         MyCards(char*);
 		void         Welcome(char*);
 		void GetCountOfCards(char*);
