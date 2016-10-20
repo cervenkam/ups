@@ -47,6 +47,10 @@ void Server::Start(){
 		TEST_ERR_DO(errno>0,STDMSG("0;36","Stopping"),break);
 		TEST_ERR_DO(sckt<0,"Cannot accept socket",close(m_sock))
 		STDMSG("0;36","Connection: " << inet_ntoa(in_addr.sin_addr) << ":" << ntohs(in_addr.sin_port));
+		struct timeval tv;
+		tv.tv_sec = 30;
+		tv.tv_usec = 0;
+		setsockopt(sckt,SOL_SOCKET,SO_RCVTIMEO,(char*)&tv,sizeof(struct timeval));
 		Commands* cmd = new Commands(); //deleted in GarbageCollector function
 		cmd->SetServer(this);
 		cmd->SetSocket(sckt);
@@ -124,7 +128,12 @@ void Server::TidyUp(Commands* cmds){
 char* Server::Receive(int sock){
 	uint32_t netlen;
 	int rcv = recv(sock,&netlen,sizeof(uint32_t),0);
-	TEST_ERR_RET(rcv<0,"Cannot get message length",nullptr)
+	if(errno==EAGAIN || errno==EWOULDBLOCK){
+		STDMSG("0;36","Disconnect: timenout exceeded");
+		return nullptr;
+	}else{
+		TEST_ERR_RET(rcv<0,STDMSG("0;36","Connection: waiting for client to reconnect"),nullptr)
+	}
 	unsigned length = ntohl(netlen);
 	TEST_ERR_RET(length>=MAX_LEN,"Message too long",nullptr)
 	rcv = recv(sock,&m_internal_storage,sizeof(char)*MAX_LEN,0);
