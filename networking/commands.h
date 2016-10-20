@@ -3,6 +3,7 @@
 
 #include "server.h"
 #include "../networkplayer.h"
+#include "../semaphore.h"
 #include <thread>
 #include "../game.h"
 
@@ -28,6 +29,11 @@ class Commands{
 		void Start();
 		void SetThread(thread*);
 		thread* GetThread();
+		void SetConnected(bool);
+		bool IsConnected();
+		void SetRunning(bool);
+		bool IsRunning();
+		Semaphore* GetSemaphore();
 	private:
 		void      BadCommand(const char*);
 		void      CreateGame(char*);
@@ -45,6 +51,9 @@ class Commands{
 		Game* m_game;
 		Card* m_card_to_play;
 		thread* m_thread;
+		bool m_is_connected = true;
+		bool m_running = true;
+		Semaphore* m_semaphore;
 
 		static funcptr ms_commands[COMMANDS];
 		static const char* ms_texts[COMMANDS];

@@ -67,7 +67,8 @@ void Server::Start(){
 void Server::GarbageCollector(){
 	while(m_port){
 		m_semaphore->Wait();
-		if(m_cmds != nullptr){
+		if(m_cmds != nullptr && !m_cmds->IsRunning()){
+			m_cmds->GetSemaphore()->Notify();	
 			unsigned len = m_commands.size();
 			for(unsigned a=0; a<len; a++){
 				if(m_commands[a]==m_cmds){
@@ -87,6 +88,11 @@ void Server::GarbageCollector(){
 			delete m_cmds; //created in Start function
 			m_cmds = nullptr;
 		}
+	}
+	unsigned len = m_commands.size();
+	for(unsigned a=0; a<len; a++){
+		m_commands[a]->SetRunning(false);
+		m_commands[a]->GetSemaphore()->Notify();	
 	}
 }
 void Server::StopGame(){

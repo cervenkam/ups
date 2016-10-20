@@ -10,7 +10,7 @@ class Semaphore{
 		Semaphore(unsigned count=1);
 		void Notify();
 		void Wait();
-		void Wait(int);
+		void Wait(unsigned);
 	private:
 		mutex m_mtx;
 		condition_variable m_cond;

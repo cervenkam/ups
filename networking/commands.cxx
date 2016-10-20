@@ -4,6 +4,7 @@
 #include <cstring>
 #include <iostream>
 #include <unistd.h>
+#include "../stdmcr.h"
 
 Commands::funcptr Commands::ms_commands[COMMANDS] = {
 	&Commands::Login,
@@ -32,6 +33,7 @@ Commands::Commands(){
 	m_server = nullptr;
 	m_player = nullptr;
 	m_game = nullptr;
+	m_semaphore = new Semaphore(0); //deleted in destructor
 }
 
 void Commands::SendMessage(char* message){
@@ -66,11 +68,35 @@ Commands::Commands(int sock,Server* server,NetworkPlayer* player,Game* game){
 
 void Commands::Start(){
 	Welcome(nullptr);
-	while(m_sock){
-		Call(m_server->Receive(m_sock));
+	while(m_running){
+		while(m_running && m_is_connected){
+			Call(m_server->Receive(m_sock));
+		}
+		if(!m_running){
+			Disconnect(nullptr);
+			return;
+		}
+		STDMSG("0;36","Waiting");
+		m_semaphore->Wait(30000);	
+		if(!m_is_connected){
+			Disconnect(nullptr);
+			return;
+		}
 	}
 }
 
+void Commands::SetConnected(bool is_connected){
+	m_is_connected = is_connected;
+}
+bool Commands::IsConnected(){
+	return m_is_connected;
+}
+void Commands::SetRunning(bool running){
+	m_running = running;
+}
+bool Commands::IsRunning(){
+	return m_running;
+}
 void Commands::SetSocket(int sock){
 	m_sock=sock;
 }
@@ -119,7 +145,7 @@ void Commands::BadCommand(const char* command){
 }
 void Commands::Call(char* command){
 	if(command == nullptr){
-		Disconnect(nullptr);
+		m_is_connected=false;
 		return;
 	}
 	unsigned max_len = 0;
@@ -230,7 +256,8 @@ void Commands::Login(char* message){
 
 void Commands::Disconnect(char*){
 	close(m_sock);
-	m_sock = 0;
+	m_is_connected = false;
+	m_running = false;
 	m_server->TidyUp(this);
 }
 
@@ -271,6 +298,10 @@ void Commands::CreateGame(char* message){
 	m_server->AddGame(game);
 	m_server->Send(m_sock,RESPONSE_GAME_CREATED);
 }
+Semaphore* Commands::GetSemaphore(){
+	return m_semaphore;
+}
 Commands::~Commands(){
+	delete m_semaphore; //created in constructor
 	delete m_thread; //created in Server::Start
 }

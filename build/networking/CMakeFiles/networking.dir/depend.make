@@ -15,6 +15,7 @@ networking/CMakeFiles/networking.dir/commands.cxx.o: ../networking/server.h
 networking/CMakeFiles/networking.dir/commands.cxx.o: ../networkplayer.h
 networking/CMakeFiles/networking.dir/commands.cxx.o: ../programmerbot.h
 networking/CMakeFiles/networking.dir/commands.cxx.o: ../semaphore.h
+networking/CMakeFiles/networking.dir/commands.cxx.o: ../stdmcr.h
 
 networking/CMakeFiles/networking.dir/commonnetwork.cxx.o: ../networking/commonnetwork.cxx
 networking/CMakeFiles/networking.dir/commonnetwork.cxx.o: ../networking/commonnetwork.h
