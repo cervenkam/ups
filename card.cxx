@@ -26,7 +26,7 @@ Card::Card(unsigned char value){
 	unsigned rank = GetRank();
 	unsigned c_len = strlen(ms_colors[color]);
 	unsigned r_len = strlen(ms_ranks[rank]);
-	m_name = new char[r_len+c_len+2];
+	m_name = new char[r_len+c_len+2]; //deleted in destructor
 	strcpy(m_name,ms_colors[color]);
 	m_name[c_len]=' ';
 	strcpy(m_name+c_len+1,ms_ranks[rank]);
@@ -36,7 +36,7 @@ Card::Card(unsigned char value){
 	Card destructor
 */
 Card::~Card(){
-	delete[] m_name;
+	delete[] m_name; //created in constructor;
 }
 /*
 	Returns the rank of this card
@@ -112,7 +112,7 @@ unsigned char Card::FromString(char* str){
 	if(!strcmp(str,"NULL")){
 		return 1<<5;
 	}
-	char* copy_of_str = new char[strlen(str)+1];
+	char* copy_of_str = new char[strlen(str)+1]; //deleted at the end of this function
 	strcpy(copy_of_str,str);
 	char* sec = copy_of_str;
 	unsigned len = strlen(copy_of_str);
@@ -147,11 +147,11 @@ unsigned char Card::FromString(char* str){
 #else
 	b|=(l2>='A' && l2!='X')? 4:0; //Jack, Queen, King, Ace
 	b|=(l2>='9' && l2!='J' && l2!='Q')? 2:0; //9, X, King, Ace
-	b|=((l2&2)==0 && l2!='9')? 1:0; //8, X, Queen, Ace //TODO
+	b|=((l2&2)==0 && l2!='9')? 1:0; //8, X, Queen, Ace
 #endif
 	if(strcmp(ms_ranks[b],sec)){
 		return 1<<6;
 	}
-	delete[] copy_of_str;
+	delete[] copy_of_str; //created at the start of this function
 	return ((b<<2)|a);
 }

@@ -84,7 +84,8 @@ unsigned char Deck::Size(){
 void Deck::Fill(){
 	m_count=0;
 	for(unsigned char a=0; a<ms_COUNT; a++){
-		Push(new Card(a));
+		Card* card = new Card(a); //deleted in destructor (x/32) ||  Hand::Clear function ((32-x)/32)
+		Push(card); 
 	}
 }
 /*
@@ -105,6 +106,6 @@ void Deck::ThrowAway(unsigned char count){
 */
 Deck::~Deck(){
 	for(unsigned char a=0; a<m_count; a++){
-		delete m_cards[a];
+		delete m_cards[a]; //created in Fill function (x/32)
 	}
 }

@@ -70,7 +70,7 @@ bool Hand::Add(Card* card){
 */
 void Hand::Clear(){
 	for(unsigned a=0; a<m_count; a++){
-		delete m_cards[a];
+		delete m_cards[a]; //created in Deck::Fill ((32-x)/32)
 	}
 	m_count = 0;
 }
@@ -79,7 +79,5 @@ void Hand::Clear(){
 	Destruct the hand
 */
 Hand::~Hand(){
-	for(unsigned a=0; a<m_count; a++){
-		delete m_cards[a];
-	}
+	Clear();
 }

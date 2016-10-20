@@ -9,7 +9,7 @@
 
 using namespace std;
 Server::Server(unsigned port){
-	m_semaphore = new Semaphore(0);
+	m_semaphore = new Semaphore(0); //deleted in destructor
 	m_port = port;
 }
 
@@ -18,13 +18,13 @@ Server::~Server(){
 	for(unsigned a=0; a<len; a++){
 		m_commands[a]->SetSocket(0);
 		m_commands[a]->GetThread()->join();
-		delete m_commands[a];
+		delete m_commands[a]; //created in Start funtion
 	}
 	len = m_games.size();
 	for(unsigned a=0; a<len; a++){
-		delete m_games[a];
+		delete m_games[a]; //created in Commands::CreateGame
 	}
-	delete m_semaphore;
+	delete m_semaphore; //created in constructor
 }
 
 void Server::Start(){
@@ -39,7 +39,7 @@ void Server::Start(){
 	int lsn = listen(m_sock, 10);
 	TEST_ERR(lsn<0,"Cannot listen")
 	STDMSG("0;36","Listen:     port " << m_port);
-	m_garbage_collector = new thread(&Server::GarbageCollector,this);
+	m_garbage_collector = new thread(&Server::GarbageCollector,this); //deleted at the end of this function
 	while(1){
 		unsigned len = sizeof(saddrin);
 		errno = 0;
@@ -47,10 +47,10 @@ void Server::Start(){
 		TEST_ERR_DO(errno>0,STDMSG("0;36","Stopping"),break);
 		TEST_ERR_DO(sckt<0,"Cannot accept socket",close(m_sock))
 		STDMSG("0;36","Connection: " << inet_ntoa(in_addr.sin_addr) << ":" << ntohs(in_addr.sin_port));
-		Commands* cmd = new Commands();
+		Commands* cmd = new Commands(); //deleted in GarbageCollector function
 		cmd->SetServer(this);
 		cmd->SetSocket(sckt);
-		thread* thr = new thread(&Commands::Start,cmd);
+		thread* thr = new thread(&Commands::Start,cmd); //deleted in Commands destuctor
 		cmd->SetThread(thr);
 		m_commands.push_back(cmd);
 	}
@@ -58,7 +58,7 @@ void Server::Start(){
 	m_port = 0;
 	m_semaphore->Notify();
 	m_garbage_collector->join();
-	delete m_garbage_collector;
+	delete m_garbage_collector; //created in this function
 }
 void Server::GarbageCollector(){
 	while(m_port){
@@ -75,13 +75,12 @@ void Server::GarbageCollector(){
 			NetworkPlayer* player=m_cmds->GetPlayer();
 			m_cmds->GetThread()->join();
 			if(player!=nullptr){
-				cout << "is NOT ready" << endl;
 				player->SetReady(false);
 				player->SetCommands(nullptr);
 			}
 			StopGame();
 			STDMSG("0;36","Disconnected");
-			delete m_cmds;
+			delete m_cmds; //created in Start function
 			m_cmds = nullptr;
 		}
 	}
@@ -107,7 +106,7 @@ void Server::StopGame(){
 			for(unsigned a=0; a<len; a++){
 				if(m_games[a]==game){
 					m_games.erase(m_games.begin()+a);
-					delete game;
+					delete game; //created in Commands::CreateGame
 					break;
 				}
 			}

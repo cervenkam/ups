@@ -18,8 +18,8 @@ public class GamePanel extends JPanel{
 	private static final Point cards = new Point(WIDTH>>1,HEIGHT-100);
 	private static final Point opponent_cards = new Point(100,100);
 	private static final BufferedImage buffer = new BufferedImage(WIDTH,HEIGHT,TYPE_INT_ARGB);
-	private final List<Integer> my_cards = new ArrayList<Integer>();
-	private final List<Integer> my_last_cards = new ArrayList<Integer>();
+	private final int[] my_cards = new int[4];
+	private final int[] my_last_cards = new int[4];
 	private final List<Player> players = new ArrayList<Player>();
 	//private final List<String> players = new ArrayList<String>();
 	//private final List<Integer> player_card_count = new ArrayList<Integer>();
@@ -29,6 +29,8 @@ public class GamePanel extends JPanel{
 	public GamePanel(Client client,String name){
 		this.name = name;
 		this.client = client;
+		clearArray(my_cards);
+		clearArray(my_last_cards);
 		loadLayers();
 		setFocusable(true);
 		requestFocusInWindow();
@@ -76,7 +78,9 @@ public class GamePanel extends JPanel{
 		//get random players card
 		for(Player plyr: players){
 			if(plyr.name.equals(player)){
-				to_swap = plyr.remove((int)(Math.random()*plyr.size()));
+				int card = plyr.pickRandom();
+				to_swap = lm.getCard(plyr.getCards()[card]);
+				plyr.getCards()[card]=-1;
 				System.out.println("SWAP: "+layer+" with "+to_swap);
 				to_swap.swap(layer);
 			}
@@ -91,10 +95,10 @@ public class GamePanel extends JPanel{
 		repaint();
 	}
 	private String handleKey(int code){
-		if(code <= '0' || code > '4' || (code-'1') >= my_cards.size()){
+		if(code <= '0' || code > '4' || (code-'1') >= 4){
 			return "NULL";
 		}
-		int card = my_cards.get(code-'1');
+		int card = my_cards[code-'1'];
 		int color = (card&3);
 		int value = ((card>>2)&7);
 		return SERVER_BUNDLE.getString("Color"+color)+" "+SERVER_BUNDLE.getString("Value"+value);
@@ -110,32 +114,53 @@ public class GamePanel extends JPanel{
 		int rnk = Integer.valueOf(SERVER_BUNDLE.getString(rank));
 		return (clr|(rnk<<2));
 	}
-	public void setCards(String cards){
-		my_last_cards.clear();
-		for(Integer i:my_cards){
-			my_last_cards.add(i);
+	private void clearArray(int[] arr){
+		for(int a=0; a<arr.length; a++){
+			arr[a]=-1;
 		}
-		my_cards.clear();
+	}
+	public void setCards(String cards){
+		clearArray(my_last_cards);
+		for(int a=0; a<my_last_cards.length; a++){
+			my_last_cards[a] = my_cards[a];
+		}
+		clearArray(my_cards);
 		String[] arr = cards.split(" ");
 		for(int a=1; a<arr.length; a+=2){
 			int value = getValue(arr[a-1],arr[a]);
-			my_cards.add(value);
+			my_cards[a>>1]=value;
 		}
+		System.out.println(java.util.Arrays.toString(my_last_cards));
+		System.out.println(java.util.Arrays.toString(my_cards));
 		List<Integer> new_cards = substract(my_cards,my_last_cards);
 		List<Integer> old_cards = substract(my_last_cards,my_cards);
+		System.out.println(java.util.Arrays.toString(new_cards.toArray(new Integer[new_cards.size()])));
+		System.out.println(java.util.Arrays.toString(old_cards.toArray(new Integer[old_cards.size()])));
 		LayerManager lm = LayerManager.getInstance();
 		System.out.println(new_cards.size()+" new cards");
 		for(int a=0; a<new_cards.size(); a++){
 			int index = new_cards.get(a);
+			int position = 0;
+			for(int b=0; b<my_cards.length; b++){
+				if(my_cards[b]==index){
+					position = b;
+					break;
+				}
+			}
 			card_played[index] = true;
 			Layer layer = lm.getCard(index);
 			System.out.println(layer);
 			PredefinedAnimations pa = new PredefinedAnimations(layer,this);
 			pa.setPosition((int)this.cards.getX()+(int)((a-1.5)*20),(int)this.cards.getY());
-			pa.setRotate((a-1.5)*Math.PI/10);
+			int ind = 0;
+			while(my_cards[ind]!=index){
+				ind++;
+			}
+			pa.setRotate((position-1.5)*Math.PI/10);
 			pa.getCard(true);
 			repaint();
 		}
+		System.out.println(old_cards.size()+" old cards");
 		for(int a=0; a<old_cards.size(); a++){
 			int index = old_cards.get(a);
 			removeCard(index);
@@ -158,27 +183,47 @@ public class GamePanel extends JPanel{
 				play.setPosition((index+1)*(int)opponent_cards.getX(),(int)opponent_cards.getY());
 				players.set(index,play);
 			}
-			int tmp_count = count-players.get(index).size();
-			System.out.println("Player ("+index+")"+name+" should get <"+count+" - "+players.get(index).size()+"> "+tmp_count+" cards");
+			int tmp_count = count-players.get(index).numberOfCards();
+			System.out.println("Player ("+index+")"+name+" should get <"+count+" - "+players.get(index).numberOfCards()+"> "+tmp_count+" cards");
 			for(int b=0,c=0; b<tmp_count; b++){
 				while(card_played[c]){
 					c++;
 				}
-				Layer layer = lm.getCard(c);
-				players.get(index).add(layer);
+				int position = players.get(index).add(c);
 				card_played[c] = true;
+				Layer layer = lm.getCard(c);
 				PredefinedAnimations pa = new PredefinedAnimations(layer,this);
 				Player player = players.get(index);
 				pa.setPosition(player.getX()+(int)(b-(count/2)-0.5)*20,player.getY());
 				pa.setRotate(((count/2)-b-0.5)*Math.PI/10);
 				pa.getCard(false);
 			}
+			int[] card_array = players.get(index).getCards();
+			for(int b=0; b<card_array.length; b++){
+				if(card_array[b]>0){
+					lm.pushOnTop(lm.getCard(card_array[b]));
+				}
+			}
+			repaint();
 		}
 	}
-	private <T> List<T> substract(List<T> from, List<T> to){
-		List<T> list = new ArrayList<T>();
-		list.addAll(from);
-		list.removeAll(to);
+	private List<Integer> substract(int[] from, int[] to){
+		List<Integer> list = new ArrayList<Integer>();
+		for(int a=0; a<from.length; a++){
+			if(from[a]<0){
+				continue;
+			}
+			boolean found = false;
+			for(int b=0; b<to.length; b++){
+				if(from[a]==to[b]){
+					found = true;
+					break;
+				}
+			}
+			if(!found){
+				list.add(from[a]);
+			}
+		}
 		return list;
 	}
 	public void paint(Graphics g){

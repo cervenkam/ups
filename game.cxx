@@ -58,24 +58,21 @@ char* Game::GetName(){
 }
 
 /*
-	Creates new game
+	Creates a game
 		=> conf Game configuration
 */
 Game::Game(Configuration* conf){
 	m_conf=conf;
 	m_players=conf->GetCount();
 	m_algos=conf->GetAlgorithms();
-	/*m_algos = new Algorithm*[players];
-	for(unsigned a=0; a<players; a++){
-		m_algos[a] = algos[a];
-	}*/
-	m_deck = new Deck();
+	m_deck = new Deck(); //deleted in destructor
+	m_thr = nullptr;
 }
 
 Game::~Game(){
 	StopParallel();
-	delete m_conf;
-	delete m_deck;
+	delete m_conf; //creates Commands::CreateGame
+	delete m_deck; //created in constructor
 }
 /*
 	Returns the game algorithm
@@ -140,7 +137,7 @@ void Game::Start(){
 	}
 }
 /*
-	Stops the game in new thread
+	Stops the game in a thread
 */
 void Game::StopParallel(){
 	m_end_of_game = true;
@@ -149,15 +146,19 @@ void Game::StopParallel(){
 	}
 	if(m_thr != nullptr){
 		m_thr->join();
-		delete m_thr;
+		delete m_thr; //created in StartParallel function
 		m_thr = nullptr;
 	}
 }
 /*
-	Game in new thread
+	Game in a thread
 */
 void Game::StartParallel(){
-	m_thr = new thread(&Game::Start,this);
+	if(m_thr != nullptr){
+		cerr << "Game is already running" << endl;
+		return;
+	}
+	m_thr = new thread(&Game::Start,this); //deleted in Stopparallel function
 }
 /*
 	Prepares the game

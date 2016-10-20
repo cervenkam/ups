@@ -16,9 +16,9 @@ int main(int argc,char** argv){
 	if(argc > 1){
 		port = atoi(argv[1]);
 	}
-	server = new Server(port);
+	server = new Server(port); //deleted at the end of this function
 	signal(SIGINT,signal_int);
 	server->Start();
-	delete server;
+	delete server; //created in the middle of this function
 	return 0;
 }

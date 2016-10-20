@@ -26,23 +26,23 @@ const char* Configuration::ms_def = "ProgrammerBot";
 	Returns the algorithm by its name
 		=> name Class name of the algorithm
 		=> player_name Name of created player
-		=> id ID of new algorithm
+		=> id ID of created algorithm
 */
 Algorithm* Configuration::GetAlgorithm(const char* name,const char* player_name,unsigned id){
 	CMP(ALGONO,"AlgoNo"){
-		return new AlgoNo(player_name,id);
+		return new AlgoNo(player_name,id); //deleted in destuctor (1/6)
 	}else CMP(PERSON,"Person"){
-		return new Person(player_name,id);
+		return new Person(player_name,id); //deleted in destuctor (1/6)
 	}else CMP(PROGRAMMERBOT,"ProgrammerBot"){
-		return new ProgrammerBot(player_name,id);
+		return new ProgrammerBot(player_name,id); //deleted in destuctor (1/6)
 	}else CMP(NETWORKPLAYER,"NetworkPlayer"){
-		return new NetworkPlayer(player_name,id);
+		return new NetworkPlayer(player_name,id); //deleted in destuctor (1/6)
 	}
 	if(!strcmp(name,ms_def)){
-		return GetAlgorithm(ms_def,player_name,id);
+		return GetAlgorithm(ms_def,player_name,id); //deleted in destuctor (1/6)
 	}else{
 		//SUPERDEFAULT value
-		return new ProgrammerBot(player_name,id);
+		return new ProgrammerBot(player_name,id); //deleted in destuctor (1/6)
 	}
 }
 /*
@@ -55,24 +55,26 @@ void Configuration::Load(string in_str){
 		OUT(ERR_NOT_FOUND << endl);
 		exit(1);
 	}
-	char* str = new char[512];
+	char* str = new char[512]; //deleted at the end of this function
 	char* strtmp = str;
-	char* command = new char[512];
-	char* parameter = new char[512];
-	char* name = new char[512];
+	char* command = new char[512]; //deleted at the end of this function
+	char* parameter = new char[512]; //deleted at the end of this function
+	char* name = new char[512]; //deleted at the end of this function (1/n) || in Algorithm destructor ((n-1)/n)
 	strcpy(name,PLAYER);
 	unsigned counter = 0;
 	while(in.getline(str,512)){
 		while(sscanf(strtmp,"%511[^=]=%511s",command,parameter)){
 			if(!strcmp(command,PLAYER_COUNT)){
 				SetCount(atoi(parameter));	
-				m_algos = new Algorithm*[GetCount()];
+				if(m_algos == nullptr){
+					m_algos = new Algorithm*[GetCount()]; //deleted in destructor
+				}
 			}else if(!strcmp(command,DEFAULT)){
 				ms_def = parameter;
 			}else if(!strcmp(command,PLAYER)){
 				if(m_algos != nullptr && counter < GetCount()){
 					m_algos[counter] = GetAlgorithm(parameter,name,counter);
-					name = new char[512];
+					name = new char[512]; //deleted in Algorithm destuctor ((n-1)/n) || end of this function (1/n)
 					strcpy(name,PLAYER);
 					counter++;
 				}
@@ -93,19 +95,19 @@ void Configuration::Load(string in_str){
 	for(unsigned a=counter; a<m_count; a++){
 		m_algos[a] = GetAlgorithm(ms_def,name,a);
 	}
-	delete[] name;
-	delete[] parameter;
-	delete[] command;
-	delete[] str;
+	delete[] name; //created at the start of this function (1/n) || at the middle of this function ((n-1)/n)
+	delete[] parameter; //created at the start of this function
+	delete[] command; //created at the start of this function
+	delete[] str; //created at the start of this function
 }
 /*
 	Destruct this configuration
 */
 Configuration::~Configuration(){
 	for(unsigned a=0; a<m_count; a++){
-		delete m_algos[a];
+		delete m_algos[a]; //created in GetAlgorithm function
 	}
-	delete[] m_algos;
+	delete[] m_algos; //created in Load function
 }
 /*
 	Sets count of players
@@ -129,10 +131,11 @@ Algorithm** Configuration::GetAlgorithms(){
 	return m_algos;
 }
 /*
-	Creates new algorithm
+	Creates an configuration
 		=> str string with configuration
 */
-Configuration:: Configuration(string str){
+Configuration::Configuration(string str){
+	m_algos = nullptr;
 	Load(str);
 }
 /*

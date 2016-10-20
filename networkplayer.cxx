@@ -19,14 +19,14 @@ NetworkPlayer::NetworkPlayer(const char* player,unsigned char ch): Algorithm(pla
 	m_name="networkplayer";
 	m_commands = nullptr;
 	m_card = nullptr;
-	m_bot = new ProgrammerBot(*this);
+	m_bot = new ProgrammerBot(*this); //deleted in destuctor
 }
 
 /*
 	Destroys this player
 */
 NetworkPlayer::~NetworkPlayer(){
-	delete m_bot;
+	delete m_bot; //created in constructor
 }
 
 /*
@@ -37,7 +37,7 @@ NetworkPlayer::~NetworkPlayer(){
 void NetworkPlayer::Used(Card* card,unsigned char player){
 	m_bot->Used(card,player);
 	if(m_commands && m_commands->GetServer()){
-		char* buff = new char[MAX_LEN];
+		char* buff = new char[MAX_LEN]; //deleted at the end of this function
 		char* tmp = buff;
 		strcpy(buff,RESPONSE_USED_CARD);
 		tmp+=strlen(RESPONSE_USED_CARD);
@@ -51,7 +51,7 @@ void NetworkPlayer::Used(Card* card,unsigned char player){
 		tmp+=strlen(text);
 		sprintf(tmp++," %s",m_commands->GetGame()->GetAlgorithm(player)->m_player); //automaticly appends '\0'
 		m_commands->GetServer()->Send(m_commands->GetSocket(),buff);
-		delete[] buff;
+		delete[] buff; //created at the start of this function
 	}
 }
 /*
@@ -81,9 +81,6 @@ Commands* NetworkPlayer::GetCommands(){
 		=> commands Commands for player
 */
 void NetworkPlayer::SetCommands(Commands* commands){
-	if(commands == nullptr){
-		cout << "NULLPTR" << endl;
-	}
 	m_commands = commands;
 }
 

@@ -148,7 +148,7 @@ void Commands::Call(char* command){
 }
 
 void Commands::MyCards(char*){
-	char* buff = new char[MAX_LEN];
+	char* buff = new char[MAX_LEN]; //deleted at the end of this function
 	strcpy(buff,RESPONSE_YOUR_CARDS);
 	char* ptr = buff+strlen(RESPONSE_YOUR_CARDS);
 	unsigned cardcount = m_player->GetHand()->Size();
@@ -161,10 +161,10 @@ void Commands::MyCards(char*){
 		ptr+=strlen(str);
 	}
 	m_server->Send(m_sock,buff);
-	delete[] buff;
+	delete[] buff; //created an the start of this function
 }
 void Commands::GetCountOfCards(char*){
-	char* buff = new char[MAX_LEN];
+	char* buff = new char[MAX_LEN]; //deleted at the end of this function
 	strcpy(buff,RESPONSE_COUNT_CARDS);
 	char* ptr = buff+strlen(RESPONSE_COUNT_CARDS);
 	unsigned playerscount = m_game->GetCountOfPlayers();
@@ -181,7 +181,7 @@ void Commands::GetCountOfCards(char*){
 		}
 	}
 	m_server->Send(m_sock,buff);
-	delete[] buff;
+	delete[] buff; //created at the start of this function
 }
 	
 void Commands::Login(char* message){
@@ -265,11 +265,12 @@ void Commands::CreateGame(char* message){
 			break;
 		}
 	}
-	Game* game = new Game(new Configuration(params));
+	Configuration* configuration = new Configuration(params); //deleted in game destructor
+	Game* game = new Game(configuration); //deleted in Server::StopGame || Server destructor
 	game->SetName(game_name);
 	m_server->AddGame(game);
 	m_server->Send(m_sock,RESPONSE_GAME_CREATED);
 }
 Commands::~Commands(){
-	delete m_thread;
+	delete m_thread; //created in Server::Start
 }

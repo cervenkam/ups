@@ -93,7 +93,8 @@ public class Client extends Thread{
 				try{
 					ent.getValue().accept(removeStart(command,ent.getKey()));
 				}catch(Exception e){
-					System.err.println("Bad parameters for command "+ent.getKey());
+					System.err.println("Bad parameters for command \""+ent.getKey()+"\" :"+removeStart(command,ent.getKey()));
+					e.printStackTrace();
 				}
 				break;
 			}

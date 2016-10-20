@@ -25,9 +25,9 @@ Card* Algorithm::m_first = nullptr;
 Algorithm::Algorithm(const char* player,unsigned char myID){
 	m_player = player;
 	m_myID=myID;
-	m_hand = new Hand();
+	m_hand = new Hand(); //deleted in destructor
 	ms_algos.push_back(this);
-	m_semaphore = new Semaphore(0);
+	m_semaphore = new Semaphore(0); //deleted in destructor
 }
 /*
 	Copy constructor
@@ -138,8 +138,15 @@ bool Algorithm::IsReady(){
 */
 Algorithm::~Algorithm(){
 	if(!m_copy){
-		delete m_hand;
-		delete m_semaphore;
-		delete[] m_player;
+		delete m_hand; //created in constructor
+		delete m_semaphore; //created in constructor
+		delete[] m_player; //created in Configuration::Load
+		unsigned len = ms_algos.size();
+		for(unsigned a=0; a<len; a++){
+			if(this == ms_algos[a]){
+				ms_algos.erase(ms_algos.begin()+a);
+				break;
+			}
+		}
 	}
 }
