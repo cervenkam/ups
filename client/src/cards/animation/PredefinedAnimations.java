@@ -33,6 +33,7 @@ public class PredefinedAnimations extends Animation{
 	}
 	public void cleanUp(){
 		LayerManager.getInstance().pushOnCorrectPosition(getLayer());
+		LayerManager.getInstance().split(getLayer());
 		getComponent().repaint();	
 	}
 	public boolean animation(String name){
@@ -56,8 +57,7 @@ public class PredefinedAnimations extends Animation{
 		lm.print();
 		run();
 		getLayer().setImageIndex(curr);
-		lm.pushOnBottom(getLayer());
-		getComponent().repaint();	
+		cleanUp();
 		return true;
 	}
 	public boolean getCard(boolean visible){
@@ -76,7 +76,9 @@ public class PredefinedAnimations extends Animation{
 		lm.print();
 		run();
 		getLayer().setImageIndex(visible?0:1);
-		cleanUp();
+		//cleanUp();
+		LayerManager.getInstance().split(getLayer());
+		getComponent().repaint();	
 		return true;
 	}
 	private int getImageIndex(){
