@@ -29,9 +29,9 @@ Person::Person(const char* player,unsigned char ch): Algorithm(player,ch){
 */
 void Person::Used(Card* card,unsigned char player){
 	if(card==nullptr){
-		OUT(ms_algos[player]->m_player << " " << ENDS << endl);
+		OUT(m_game->GetAlgorithm(player)->m_player << " " << ENDS << endl);
 	}else{
-		OUT(ms_algos[player]->m_player << " " << USED << " " << *card << endl);
+		OUT(m_game->GetAlgorithm(player)->m_player << " " << USED << " " << *card << endl);
 	}
 }
 void Person::Print(unsigned card,bool clear){
@@ -90,7 +90,7 @@ Card* Person::Play(bool force){
 		}
 		if(card<hand->Size()){
 			Card* crd = hand->Get(card);
-			if(force || !Algorithm::FirstCard() || Algorithm::FirstCard()->IsPlayable(crd)){
+			if(force || !m_game->FirstCard() || m_game->FirstCard()->IsPlayable(crd)){
 				return crd;
 			}
 		}else{

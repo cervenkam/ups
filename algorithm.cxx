@@ -12,11 +12,6 @@
 
 using namespace std;
 
-/* Static list of all algorithms in the play */
-vector<Algorithm*> Algorithm::ms_algos;
-/* Card which should another player react on */
-Card* Algorithm::m_first = nullptr;
-
 /*
 	Abstract algorithm constructor
 		=> player Name of the player
@@ -26,7 +21,6 @@ Algorithm::Algorithm(const char* player,unsigned char myID){
 	m_player = player;
 	m_myID=myID;
 	m_hand = new Hand(); //deleted in destructor
-	ms_algos.push_back(this);
 	m_semaphore = new Semaphore(0); //deleted in destructor
 }
 /*
@@ -37,7 +31,15 @@ Algorithm::Algorithm(const Algorithm& algorithm){
 	m_myID = algorithm.m_myID;
 	m_hand = algorithm.m_hand;
 	m_semaphore = algorithm.m_semaphore;
+	m_game = algorithm.m_game;
 	m_copy = true;
+}
+/*
+	Sets the game
+		=> game Game in which this player acts
+*/
+void Algorithm::SetGame(Game* game){
+	m_game = game;
 }
 /*
 	Lays down the card from player to table
@@ -55,18 +57,11 @@ bool Algorithm::Send(Card* card){
 	if(!ok){
 		return false;
 	}
-	count = ms_algos.size();
+	count = m_game->GetCountOfPlayers();
 	for(unsigned char a=0; a<count; a++){
-		ms_algos[a]->Used(card,m_myID);
+		m_game->GetAlgorithm(a)->Used(card,m_myID);
 	}
 	return true;
-}
-/*
-	Returns the card which should another player react on
-		<= Card to be reacted on
-*/
-Card* Algorithm::FirstCard(){
-	return m_first;
 }
 /*
 	Gets semapohore for this object
@@ -81,13 +76,6 @@ Semaphore* Algorithm::GetSemaphore(){
 */
 Hand* Algorithm::GetHand(){
 	return m_hand;
-}
-/*
-	Sets the card which should another player react on
-		=> card Card to be reacted on
-*/
-void Algorithm::SetFirstCard(Card* card){
-	m_first=card;
 }
 /*
 	Adds points to this player
@@ -141,13 +129,6 @@ Algorithm::~Algorithm(){
 		delete m_hand; //created in constructor
 		delete m_semaphore; //created in constructor
 		delete[] m_player; //created in Configuration::Load
-		unsigned len = ms_algos.size();
-		for(unsigned a=0; a<len; a++){
-			if(this == ms_algos[a]){
-				ms_algos.erase(ms_algos.begin()+a);
-				break;
-			}
-		}
 		STDMSG("1;35","Deleted:    Algorithm");
 	}
 }

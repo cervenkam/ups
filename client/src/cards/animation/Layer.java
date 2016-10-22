@@ -19,10 +19,11 @@ public class Layer{
 			layer.paint(g2d);
 		}
 		g2d.dispose();
-		return new Layer(buf,x,y);
+		return new Layer(buf,x,y,layers[0].name+"-"+layers[layers.length-1].name);
 	}
 
 	private List<BufferedImage> buf = new ArrayList<BufferedImage>();
+	private final String name;
 	private int x;
 	private int y;
 	private double px = 0.5;
@@ -34,12 +35,16 @@ public class Layer{
 	private int center_y;
 	private int paint_x;
 	private int paint_y;
+	private double zoom = 1;
 
 	public Layer(){
 		this(null);
 	}
 	public Layer(BufferedImage buf){
-		this(buf,0,0);
+		this(buf,"Unnamed layer");
+	}
+	public Layer(BufferedImage buf,String name){
+		this(buf,0,0,name);
 	}
 	public void swap(Layer layer){
 		int tmp_x = x;
@@ -53,8 +58,12 @@ public class Layer{
 		double tmp_center_y = center_y;
 		setCenter(layer.center_x,layer.center_y);
 		layer.setCenter(tmp_center_x,tmp_center_y);
+		double tmp_zoom = zoom;
+		setZoom(layer.zoom);
+		layer.setZoom(tmp_zoom);
 	}
-	public Layer(BufferedImage buf,int x,int y){
+	public Layer(BufferedImage buf,int x,int y,String name){
+		this.name = name;
 		this.buf.add(buf);
 		this.x=x;
 		this.y=y;
@@ -104,6 +113,12 @@ public class Layer{
 	public final void setY(int y){
 		setPosition(this.x,y);
 	}
+	public void setZoom(double zoom){
+		this.zoom = zoom;
+	}
+	public double getZoom(){
+		return zoom;
+	}
 	public final void setPosition(int x, int y){
 		this.x=x;
 		this.y=y;
@@ -124,6 +139,7 @@ public class Layer{
 		AffineTransform aft = g.getTransform();
 		g.translate(center_x,center_y);
 		g.rotate(rotate);
+		g.scale(zoom,zoom);
 		if(buf!=null){
 			g.drawImage(buf.get(image_position),paint_x,paint_y,null);
 		}
@@ -133,6 +149,6 @@ public class Layer{
 		g.setTransform(aft);
 	}
 	public String toString(){
-		return "Layer "+instance+": x="+center_x+", y="+center_y;
+		return "Layer: ["+x+";"+y+"] \""+name+"\"";
 	}
 }

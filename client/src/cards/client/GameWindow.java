@@ -1,8 +1,7 @@
 package cards.client;
 import javax.swing.*;
 import java.awt.*;
-import static cards.client.Common.BUNDLE;
-import static cards.client.Common.SERVER_BUNDLE;
+import static cards.client.Common.*;
 public class GameWindow extends JFrame{
 	private static final String HEADER = "<html><head><meta charset=\"utf-8\" /></head><body>";
 	private static final String FOOTER = "</body></html>";
@@ -16,6 +15,7 @@ public class GameWindow extends JFrame{
 		this.client = client;
 		Container c = getContentPane();
 		c.setLayout(new BorderLayout());
+		setTitle(BUNDLE.getString("GameWindow"));
 		JPanel panel = new GamePanel(client,name);
 		c.add(panel,BorderLayout.CENTER);
 		JPanel side_panel = new JPanel(new BorderLayout());
@@ -29,7 +29,6 @@ public class GameWindow extends JFrame{
 		side_panel.add(messages,BorderLayout.CENTER);
 		side_panel.add(sub_panel,BorderLayout.SOUTH);
 		c.add(side_panel,BorderLayout.EAST);
-		setDefaultCloseOperation(EXIT_ON_CLOSE); //TODO
 		getRootPane().setDefaultButton(send);
 		pack();
 		send.addActionListener((e)->{
@@ -41,6 +40,12 @@ public class GameWindow extends JFrame{
 			content.append(toParagraph(split[0],split[1]));
 			messages.setText(HEADER+content.toString()+FOOTER);
 		});
+		client.addCallback("Bye",(s)->{
+			error("ErrorDisconnected");
+			dispose();
+			Main.main();
+		});
+		addWindowListener(Common.getWindowListener(client));
 	}
 	private String toParagraph(String name,String message){
 		Color color = getColor(name);

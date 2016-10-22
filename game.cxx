@@ -16,29 +16,27 @@
 #include <fstream>
 #include <thread>
 unsigned counter_of_same_cards = 0;
-/* Determines the player which started this round */
-unsigned char Game::ms_started = 0;
 /*
 	Is a player with given ID a starting player of this round?
 		=> ID Id of player
 		<= Is he?
 */
 bool Game::IsHeStarted(unsigned char ID){
-	return ID==ms_started;
+	return ID==m_started;
 }
 /*
 	Sets the starting player of this round
 		=> ID Starting player's ID
 */
 void Game::SetStarted(unsigned char ID){
-	ms_started=ID;
+	m_started=ID;
 }
 /*
 	Returns the starting player of this round
 		<= Starting player's ID
 */
 unsigned char Game::GetStarted(){
-	return ms_started;
+	return m_started;
 }
 
 /*
@@ -65,6 +63,9 @@ Game::Game(Configuration* conf){
 	m_conf=conf;
 	m_players=conf->GetCount();
 	m_algos=conf->GetAlgorithms();
+	for(unsigned a=0; a<m_players; a++){
+		m_algos[a]->SetGame(this);
+	}
 	m_deck = new Deck(); //deleted in destructor
 	m_thr = nullptr;
 }
@@ -122,11 +123,10 @@ void Game::End(){
 		}
 	}
 	for(unsigned a=0; a<m_players; a++){
-		OUT(Algorithm::ms_algos[a]->m_player << " " << HAS << " " << (unsigned)m_algos[a]->GetPoints() <<
+		OUT(m_algos[a]->m_player << " " << HAS << " " << (unsigned)m_algos[a]->GetPoints() <<
 			((m_algos[a]->GetPoints()==0)?"":"0") << " " << POINTS << endl);
 	}
-	//reinitialize static variables
-	Algorithm::SetFirstCard(nullptr);
+	SetFirstCard(nullptr);
 	SetStarted(0);
 }
 /*
@@ -209,7 +209,7 @@ void Game::Loop(){
 bool Game::ChooseCard(unsigned& player,unsigned& winner,Card*& card, bool& started){
 	started = IsHeStarted(player);
 	//select the card
-	card = m_algos[player]->Play(!started || !Algorithm::FirstCard());
+	card = m_algos[player]->Play(!started || !FirstCard());
 	//if the game ends
 	if(m_end_of_game){
 		return true; //END
@@ -217,20 +217,20 @@ bool Game::ChooseCard(unsigned& player,unsigned& winner,Card*& card, bool& start
 	//if he is making the next loop
 	if(started && card){
 		//check the card if it is compatible
-		if(Algorithm::FirstCard() && !Algorithm::FirstCard()->IsPlayable(card)){
+		if(FirstCard() && !FirstCard()->IsPlayable(card)){
 			//force next loop
 			card = nullptr;
 			started = false;
-			STDMSG("0;31","Game:       " << Algorithm::ms_algos[player]->m_player << " " << CANT_FORCE);
+			STDMSG("0;31","Game:       " << m_algos[player]->m_player << " " << CANT_FORCE);
 			return false;		
 		} 
-		STDMSG("0;31","Game:       " << Algorithm::ms_algos[player]->m_player << " " << LEADS);
+		STDMSG("0;31","Game:       " << m_algos[player]->m_player << " " << LEADS);
 		winner = player;
 	//if player started and do not want to continue
 	}else if(started){
 		m_algos[winner]->AddPoints(m_points);
 		if(m_points){
-			STDMSG("0;31","Game:       " << Algorithm::ms_algos[winner]->m_player << " " << RECEIVED << " " << (unsigned)(m_points*10) << " " << POINTS);
+			STDMSG("0;31","Game:       " << m_algos[winner]->m_player << " " << RECEIVED << " " << (unsigned)(m_points*10) << " " << POINTS);
 		}
 		m_points=0;
 	}
@@ -275,8 +275,8 @@ bool Game::OneHand(unsigned& winner,unsigned& player){
 		return true;
 	}
 	//sets the first card
-	if((card && !Algorithm::FirstCard()) || (!card && Algorithm::FirstCard())){
-		Algorithm::SetFirstCard(card);
+	if((card && !FirstCard()) || (!card && FirstCard())){
+		SetFirstCard(card);
 	}
 	return !UseCard(card,player,winner);
 }
@@ -307,7 +307,7 @@ bool Game::UseCard(Card* card,unsigned& player, unsigned& winner){
 			return true;
 		}
 	}else{
-		if(Algorithm::FirstCard() && Algorithm::FirstCard()->GetRank()==card->GetRank()){
+		if(FirstCard() && FirstCard()->GetRank()==card->GetRank()){
 			counter_of_same_cards++;
 		}else{
 			counter_of_same_cards = 0;
@@ -369,7 +369,7 @@ void Game::DetermineWinner(Card* card,unsigned& player, unsigned& winner){
 		m_points++;
 	}
 	//Determine the winner
-	if(Algorithm::FirstCard()->IsPlayable(card)){
+	if(FirstCard()->IsPlayable(card)){
 		STDMSG("0;31","Game:       " << NOW << " " << m_algos[player]->m_player << " " << LEADS);
 		winner = player;
 		//player = (winner+(players-1))%players;
@@ -379,7 +379,7 @@ void Game::DetermineWinner(Card* card,unsigned& player, unsigned& winner){
 	unsigned char handsize = hand->Size();
 	for(unsigned char b=0; b<handsize; b++){
 		if(hand->Get(b)==card){
-			hand->Use(b);
+			hand->Use(b); 
 		}
 	}
 }
@@ -399,4 +399,18 @@ void Game::Print(){
 		OUT("\t");
 	}
 	OUT(endl);
+}
+/*
+	Returns the card which should another player react on
+		<= Card to be reacted on
+*/
+Card* Game::FirstCard(){
+	return m_first;
+}
+/*
+	Sets the card which should another player react on
+		=> card Card to be reacted on
+*/
+void Game::SetFirstCard(Card* card){
+	m_first=card;
 }

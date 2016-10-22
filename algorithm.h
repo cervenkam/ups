@@ -9,13 +9,13 @@
 #include "card.h"
 #include "hand.h"
 #include "lang.h"
+#include "game.h"
 #include <vector>
 #include "semaphore.h"
 using namespace std;
+class Game;
 class Algorithm{
 	public:
-		/* Static list of all algorithms in the play */
-		static vector<Algorithm*> ms_algos;
 		/*
 			Defines the card which this player will use
 				=> force Forces the player to play
@@ -33,20 +33,15 @@ class Algorithm{
 		*/
 		Algorithm(const Algorithm& algorithm);
 		/*
+			Sets the game
+				=> game Game in which this player acts
+		*/
+		void SetGame(Game* game);
+		/*
 			Lays down the card from player to table
 				=> card Played card
 		*/
 		bool Send(Card* card);	
-		/*
-			Returns the card which shoud another player react on
-				<= Card to be reacted on
-		*/
-		static Card* FirstCard();
-		/*
-			Sets the card which should another player react on
-				=> card Card to be reacted on
-		*/
-		static void SetFirstCard(Card* card);
 		/*
 			Returns the player's hand
 				<= Player's card 
@@ -104,9 +99,9 @@ class Algorithm{
 		unsigned char m_myID;
 		/* Name of this algoritm */
 		const char* m_name = "algorithm";
+		/* Game in which this player acts */
+		Game* m_game = nullptr;
 	private:
-		/* Card which should another player react on */
-		static Card* m_first;
 		/* Player's hand */
 		Hand* m_hand;
 		/* Points of this player */

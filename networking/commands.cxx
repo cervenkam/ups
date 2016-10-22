@@ -63,7 +63,7 @@ Commands::Commands(int sock,Server* server,NetworkPlayer* player,Game* game){
 	SetSocket(sock);
 	SetServer(server);
 	SetPlayer(player);
-	SetGame(game);
+	player->SetGameForBothMeAndBot(game);
 }
 
 void Commands::Start(){
@@ -255,6 +255,7 @@ void Commands::Login(char* message){
 }
 
 void Commands::Disconnect(char*){
+	m_server->Send(m_sock,RESPONSE_BYE);
 	close(m_sock);
 	m_is_connected = false;
 	m_running = false;

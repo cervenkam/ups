@@ -41,7 +41,7 @@ public class LayerLoader{
 		return loadLayer(new File(path));
 	}
 	private static Layer loadLayer(File file){
-		return new Layer(loadImage(file));
+		return new Layer(loadImage(file),file.getName());
 	}
 	private static BufferedImage loadImage(String path){
 		return loadImage(new File(path));

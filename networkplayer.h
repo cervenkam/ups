@@ -23,6 +23,11 @@ class NetworkPlayer: public Algorithm{
 		*/
 		~NetworkPlayer();
 		/*
+			Sets the game for me and my bot
+				=> Game in which this algorithm acts
+		*/
+		void SetGameForBothMeAndBot(Game* game);
+		/*
 			Is called when a card is used (with any player)
 				=> card Player card
 				=> player ID of the player which played card

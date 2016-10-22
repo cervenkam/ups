@@ -10,6 +10,9 @@
 #include "algorithm.h"
 #include "config.h"
 #include <thread>
+#include <vector>
+class Algorithm;
+class Configuration;
 class Game{
 	public:
 		/*
@@ -66,12 +69,12 @@ class Game{
 			Sets the starting player of this round
 				=> ID Starting player's ID
 		*/
-		static void SetStarted(unsigned char ID);
+		void SetStarted(unsigned char ID);
 		/*
 			Returns the starting player of this round
 				<= Starting player's ID
 		*/
-		static unsigned char GetStarted();
+		unsigned char GetStarted();
 		/*
 			Game in new thread
 		*/
@@ -80,6 +83,16 @@ class Game{
 			Stops game in new thread
 		*/
 		void StopParallel();
+		/*
+			Returns the card which shoud another player react on
+				<= Card to be reacted on
+		*/
+		Card* FirstCard();
+		/*
+			Sets the card which should another player react on
+				=> card Card to be reacted on
+		*/
+		void SetFirstCard(Card* card);
 	private:
 		/*
 			Prepares the game
@@ -131,10 +144,12 @@ class Game{
 				=> winner Actual winner
 		*/
 		void DetermineWinner(Card* card,unsigned& player, unsigned& winner);
+		/* Card which should another player react on */
+		Card* m_first = nullptr;
 		/* Count of players in this game */
 		unsigned char m_players;
 		/* Determines the player which started this round */
-		static unsigned char ms_started;
+		unsigned char m_started = 0;
 		/* Deck of not used card */
 		Deck* m_deck;
 		/* Array of player algorithms */

@@ -9,6 +9,7 @@
 */
 #include "algorithm.h"
 using namespace std;
+class Algorithm;
 class Configuration{
 	public:
 		/*

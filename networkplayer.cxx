@@ -23,6 +23,14 @@ NetworkPlayer::NetworkPlayer(const char* player,unsigned char ch): Algorithm(pla
 }
 
 /*
+	Sets the game for me and my bot
+		=> Game in which this algorithm acts
+*/
+void NetworkPlayer::SetGameForBothMeAndBot(Game* game){
+	m_bot->SetGame(game);
+	SetGame(game);
+}
+/*
 	Destroys this player
 */
 NetworkPlayer::~NetworkPlayer(){

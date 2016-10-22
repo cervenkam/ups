@@ -65,7 +65,10 @@ public class Client extends Thread{
 					msglen|=in.read();
 				}
 				int count = in.read(buffer,0,msglen);
-				if(count==msglen){
+				if(count<0){
+					System.out.println("EOS");
+					break;
+				}else if(count==msglen){
 					String data = new String(buffer, 0, count);
 					System.out.println("Received: "+data); //TODO lang
 					notifyObserver(data);

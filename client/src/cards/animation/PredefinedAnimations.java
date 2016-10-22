@@ -3,12 +3,11 @@ import java.awt.Component;
 public class PredefinedAnimations extends Animation{	
 	private int x=-1;
 	private int y=-1;
-	private double rotate;
+	private double rotate = 0;
+	private double zoom = 1;
 	private static final double ratio = 0.3;
 	public PredefinedAnimations(Layer layer,Component component){
 		super(layer,component);
-		LayerManager.getInstance().pushOnTop(layer);
-		LayerManager.getInstance().split(layer);
 	}
 	public PredefinedAnimations setPosition(int x,int y){
 		this.x=x;
@@ -19,33 +18,28 @@ public class PredefinedAnimations extends Animation{
 		this.rotate = rotate;
 		return this;
 	}
-	public boolean cardThrow(){
-		if(x<0 || y<0){
-			return false;
-		}
-		getLayer().setImage(0);
-		double tmp_rotate = rotate;
-		double first_rotate = Math.PI;
-		setRotation(getRotation()+first_rotate*ratio);
-		setCenter(1.2,-0.6);
-		andThen(rotate,(v)->setRotation(v),()->getRotation());
-		setRotation(getRotation()+first_rotate*(1-ratio)+Math.PI*(Math.random()-0.5)/10);
-		 andThen(x,(v)->setX(v),()->getX());
-		parallel(y,(v)->setY(v),()->getY());
-		parallel(rotate,(v)->setRotation(v),()->getRotation());
-		rotate = tmp_rotate;
-		run();
-		return true;
+	public void setMaxZoom(double zoom){
+		this.zoom = zoom;
+	}
+	public void cleanUp(){
+		LayerManager.getInstance().pushOnCorrectPosition(getLayer());
+		getComponent().repaint();	
 	}
 	public boolean getCard(boolean visible){
 		if(x<0 || y<0){
 			return false;
 		}
+		LayerManager.getInstance().pushOnTop(getLayer());
+		LayerManager.getInstance().split(getLayer());
+		setMaxZoom(2);
 		 andThen(x,(v)->setX(v),()->getX());
 		parallel(y,(v)->setY(v),()->getY());
 		parallel(rotate,(v)->setRotation(v),()->getRotation());
+		parallel(zoom,(v)->setZoom(v),()->getZoom(),Callback.SINUS);
+		System.out.println("Animating "+getLayer()+" to ["+x+";"+y+"]");
 		run();
 		getLayer().setImage(visible?0:1);
+		cleanUp();
 		return true;
 	}
 	private int getX(){
@@ -56,6 +50,9 @@ public class PredefinedAnimations extends Animation{
 	}
 	private double getRotation(){
 		return getLayer().getRotation();
+	}
+	private double getZoom(){
+		return getLayer().getZoom();
 	}
 	private void setCenter(double cx,double cy){
 		getLayer().setCenter(cx,cy);
@@ -68,6 +65,9 @@ public class PredefinedAnimations extends Animation{
 	}
 	private void setRotation(double r){
 		getLayer().setRotation(r);
+	}
+	private void setZoom(double zoom){
+		getLayer().setZoom(zoom);
 	}
 	private int getPart(double start,double end){
 		return (int)((ratio-start)/(end-start));

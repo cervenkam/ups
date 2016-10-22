@@ -42,8 +42,19 @@ public class LayerManager{
 	public void addLayersOnBottom(List<Layer> layers){
 		this.layers.addAll(0,layers);
 	}
-	public void pushOnTop(Layer layer){
-		layers.add(layers.remove(layers.indexOf(layer)));
+	public int pushOnTop(Layer layer){
+		int index = layers.indexOf(layer);
+		layers.add(layers.remove(index));
+		System.out.println("Moved => from: "+index+" to: "+(layers.indexOf(layer)));
+		return index;
+	}
+	public int pushOnCorrectPosition(Layer layer){
+		int old_index = layers.indexOf(layer);
+		int new_index = cards.indexOf(layer);
+		layers.remove(old_index);
+		layers.add(new_index,layer);
+		System.out.println("Moved <=  from: "+old_index+" to: "+new_index);
+		return new_index;
 	}
 	public void split(Layer... layers){
 		int[] positions = new int[layers.length];
@@ -69,9 +80,12 @@ public class LayerManager{
 				to_merge[b-start] = layers.get(b);
 			}
 			if(to_merge.length > 0){
-				merges.add(Layer.mergeLayers(width,height,to_merge));
+				Layer layer = Layer.mergeLayers(width,height,to_merge);
+				System.out.println("Creating: "+layer);
+				merges.add(layer);
 			}
 			if(a!=position.length){
+				System.out.println("Adding:   "+layers.get(position[a]));
 				merges.add(layers.get(position[a]));
 			}
 		}

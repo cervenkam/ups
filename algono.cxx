@@ -34,7 +34,7 @@ Card* AlgoNo::Play(bool force){
 		return nullptr;
 	}
 	Hand* hand = GetHand();
-	Card* first = FirstCard();
+	Card* first = m_game->FirstCard();
 	unsigned char size = hand->Size();
 	for(unsigned char a=0; a<size; a++){
 		if(first==nullptr || hand->Get(a)->IsPlayable(first)){

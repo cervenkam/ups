@@ -26,7 +26,7 @@ class CreateGameWindow extends JFrame implements Runnable{
 		this.name=name;
 		this.client=client;
 		invokeLater(this);
-		setDefaultCloseOperation(EXIT_ON_CLOSE); //TODO
+		addWindowListener(Common.getWindowListener(client));
 	}
 	public void run(){
 		createGUI();
@@ -35,6 +35,7 @@ class CreateGameWindow extends JFrame implements Runnable{
 		//initial settings
 		Container c = getContentPane();
 		c.setLayout(null);
+		setTitle(BUNDLE.getString("CreateGameWindow"));
 		//create section
 		JLabel create_name_label = new JLabel(BUNDLE.getString("GameName")+":");
 		create_name = new JTextField(20);
@@ -62,10 +63,16 @@ class CreateGameWindow extends JFrame implements Runnable{
 				refreshPlayers((int)create_players_count.getValue());
 			}
 		});
+		client.addCallback("Bye",(s)->{
+			error("ErrorDisconnected");
+			dispose();
+			Main.main();
+		});
 		getRootPane().setDefaultButton(create_players_button);
 		refreshPlayers((int)create_players_count.getValue());
 		//border section
-		setSize(d);
+		c.setPreferredSize(d);
+		pack();
 		create_players_button.addActionListener((x)->{
 			String command = getCommand();
 			client.send(command);

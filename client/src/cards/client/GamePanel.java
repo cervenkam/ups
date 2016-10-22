@@ -13,16 +13,14 @@ import static cards.client.Common.SERVER_BUNDLE;
 public class GamePanel extends JPanel{
 	private static final int WIDTH = 800;
 	private static final int HEIGHT = 600;
-	private static final Point all_cards = new Point((WIDTH>>1)-50,HEIGHT>>1);
-	private static final Point played_cards = new Point((WIDTH>>1)+50,HEIGHT>>1);
+	private static final Point all_cards = new Point((WIDTH>>1)-100,HEIGHT>>1);
+	private static final Point played_cards = new Point((WIDTH>>1)+100,HEIGHT>>1);
 	private static final Point cards = new Point(WIDTH>>1,HEIGHT-100);
 	private static final Point opponent_cards = new Point(100,100);
 	private static final BufferedImage buffer = new BufferedImage(WIDTH,HEIGHT,TYPE_INT_ARGB);
 	private final int[] my_cards = new int[4];
 	private final int[] my_last_cards = new int[4];
 	private final List<Player> players = new ArrayList<Player>();
-	//private final List<String> players = new ArrayList<String>();
-	//private final List<Integer> player_card_count = new ArrayList<Integer>();
 	private final boolean[] card_played = new boolean[32];
 	private final Client client;
 	private final String name;
@@ -47,8 +45,10 @@ public class GamePanel extends JPanel{
 		client.addCallback("CardPlayed",(s)->{
 			String[] split = s.split(" ");
 			if(!split[2].equals(name)){
+				System.out.println("opponents card");
 				playOponentCard(split[0],split[1],split[2]);
 			}else{
+				System.out.println("my card");
 				removeCard(getValue(split[0],split[1]));
 			}
 		});
@@ -57,6 +57,7 @@ public class GamePanel extends JPanel{
 				client.send(SERVER_BUNDLE.getString("Play")+" "+handleKey(e.getKeyCode()));
 			}
 		});
+		client.send(SERVER_BUNDLE.getString("MyCards"));
 		setPreferredSize(new Dimension(WIDTH,HEIGHT));
 	}
 	private void removeCard(int index){
@@ -81,16 +82,19 @@ public class GamePanel extends JPanel{
 				int card = plyr.pickRandom();
 				to_swap = lm.getCard(plyr.getCards()[card]);
 				plyr.getCards()[card]=-1;
-				System.out.println("SWAP: "+layer+" with "+to_swap);
-				to_swap.swap(layer);
+				//System.out.println("SWAP:   "+layer+" with "+to_swap);
+				//to_swap.swap(layer); //TODO does not working
+				//System.out.println("SWAPED: "+layer+" with "+to_swap);
+				repaint();
+				break;
 			}
 		}
 		if(to_swap == null){
 			return;
 		}
-		PredefinedAnimations pa = new PredefinedAnimations(to_swap,this);
-		pa.setRotate(Math.random()*2*Math.PI);
+		PredefinedAnimations pa = new PredefinedAnimations(layer,this);
 		pa.setPosition((int)played_cards.getX(),(int)played_cards.getY());
+		pa.setRotate(Math.random()*2*Math.PI);
 		pa.getCard(true);
 		repaint();
 	}
@@ -120,6 +124,8 @@ public class GamePanel extends JPanel{
 		}
 	}
 	public void setCards(String cards){
+		System.out.println(java.util.Arrays.toString(my_last_cards));
+		System.out.println(java.util.Arrays.toString(my_cards));
 		clearArray(my_last_cards);
 		for(int a=0; a<my_last_cards.length; a++){
 			my_last_cards[a] = my_cards[a];
@@ -128,20 +134,34 @@ public class GamePanel extends JPanel{
 		String[] arr = cards.split(" ");
 		for(int a=1; a<arr.length; a+=2){
 			int value = getValue(arr[a-1],arr[a]);
-			my_cards[a>>1]=value;
+			boolean found = false;
+			for(int b=0; b<my_last_cards.length; b++){
+				if(value == my_last_cards[b]){
+					my_cards[b] = value;
+					found = true;
+					break;
+				}
+			}
+			if(!found){
+				for(int b=0; b<my_cards.length; b++){
+					if(my_cards[b]==-1){
+						my_cards[b]=value;
+						break;
+					}
+				}
+			}
 		}
 		System.out.println(java.util.Arrays.toString(my_last_cards));
 		System.out.println(java.util.Arrays.toString(my_cards));
 		List<Integer> new_cards = substract(my_cards,my_last_cards);
-		List<Integer> old_cards = substract(my_last_cards,my_cards);
 		System.out.println(java.util.Arrays.toString(new_cards.toArray(new Integer[new_cards.size()])));
-		System.out.println(java.util.Arrays.toString(old_cards.toArray(new Integer[old_cards.size()])));
 		LayerManager lm = LayerManager.getInstance();
 		System.out.println(new_cards.size()+" new cards");
 		for(int a=0; a<new_cards.size(); a++){
 			int index = new_cards.get(a);
-			int position = 0;
+			int position = -1;
 			for(int b=0; b<my_cards.length; b++){
+				System.out.println("Compare: "+my_cards[b]+" with "+index);
 				if(my_cards[b]==index){
 					position = b;
 					break;
@@ -151,19 +171,30 @@ public class GamePanel extends JPanel{
 			Layer layer = lm.getCard(index);
 			System.out.println(layer);
 			PredefinedAnimations pa = new PredefinedAnimations(layer,this);
-			pa.setPosition((int)this.cards.getX()+(int)((a-1.5)*20),(int)this.cards.getY());
+			pa.setPosition((int)this.cards.getX()+(int)((position-1.5)*20),(int)this.cards.getY());
 			int ind = 0;
 			while(my_cards[ind]!=index){
 				ind++;
 			}
 			pa.setRotate((position-1.5)*Math.PI/10);
 			pa.getCard(true);
-			repaint();
+			repaintStackOfCards(my_cards);
 		}
-		System.out.println(old_cards.size()+" old cards");
-		for(int a=0; a<old_cards.size(); a++){
-			int index = old_cards.get(a);
-			removeCard(index);
+		repaint();
+	}
+	private void repaintStackOfCards(int[] cards){
+		if(true) return; //TODO
+		LayerManager lm = LayerManager.getInstance();
+		for(int b=0; b<cards.length; b++){
+			if(cards[b]>0){
+				lm.pushOnTop(lm.getCard(cards[b]));
+			}
+		}
+		repaint();
+		for(int b=0; b<cards.length; b++){
+			if(cards[b]>0){
+				lm.pushOnCorrectPosition(lm.getCard(cards[b]));
+			}
 		}
 	}
 	public void setOponentsCards(String cards){
@@ -199,12 +230,7 @@ public class GamePanel extends JPanel{
 				pa.getCard(false);
 			}
 			int[] card_array = players.get(index).getCards();
-			for(int b=0; b<card_array.length; b++){
-				if(card_array[b]>0){
-					lm.pushOnTop(lm.getCard(card_array[b]));
-				}
-			}
-			repaint();
+			repaintStackOfCards(card_array);
 		}
 	}
 	private List<Integer> substract(int[] from, int[] to){

@@ -6,6 +6,9 @@ CMakeFiles/server.dir/algono.cxx.o
  /home/martin/skola/UPS/SP/algono.h
  /home/martin/skola/UPS/SP/algorithm.h
  /home/martin/skola/UPS/SP/card.h
+ /home/martin/skola/UPS/SP/config.h
+ /home/martin/skola/UPS/SP/deck.h
+ /home/martin/skola/UPS/SP/game.h
  /home/martin/skola/UPS/SP/hand.h
  /home/martin/skola/UPS/SP/lang.h
  /home/martin/skola/UPS/SP/semaphore.h
@@ -13,6 +16,9 @@ CMakeFiles/server.dir/algorithm.cxx.o
  /home/martin/skola/UPS/SP/algorithm.cxx
  /home/martin/skola/UPS/SP/algorithm.h
  /home/martin/skola/UPS/SP/card.h
+ /home/martin/skola/UPS/SP/config.h
+ /home/martin/skola/UPS/SP/deck.h
+ /home/martin/skola/UPS/SP/game.h
  /home/martin/skola/UPS/SP/hand.h
  /home/martin/skola/UPS/SP/lang.h
  /home/martin/skola/UPS/SP/semaphore.h
@@ -96,6 +102,9 @@ CMakeFiles/server.dir/networkplayer.cxx.o
 CMakeFiles/server.dir/person.cxx.o
  /home/martin/skola/UPS/SP/algorithm.h
  /home/martin/skola/UPS/SP/card.h
+ /home/martin/skola/UPS/SP/config.h
+ /home/martin/skola/UPS/SP/deck.h
+ /home/martin/skola/UPS/SP/game.h
  /home/martin/skola/UPS/SP/hand.h
  /home/martin/skola/UPS/SP/lang.h
  /home/martin/skola/UPS/SP/person.cxx
@@ -105,6 +114,9 @@ CMakeFiles/server.dir/person.cxx.o
 CMakeFiles/server.dir/programmerbot.cxx.o
  /home/martin/skola/UPS/SP/algorithm.h
  /home/martin/skola/UPS/SP/card.h
+ /home/martin/skola/UPS/SP/config.h
+ /home/martin/skola/UPS/SP/deck.h
+ /home/martin/skola/UPS/SP/game.h
  /home/martin/skola/UPS/SP/hand.h
  /home/martin/skola/UPS/SP/lang.h
  /home/martin/skola/UPS/SP/programmerbot.cxx

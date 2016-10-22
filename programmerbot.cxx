@@ -63,7 +63,7 @@ Card* ProgrammerBot::Play(bool force){
 	unsigned char size = hand->Size();
 	if(force){
 		//I should put first card
-		if(FirstCard()==nullptr){
+		if(m_game->FirstCard()==nullptr){
 			//find strong rank
 			unsigned count = 0;
 			unsigned index = 0;
@@ -83,13 +83,13 @@ Card* ProgrammerBot::Play(bool force){
 			return hand->Get(index);
 		}
 		//is there a fight about valuable cards
-		if(FirstCard()->IsValuable()){
+		if(m_game->FirstCard()->IsValuable()){
 			int count = 0;
 			//I'll have "count" number of cards to fight against
-			FIND_DO(card->GetRank()==FirstCard()->GetRank() || card->GetRank()==CARD_7,count++)
+			FIND_DO(card->GetRank()==m_game->FirstCard()->GetRank() || card->GetRank()==CARD_7,count++)
 			if(count>0){
 				unsigned alreadyPlayed = m_counter7;
-				if(FirstCard()->GetRank()==CARD_X){
+				if(m_game->FirstCard()->GetRank()==CARD_X){
 					alreadyPlayed += m_counterX;
 				}else{
 					alreadyPlayed += m_counterE;
@@ -97,15 +97,15 @@ Card* ProgrammerBot::Play(bool force){
 				int rest = 8 - alreadyPlayed - count;
 				if(rest-HAZARD<count){
 					//ok, lets fight - find valuable card
-					FIND(card->GetRank()==FirstCard()->GetRank())
+					FIND(card->GetRank()==m_game->FirstCard()->GetRank())
 					//else use 7
 					FIND(card->GetRank()==CARD_7)
 				}
 			}
 		}
 		//Find same rank card if it is non-valuable
-		if(!FirstCard()->IsValuable()){
-			FIND(card->GetRank()==FirstCard()->GetRank())
+		if(!m_game->FirstCard()->IsValuable()){
+			FIND(card->GetRank()==m_game->FirstCard()->GetRank())
 		}
 		//Find some not special card
 		FIND_P(0.9,!card->IsSpecial())
@@ -115,11 +115,11 @@ Card* ProgrammerBot::Play(bool force){
 		return hand->Get(0); // TODO dangerous
 	}else{
 		//I can collect values - do it
-		if(FirstCard()->IsValuable()){
+		if(m_game->FirstCard()->IsValuable()){
 			return nullptr;
-		}else if(!FirstCard()->IsSpecial()){
+		}else if(!m_game->FirstCard()->IsSpecial()){
 			//force next loop with non-valuable card
-			FIND(card->GetRank()==FirstCard()->GetRank())
+			FIND(card->GetRank()==m_game->FirstCard()->GetRank())
 		}
 		//do not continue
 		return nullptr;

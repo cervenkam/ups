@@ -83,9 +83,9 @@ class Card{
 		/* Card name */
 		char* m_name;
 		/* Cards rank names */
-		static const char* ms_ranks[8];
+		static const char* ms_ranks[8]; //OK
 		/* Card color names */
-		static const char* ms_colors[4];
+		static const char* ms_colors[4]; //OK
 };
 
 #endif

@@ -96,6 +96,7 @@ void Deck::ThrowAway(unsigned char count){
 	Fill();
 	for(unsigned char a=0; a<count; a++){
 		//4 because deck begins with 4 cards of rank 7
+		delete m_cards[a+4];
 		m_cards[a+4]=m_cards[ms_COUNT-a-1];
 	}
 	m_count-=count;

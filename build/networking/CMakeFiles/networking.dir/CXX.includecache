@@ -13,6 +13,8 @@ hand.h
 /home/martin/skola/UPS/SP/hand.h
 lang.h
 /home/martin/skola/UPS/SP/lang.h
+game.h
+/home/martin/skola/UPS/SP/game.h
 vector
 -
 semaphore.h
@@ -38,6 +40,8 @@ algorithm.h
 config.h
 /home/martin/skola/UPS/SP/config.h
 thread
+-
+vector
 -
 
 /home/martin/skola/UPS/SP/hand.h

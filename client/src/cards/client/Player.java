@@ -35,6 +35,7 @@ public class Player{
 	}
 	public int pickRandom(){	
 		if(numberOfCards()<=0){
+			System.err.println("empty hand");
 			return -1;
 		}
 		int card;

@@ -25,6 +25,7 @@ public class LoginWindow extends JFrame implements Runnable{
 		//initial settings
 		Container c = getContentPane();
 		c.setLayout(null);
+		setTitle(BUNDLE.getString("LoginWindow"));
 		//create section
 		JLabel connection_server_label = new JLabel(BUNDLE.getString("Server")+":");
 		JTextField connection_server =   new JTextField(20);
@@ -53,7 +54,8 @@ public class LoginWindow extends JFrame implements Runnable{
 		c.add(connection_name);
 		c.add(connection_button);
 		//size
-		setSize(d);
+		c.setPreferredSize(d);
+		pack();
 		//onclick
 		getRootPane().setDefaultButton(connection_button);
 		connection_button.addActionListener((x)->{

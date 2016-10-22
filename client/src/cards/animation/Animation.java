@@ -26,11 +26,8 @@ public class Animation extends Thread{
 	public Animation andThen(double end,DoubleConsumer consumer,DoubleSupplier supplier){
 		return andThen(new Callback(end,consumer,supplier));
 	}
-	public Animation andThen(double end,DoubleConsumer consumer,DoubleSupplier supplier,int duration){
-		return andThen(new Callback(end,consumer,supplier,duration));
-	}
-	public Animation andThen(double end,DoubleConsumer consumer,DoubleSupplier supplier,int duration,int sleep){
-		return andThen(new Callback(end,consumer,supplier,duration,sleep));
+	public Animation andThen(double end,DoubleConsumer consumer,DoubleSupplier supplier,DoubleUnaryOperator operator){
+		return andThen(new Callback(end,consumer,supplier,operator));
 	}
 	public Animation andThen(Callback callback){
 		List<Callback> list = new ArrayList<Callback>();
@@ -41,11 +38,8 @@ public class Animation extends Thread{
 	public Animation parallel(double end,DoubleConsumer consumer,DoubleSupplier supplier){
 		return parallel(new Callback(end,consumer,supplier));
 	}
-	public Animation parallel(double end,DoubleConsumer consumer,DoubleSupplier supplier,int duration){
-		return parallel(new Callback(end,consumer,supplier,duration));
-	}
-	public Animation parallel(double end,DoubleConsumer consumer,DoubleSupplier supplier,int duration,int sleep){
-		return parallel(new Callback(end,consumer,supplier,duration,sleep));
+	public Animation parallel(double end,DoubleConsumer consumer,DoubleSupplier supplier,DoubleUnaryOperator operator){
+		return parallel(new Callback(end,consumer,supplier,operator));
 	}
 	public Animation parallel(Callback callback){
 		callbacks.peekLast().add(callback);

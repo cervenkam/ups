@@ -5,6 +5,9 @@ import java.util.ResourceBundle;
 import java.util.Locale;
 import java.nio.ByteOrder;
 import java.nio.ByteBuffer;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowAdapter;
 import static javax.swing.JOptionPane.showMessageDialog;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 public class Common{
@@ -25,5 +28,15 @@ public class Common{
 			val = Integer.reverseBytes(val);
 		}
 		return ByteBuffer.allocate(4).putInt(val).array();
+	}
+	public static WindowListener getWindowListener(Client client){
+		return new WindowAdapter(){
+			public void windowClosing(WindowEvent e){
+				client.send(SERVER_BUNDLE.getString("Disconnect"));
+				client.addCallback("Bye",(s)->{
+					System.exit(0);
+				});
+			}
+		};
 	}
 }
