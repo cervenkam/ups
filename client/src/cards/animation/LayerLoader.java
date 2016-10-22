@@ -18,11 +18,24 @@ public class LayerLoader{
 		int count = 0;
 		for(Layer layer:layers){
 			layer.addImage(second_side);
-			layer.setPosition(x-(count>>2),y-(count>>2));
-			layer.setImage(1);
+			layer.setPosition(x-(count>>2),y-(count>>2),true);
+			layer.setImageIndex(1);
 			count++;
 		}
 		return layers;
+	}
+	public static Layer loadLayerImages(String path){
+		return loadLayerImages(new File(path));
+	}
+	public static Layer loadLayerImages(File directory){
+		Layer layer = new Layer(null,directory.getName());
+		File[] list = directory.listFiles((f)->f.getAbsolutePath().endsWith(".png"));
+		Arrays.sort(list);
+		for(File file: list){
+			BufferedImage img = loadImage(file);
+			layer.addImage(img);
+		}
+		return layer;
 	}
 	public static List<Layer> loadLayers(String path){
 		List<Layer> layers = new ArrayList<Layer>();

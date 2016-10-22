@@ -9,13 +9,16 @@ import java.util.function.DoubleUnaryOperator;
 public class Animation extends Thread{
 	private static int running_threads = 0;
 	private static Thread repaint_manager = null;
-	private final Layer layer;
+	private Layer layer;
 	private final Component component;
 	private LinkedList<List<Callback>> callbacks;
 	public Animation(Layer layer,Component component){
 		this.layer=layer;
 		this.component=component;
 		callbacks = new LinkedList<List<Callback>>();
+	}
+	public void setLayer(Layer layer){
+		this.layer = layer;
 	}
 	public Layer getLayer(){
 		return layer;

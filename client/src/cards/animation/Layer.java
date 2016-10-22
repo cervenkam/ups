@@ -36,7 +36,7 @@ public class Layer{
 	private int paint_x;
 	private int paint_y;
 	private double zoom = 1;
-
+	private boolean fromCenter = false;
 	public Layer(){
 		this(null);
 	}
@@ -49,8 +49,9 @@ public class Layer{
 	public void swap(Layer layer){
 		int tmp_x = x;
 		int tmp_y = y;
-		setPosition(layer.x,layer.y);
-		layer.setPosition(tmp_x,tmp_y);
+		boolean tmp_fromCenter = fromCenter;
+		setPosition(layer.x,layer.y,layer.fromCenter);
+		layer.setPosition(tmp_x,tmp_y,tmp_fromCenter);
 		double tmp_rotate = rotate;
 		setRotation(layer.rotate);
 		layer.setRotation(tmp_rotate);
@@ -64,25 +65,33 @@ public class Layer{
 	}
 	public Layer(BufferedImage buf,int x,int y,String name){
 		this.name = name;
-		this.buf.add(buf);
 		this.x=x;
 		this.y=y;
-		updateRatio();
+		if(buf != null){
+			this.buf.add(buf);
+			updateRatio();
+		}
 	}
 	public void addImage(BufferedImage buf){
 		this.buf.add(buf);
 	}
-	public void setImage(int image){
+	public void setImageIndex(int image){
 		if(image < buf.size()){
 			image_position = image;
 			updateRatio();
 		}
+	}
+	public int getImageIndex(){
+		return image_position;
 	}
 	public BufferedImage getImage(){
 		return getImage(image_position);
 	}
 	public BufferedImage getImage(int index){
 		return buf.get(index);
+	}
+	public int getNumberOfImages(){
+		return buf.size();
 	}
 	public int getX(){
 		return x;
@@ -108,10 +117,10 @@ public class Layer{
 		updateRatio();
 	}
 	public final void setX(int x){
-		setPosition(x,this.y);
+		setPosition(x,this.y,this.fromCenter);
 	}
 	public final void setY(int y){
-		setPosition(this.x,y);
+		setPosition(this.x,y,this.fromCenter);
 	}
 	public void setZoom(double zoom){
 		this.zoom = zoom;
@@ -119,9 +128,10 @@ public class Layer{
 	public double getZoom(){
 		return zoom;
 	}
-	public final void setPosition(int x, int y){
+	public final void setPosition(int x, int y, boolean fromCenter){
 		this.x=x;
 		this.y=y;
+		this.fromCenter = fromCenter;
 		updateCenter();
 	}
 	private final void updateRatio(){
@@ -137,7 +147,11 @@ public class Layer{
 	}
 	public void paint(Graphics2D g){
 		AffineTransform aft = g.getTransform();
-		g.translate(center_x,center_y);
+		if(fromCenter){
+			g.translate(x,y);
+		}else{
+			g.translate(center_x,center_y);
+		}
 		g.rotate(rotate);
 		g.scale(zoom,zoom);
 		if(buf!=null){

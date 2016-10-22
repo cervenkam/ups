@@ -13,10 +13,10 @@ import static cards.client.Common.SERVER_BUNDLE;
 public class GamePanel extends JPanel{
 	private static final int WIDTH = 800;
 	private static final int HEIGHT = 600;
-	private static final Point all_cards = new Point((WIDTH>>1)-100,HEIGHT>>1);
-	private static final Point played_cards = new Point((WIDTH>>1)+100,HEIGHT>>1);
-	private static final Point cards = new Point(WIDTH>>1,HEIGHT-100);
-	private static final Point opponent_cards = new Point(100,100);
+	private static final Point all_cards = new Point(WIDTH/8*3,HEIGHT>>1);
+	private static final Point played_cards = new Point(WIDTH/8*5,HEIGHT>>1);
+	private static final Point cards = new Point(WIDTH>>1,HEIGHT-77);
+	private static final Point opponent_cards = new Point(WIDTH/6,77);
 	private static final BufferedImage buffer = new BufferedImage(WIDTH,HEIGHT,TYPE_INT_ARGB);
 	private final int[] my_cards = new int[4];
 	private final int[] my_last_cards = new int[4];
@@ -43,6 +43,7 @@ public class GamePanel extends JPanel{
 			setOponentsCards(s);
 		});
 		client.addCallback("CardPlayed",(s)->{
+			s = s.replaceFirst("NULL","NU LL"); //HACK
 			String[] split = s.split(" ");
 			if(!split[2].equals(name)){
 				System.out.println("opponents card");
@@ -61,18 +62,36 @@ public class GamePanel extends JPanel{
 		setPreferredSize(new Dimension(WIDTH,HEIGHT));
 	}
 	private void removeCard(int index){
-		LayerManager lm = LayerManager.getInstance();
-		card_played[index] = true;
-		Layer layer = lm.getCard(index);
-		PredefinedAnimations pa = new PredefinedAnimations(layer,this);
-		pa.setPosition((int)played_cards.getX(),(int)played_cards.getY());
-		pa.setRotate(Math.random()*2*Math.PI);
-		pa.getCard(true);
-		repaint();
+		if(index<0){
+			PredefinedAnimations pa = new PredefinedAnimations(null,this);
+			pa.setPosition((int)cards.getX(),(int)cards.getY());
+			pa.animation("DontWantToContinue");
+			repaint();
+		}else{
+			LayerManager lm = LayerManager.getInstance();
+			card_played[index] = true;
+			Layer layer = lm.getCard(index);
+			PredefinedAnimations pa = new PredefinedAnimations(layer,this);
+			pa.setPosition((int)played_cards.getX(),(int)played_cards.getY());
+			pa.setRotate(Math.random()*2*Math.PI);
+			pa.getCard(true);
+			repaint();
+		}
 	}
 	private void playOponentCard(String color,String value,String player){
-		LayerManager lm = LayerManager.getInstance();
 		int index = getValue(color,value);
+		if(index<0){
+			for(int a=0; a<players.size(); a++){
+				Player plyr = players.get(a);
+				if(plyr.name.equals(player)){
+					PredefinedAnimations pa = new PredefinedAnimations(null,this);
+					pa.setPosition((int)((a+0.5)*opponent_cards.getX()),(int)opponent_cards.getY());
+					pa.animation("DontWantToContinue",Math.PI);
+					return;
+				}
+			}
+		}
+		LayerManager lm = LayerManager.getInstance();
 		Layer layer = lm.getCard(index);
 		Layer to_swap = null;
 		System.out.println(getValue(color,value)+": "+player);
@@ -109,11 +128,14 @@ public class GamePanel extends JPanel{
 	}
 	private void loadLayers(){
 		LayerManager lm = LayerManager.getInstance();
-		lm.setLayers(LayerLoader.loadCards(WIDTH>>1,HEIGHT>>1,"images/cards/"));
-		//lm.addLayerOnBottom(LayerLoader.loadLayer("images/background.png"));
+		lm.setLayers(LayerLoader.loadCards((int)all_cards.getX(),(int)all_cards.getY(),"images/cards/"));
+		lm.addLayerOnBottom(LayerLoader.loadLayer("images/background/table.png"));
 		lm.mergeAll();
 	}
 	private int getValue(String color,String rank){
+		if(color.equals("NU") && rank.equals("LL")){
+			return -1;
+		}
 		int clr = Integer.valueOf(SERVER_BUNDLE.getString(color));
 		int rnk = Integer.valueOf(SERVER_BUNDLE.getString(rank));
 		return (clr|(rnk<<2));
@@ -207,11 +229,11 @@ public class GamePanel extends JPanel{
 			int count = Integer.valueOf(arr[a]);
 			if(players.size()<=index){
 				Player play = new Player(name);
-				play.setPosition((index+1)*(int)opponent_cards.getX(),(int)opponent_cards.getY());
+				play.setPosition((int)((index+0.5)*opponent_cards.getX()),(int)opponent_cards.getY());
 				players.add(play);
 			}else if(!players.get(index).name.equals(name)){
 				Player play = new Player(name);
-				play.setPosition((index+1)*(int)opponent_cards.getX(),(int)opponent_cards.getY());
+				play.setPosition((int)((index+0.5)*opponent_cards.getX()),(int)opponent_cards.getY());
 				players.set(index,play);
 			}
 			int tmp_count = count-players.get(index).numberOfCards();
@@ -225,8 +247,7 @@ public class GamePanel extends JPanel{
 				Layer layer = lm.getCard(c);
 				PredefinedAnimations pa = new PredefinedAnimations(layer,this);
 				Player player = players.get(index);
-				pa.setPosition(player.getX()+(int)(b-(count/2)-0.5)*20,player.getY());
-				pa.setRotate(((count/2)-b-0.5)*Math.PI/10);
+				pa.setPosition(player.getX(),player.getY());
 				pa.getCard(false);
 			}
 			int[] card_array = players.get(index).getCards();

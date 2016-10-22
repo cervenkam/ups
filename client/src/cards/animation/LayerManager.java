@@ -13,6 +13,13 @@ public class LayerManager{
 	private List<Layer> layers;
 	private List<Layer> merges;
 	private List<Layer> cards;
+	private List<Layer> corrects;
+	public void print(){
+		System.out.println("Layers:");
+		for(int a=0; a<layers.size(); a++){
+			System.out.println("\t"+layers.get(a));
+		}
+	}
 	public static LayerManager getInstance(){
 		return manager;
 	}
@@ -20,27 +27,33 @@ public class LayerManager{
 		layers = new ArrayList<Layer>();
 		merges = new ArrayList<Layer>();
 		cards = new ArrayList<Layer>();
+		corrects = new ArrayList<Layer>();
 	}
 	public void setLayers(List<Layer> layers){
 		this.cards.clear();
 		this.layers.clear();
+		this.corrects.clear();
 		this.cards.addAll(layers);
 		this.layers.addAll(layers);
+		this.corrects.addAll(layers);
 	}
 	public Layer getCard(int index){
 		return cards.get(index);
 	}
 	public void addLayersOnTop(List<Layer> layers){
 		this.layers.addAll(layers);
+		this.corrects.addAll(layers);
 	}
 	public void addLayerOnTop(Layer layer){
 		layers.add(layer);
 	}
 	public void addLayerOnBottom(Layer layer){
 		layers.add(0,layer);
+		corrects.add(0,layer);
 	}
 	public void addLayersOnBottom(List<Layer> layers){
 		this.layers.addAll(0,layers);
+		corrects.addAll(0,layers);
 	}
 	public int pushOnTop(Layer layer){
 		int index = layers.indexOf(layer);
@@ -48,9 +61,15 @@ public class LayerManager{
 		System.out.println("Moved => from: "+index+" to: "+(layers.indexOf(layer)));
 		return index;
 	}
+	public int pushOnBottom(Layer layer){
+		int index = layers.indexOf(layer);
+		layers.add(0,layers.remove(index));
+		System.out.println("Moved => from: "+index+" to: "+(layers.indexOf(layer)));
+		return index;
+	}
 	public int pushOnCorrectPosition(Layer layer){
 		int old_index = layers.indexOf(layer);
-		int new_index = cards.indexOf(layer);
+		int new_index = corrects.indexOf(layer);
 		layers.remove(old_index);
 		layers.add(new_index,layer);
 		System.out.println("Moved <=  from: "+old_index+" to: "+new_index);
@@ -75,12 +94,12 @@ public class LayerManager{
 		for(int a=0; a<=position.length; a++){
 			int start = a == 0              ? 0              : position[a-1]+1;
 			int end   = a == position.length? layers.size()-1: position[a]-1;
-			Layer[] to_merge = new Layer[end-start+1];
+			Layer[] to_merge_array = new Layer[end-start+1];
 			for(int b=start; b<=end; b++){
-				to_merge[b-start] = layers.get(b);
+				to_merge_array[b-start] = layers.get(b);
 			}
-			if(to_merge.length > 0){
-				Layer layer = Layer.mergeLayers(width,height,to_merge);
+			if(to_merge_array.length > 0){
+				Layer layer = Layer.mergeLayers(width,height,to_merge_array);
 				System.out.println("Creating: "+layer);
 				merges.add(layer);
 			}
@@ -91,9 +110,6 @@ public class LayerManager{
 		}
 	}
 	public void paint(Graphics2D g){
-		g.setRenderingHints(new RenderingHints(KEY_ANTIALIASING,VALUE_ANTIALIAS_ON));
-		g.setColor(WHITE);
-		g.fillRect(0,0,width,height);
 		for(int a=0; a<merges.size(); a++){
 			merges.get(a).paint(g);
 		}
