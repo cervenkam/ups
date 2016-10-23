@@ -54,10 +54,26 @@ public class PredefinedAnimations extends Animation{
 		int curr = getImageIndex();
 		int count = getLayer().getNumberOfImages();
 		andThen(count-1,(v)->setImageIndex(v),()->getImageIndex());
-		lm.print();
+		//lm.print();
 		run();
 		getLayer().setImageIndex(curr);
 		cleanUp();
+		return true;
+	}
+	public boolean zoom(){
+		if(x<0 || y<0){
+			return false;
+		}
+		LayerManager lm = LayerManager.getInstance();
+		lm.pushOnTop(getLayer());
+		lm.split(getLayer());
+		 andThen(x,(v)->setX(v),()->getX());
+		parallel(y,(v)->setY(v),()->getY());
+		parallel(rotate,(v)->setRotation(v),()->getRotation());
+		parallel(zoom,(v)->setZoom(v),()->getZoom());
+		run();
+		lm.split(getLayer());
+		getComponent().repaint();	
 		return true;
 	}
 	public boolean getCard(boolean visible){
@@ -73,7 +89,7 @@ public class PredefinedAnimations extends Animation{
 		parallel(rotate,(v)->setRotation(v),()->getRotation());
 		parallel(zoom,(v)->setZoom(v),()->getZoom(),Callback.SINUS);
 		System.out.println("Animating "+getLayer()+" to ["+x+";"+y+"]");
-		lm.print();
+		//lm.print();
 		run();
 		getLayer().setImageIndex(visible?0:1);
 		//cleanUp();
@@ -98,9 +114,6 @@ public class PredefinedAnimations extends Animation{
 	}
 	private double getZoom(){
 		return getLayer().getZoom();
-	}
-	private void setCenter(double cx,double cy){
-		getLayer().setCenter(cx,cy);
 	}
 	private void setX(double x){
 		getLayer().setX((int)x);

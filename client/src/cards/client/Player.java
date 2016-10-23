@@ -24,6 +24,15 @@ public class Player{
 	public int[] getCards(){
 		return cards;
 	}
+	public void setCard(int previous,int next){
+		int count = 0;
+		for(int a=0; a<cards.length; a++){
+			if(cards[a]==previous){
+				cards[a]=next;
+				break;
+			}
+		}
+	}
 	public int numberOfCards(){
 		int count = 0;
 		for(int a=0; a<cards.length; a++){

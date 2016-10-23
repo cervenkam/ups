@@ -30,13 +30,13 @@ public class Layer{
 	private double py = 0.5;
 	private double rotate = 0;
 	private int image_position = 0;
+	private double zoom = 1;
+	private boolean fromCenter = false;
 	//precalculated
 	private int center_x;
 	private int center_y;
 	private int paint_x;
 	private int paint_y;
-	private double zoom = 1;
-	private boolean fromCenter = false;
 	public Layer(){
 		this(null);
 	}
@@ -55,13 +55,16 @@ public class Layer{
 		double tmp_rotate = rotate;
 		setRotation(layer.rotate);
 		layer.setRotation(tmp_rotate);
-		double tmp_center_x = center_x;
-		double tmp_center_y = center_y;
-		setCenter(layer.center_x,layer.center_y);
-		layer.setCenter(tmp_center_x,tmp_center_y);
+		double tmp_px = px;
+		double tmp_py = py;
+		setCenter(layer.px,layer.py);
+		layer.setCenter(tmp_px,tmp_py);
 		double tmp_zoom = zoom;
 		setZoom(layer.zoom);
 		layer.setZoom(tmp_zoom);
+		int tmp_image_position = image_position;
+		setImageIndex(layer.image_position);
+		layer.setImageIndex(tmp_image_position);
 	}
 	public Layer(BufferedImage buf,int x,int y,String name){
 		this.name = name;
@@ -105,17 +108,6 @@ public class Layer{
 	public final void setRotation(double rotate){
 		this.rotate = rotate;
 	}
-	public final void setCenterX(double px){
-		setCenter(px,this.py);
-	}
-	public final void setCenterY(double py){
-		setCenter(this.py,px);
-	}
-	public final void setCenter(double px, double py){
-		this.px=px;
-		this.py=py;
-		updateRatio();
-	}
 	public final void setX(int x){
 		setPosition(x,this.y,this.fromCenter);
 	}
@@ -127,6 +119,12 @@ public class Layer{
 	}
 	public double getZoom(){
 		return zoom;
+	}
+	private void setCenter(double px,double py){
+		try{throw new Exception();}catch(Exception e){e.printStackTrace();}
+		this.px=px;
+		this.py=py;
+		updateRatio();
 	}
 	public final void setPosition(int x, int y, boolean fromCenter){
 		this.x=x;
@@ -155,6 +153,7 @@ public class Layer{
 		g.rotate(rotate);
 		g.scale(zoom,zoom);
 		if(buf!=null){
+			//System.out.println("Paint: "+paint_x+", "+paint_y+", "+px+", "+py);
 			g.drawImage(buf.get(image_position),paint_x,paint_y,null);
 		}
 		g.setColor(Color.RED); //TODO debug remove

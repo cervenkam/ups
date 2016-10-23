@@ -2,8 +2,7 @@ package cards.client;
 import javax.swing.*;
 import java.awt.*;
 import cards.animation.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyAdapter;
+import java.awt.event.*;
 import java.util.List;
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -13,6 +12,7 @@ import static cards.client.Common.SERVER_BUNDLE;
 public class GamePanel extends JPanel{
 	private static final int WIDTH = 800;
 	private static final int HEIGHT = 600;
+	private static final Point center_point = new Point(WIDTH>>1,HEIGHT>>1);
 	private static final Point all_cards = new Point(WIDTH/8*3,HEIGHT>>1);
 	private static final Point played_cards = new Point(WIDTH/8*5,HEIGHT>>1);
 	private static final Point cards = new Point(WIDTH>>1,HEIGHT-77);
@@ -24,6 +24,10 @@ public class GamePanel extends JPanel{
 	private final boolean[] card_played = new boolean[32];
 	private final Client client;
 	private final String name;
+	private Point previous_position = null; 
+	private double previous_rotate = 0;
+	private int previous_card = -1;
+	private boolean running_quard = true;
 	public GamePanel(Client client,String name){
 		this.name = name;
 		this.client = client;
@@ -54,12 +58,60 @@ public class GamePanel extends JPanel{
 			}
 		});
 		addKeyListener(new KeyAdapter(){
+			@Override
 			public void keyPressed(KeyEvent e){
 				client.send(SERVER_BUNDLE.getString("Play")+" "+handleKey(e.getKeyCode()));
 			}
 		});
+		addMouseListener(new MouseAdapter(){
+			@Override
+			public void mousePressed(MouseEvent e){
+				if(e.getButton()==MouseEvent.BUTTON1){
+					client.send(SERVER_BUNDLE.getString("Play")+" "+handleMouse(e.getX(),e.getY()));
+				}else if(e.getButton()==MouseEvent.BUTTON3){
+					if(running_quard){
+						running_quard = false;
+						new Thread(()->{
+							animateMouse(getMouseCard(e.getX(),e.getY()));
+							running_quard = true;
+						}).start();
+					}
+				}
+			}
+		});
 		client.send(SERVER_BUNDLE.getString("MyCards"));
 		setPreferredSize(new Dimension(WIDTH,HEIGHT));
+	}
+	private void animateMouse(int card){
+		LayerManager lm = LayerManager.getInstance();
+		if(previous_position == null){
+			if(card<0){
+				return;
+			}
+			Layer layer = lm.getCard(card);
+			PredefinedAnimations pa = new PredefinedAnimations(layer,this);
+			pa.setMaxZoom(5);
+			pa.setPosition((int)center_point.getX(),(int)center_point.getY());
+			pa.setRotate(0);
+			previous_position = new Point(layer.getX(),layer.getY());
+			previous_rotate = layer.getRotation();
+			previous_card = card;
+			pa.zoom();
+		}else{
+			if(card!=-2){
+				return;
+			}
+			Layer layer = lm.getCard(previous_card);
+			PredefinedAnimations pa = new PredefinedAnimations(layer,this);
+			pa.setMaxZoom(1);
+			pa.setPosition((int)previous_position.getX(),(int)previous_position.getY());
+			pa.setRotate(previous_rotate);
+			previous_position = null;
+			previous_rotate = 0;
+			previous_card = -1;
+			pa.zoom();
+		}
+		repaint();
 	}
 	private void removeCard(int index){
 		if(index<0){
@@ -99,11 +151,11 @@ public class GamePanel extends JPanel{
 		for(Player plyr: players){
 			if(plyr.name.equals(player)){
 				int card = plyr.pickRandom();
-				to_swap = lm.getCard(plyr.getCards()[card]);
-				plyr.getCards()[card]=-1;
-				//System.out.println("SWAP:   "+layer+" with "+to_swap);
-				//to_swap.swap(layer); //TODO does not working
-				//System.out.println("SWAPED: "+layer+" with "+to_swap);
+				to_swap = lm.getCard(card);
+				plyr.setCard(card,-1);
+				System.out.println("SWAP:   "+layer+" with "+to_swap);
+				to_swap.swap(layer); //TODO does not working
+				System.out.println("SWAPED: "+layer+" with "+to_swap);
 				repaint();
 				break;
 			}
@@ -126,6 +178,28 @@ public class GamePanel extends JPanel{
 		int value = ((card>>2)&7);
 		return SERVER_BUNDLE.getString("Color"+color)+" "+SERVER_BUNDLE.getString("Value"+value);
 	}
+	private int getMouseCard(int x, int y){
+		if(y<HEIGHT*11/15){
+			return -2;
+		}
+		int position = 4*x/WIDTH;
+		int offset = x%(WIDTH/4);
+		if(offset < WIDTH/24 || offset > 5*WIDTH/24){
+			return -1;
+		}
+		return my_cards[position];
+	}
+
+	private String handleMouse(int x, int y){
+		int card = getMouseCard(x,y);
+		if(card<0 || card>=32){
+			return "NULL";
+		}
+		int color = (card&3);
+		int value = ((card>>2)&7);
+		return SERVER_BUNDLE.getString("Color"+color)+" "+SERVER_BUNDLE.getString("Value"+value);
+	}
+		
 	private void loadLayers(){
 		LayerManager lm = LayerManager.getInstance();
 		lm.setLayers(LayerLoader.loadCards((int)all_cards.getX(),(int)all_cards.getY(),"images/cards/"));
@@ -193,7 +267,7 @@ public class GamePanel extends JPanel{
 			Layer layer = lm.getCard(index);
 			System.out.println(layer);
 			PredefinedAnimations pa = new PredefinedAnimations(layer,this);
-			pa.setPosition((int)this.cards.getX()+(int)((position-1.5)*20),(int)this.cards.getY());
+			pa.setPosition((int)this.cards.getX()+(int)((position-1.5)*200),(int)this.cards.getY());
 			int ind = 0;
 			while(my_cards[ind]!=index){
 				ind++;
@@ -247,7 +321,8 @@ public class GamePanel extends JPanel{
 				Layer layer = lm.getCard(c);
 				PredefinedAnimations pa = new PredefinedAnimations(layer,this);
 				Player player = players.get(index);
-				pa.setPosition(player.getX(),player.getY());
+				pa.setPosition(player.getX()+(int)((position-1.5)*10),player.getY());
+				pa.setRotate((position-1.5)*Math.PI/10);
 				pa.getCard(false);
 			}
 			int[] card_array = players.get(index).getCards();
