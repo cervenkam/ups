@@ -144,7 +144,7 @@ bool Game::VotePasses(){
 	for(unsigned a=0; a<m_players; a++){
 		votes+=m_algos[a]->Vote();
 	}
-	return votes>=0;
+	return votes>0;
 }
 /*
 	Stops the game in a thread
@@ -153,6 +153,7 @@ void Game::StopParallel(){
 	m_end_of_game = true;
 	for(unsigned a=0; a<m_players; a++){
 		m_algos[a]->GetSemaphore()->Notify();
+		m_algos[a]->GetSemaphoreForVote()->Notify();
 	}
 	if(m_thr != nullptr){
 		m_thr->join();

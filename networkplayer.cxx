@@ -20,6 +20,7 @@ NetworkPlayer::NetworkPlayer(const char* player,unsigned char ch): Algorithm(pla
 	m_commands = nullptr;
 	m_card = nullptr;
 	m_bot = new ProgrammerBot(*this); //deleted in destuctor
+	m_vote = 0;
 }
 
 /*
@@ -27,6 +28,7 @@ NetworkPlayer::NetworkPlayer(const char* player,unsigned char ch): Algorithm(pla
 		=> Game in which this algorithm acts
 */
 void NetworkPlayer::SetGameForBothMeAndBot(Game* game){
+	cout << "Game set" << endl;
 	m_bot->SetGame(game);
 	SetGame(game);
 }
@@ -50,7 +52,7 @@ void NetworkPlayer::SetVote(char vote){
 */
 void NetworkPlayer::Used(Card* card,unsigned char player){
 	m_bot->Used(card,player);
-	if(m_commands && m_commands->GetServer()){
+	if(m_commands && m_commands->GetServer() && m_commands->IsConnected()){
 		char* buff = new char[MAX_LEN]; //deleted at the end of this function
 		char* tmp = buff;
 		strcpy(buff,RESPONSE_USED_CARD);
@@ -77,8 +79,12 @@ Card* NetworkPlayer::Play(bool force){
 	if(m_commands == nullptr){
 		return m_bot->Play(force);
 	}
-	m_commands->GetServer()->Send(m_commands->GetSocket(),RESPONSE_PLAY);
-	GetSemaphore()->Wait();
+	if(m_commands->IsConnected()){
+		m_commands->GetServer()->Send(m_commands->GetSocket(),RESPONSE_PLAY);
+	}
+	if(GetSemaphore()->Wait(TIMEOUT)){
+		return m_bot->Play(force);
+	}
 	return m_card;
 }
 
@@ -91,7 +97,9 @@ char NetworkPlayer::Vote(){
 		return m_bot->Vote();
 	}
 	m_commands->GetServer()->Send(m_commands->GetSocket(),RESPONSE_VOTE);
-	GetSemaphoreForVote()->Wait();
+	if(GetSemaphoreForVote()->Wait(TIMEOUT_VOTE)){
+		return -1;
+	}
 	return m_vote;
 }
 

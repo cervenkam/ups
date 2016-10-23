@@ -36,6 +36,7 @@ class Commands{
 		Semaphore* GetSemaphore();
 
 		void      Disconnect(char*);  
+		void  DisconnectHard(char*);  
 	private:
 		void      BadCommand(const char*);
 		void      CreateGame(char*);

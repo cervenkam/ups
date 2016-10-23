@@ -12,6 +12,9 @@
 #define TEST_ERR_RET(T,X,R) TEST_ERR_DO_RET(T,X,,R)
 
 #define MAX_LEN 512
+#define TIMEOUT_VOTE 30000//ms
+#define TIMEOUT_CONNECTION 30000//ms
+#define TIMEOUT 30000//ms
 
 #include <sys/socket.h>
 #include <sys/types.h>

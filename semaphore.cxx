@@ -11,15 +11,18 @@ Semaphore::Semaphore(unsigned count){
 void Semaphore::Wait(){
 	Wait(0);
 }
-void Semaphore::Wait(unsigned timeout){
+bool Semaphore::Wait(unsigned timeout){
+	bool ret_value;
 	unique_lock<mutex> lock(m_mtx);
 	if(timeout){
-		m_cond.wait_for(lock,milliseconds(timeout));
+		ret_value = m_cond.wait_for(lock,milliseconds(timeout))==cv_status::timeout;
 	}else{
 		while(!m_count){
 			m_cond.wait(lock);
 		}
+		ret_value = false;
 	}
+	return ret_value;
 	m_count--;
 }
 
