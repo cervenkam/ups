@@ -22,6 +22,7 @@ Algorithm::Algorithm(const char* player,unsigned char myID){
 	m_myID=myID;
 	m_hand = new Hand(); //deleted in destructor
 	m_semaphore = new Semaphore(0); //deleted in destructor
+	m_semaphore_voting = new Semaphore(0); //deleted in destructor
 }
 /*
 	Copy constructor
@@ -68,6 +69,14 @@ bool Algorithm::Send(Card* card){
 */
 Semaphore* Algorithm::GetSemaphore(){
 	return m_semaphore;
+}
+
+/*
+	Gets semapohore for this voting
+		<= Semaphore for voting
+*/
+Semaphore* Algorithm::GetSemaphoreForVote(){
+	return m_semaphore_voting;
 }
 
 /*
@@ -128,6 +137,7 @@ Algorithm::~Algorithm(){
 	if(!m_copy){
 		delete m_hand; //created in constructor
 		delete m_semaphore; //created in constructor
+		delete m_semaphore_voting; //created in constructor
 		delete[] m_player; //created in Configuration::Load
 		STDMSG("1;35","Deleted:    Algorithm");
 	}

@@ -14,7 +14,8 @@ Commands::funcptr Commands::ms_commands[COMMANDS] = {
 	&Commands::MyCards,
 	&Commands::Welcome,
 	&Commands::GetCountOfCards,
-	&Commands::SendMessage
+	&Commands::SendMessage,
+	&Commands::Vote
 };
 //requires first letter distinct
 const char* Commands::ms_texts[COMMANDS] = {
@@ -25,7 +26,8 @@ const char* Commands::ms_texts[COMMANDS] = {
 	QUERY_MY_CARDS,
 	QUERY_WELCOME,
 	QUERY_COUNT_OF_CARDS,
-	QUERY_MESSAGE
+	QUERY_MESSAGE,
+	QUERY_VOTE
 };
 
 Commands::Commands(){
@@ -280,6 +282,17 @@ void Commands::SendCard(char* message){
 	}
 	m_player->SetCard(m_card_to_play);
 	m_player->GetSemaphore()->Notify();
+}
+
+void Commands::Vote(char* message){
+	int vote = 0;
+	if(!strcmp(message,VOTE_YES)){
+		vote = 1;
+	}else if(!strcmp(message,VOTE_NO)){
+		vote = -1;
+	}
+	m_player->SetVote(vote);
+	m_player->GetSemaphoreForVote()->Notify();
 }
 
 void Commands::CreateGame(char* message){

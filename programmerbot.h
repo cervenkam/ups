@@ -32,6 +32,11 @@ class ProgrammerBot: public Algorithm{
 		*/
 		Card* Play(bool force);
 		/*
+			Selects if this player wants to start new game
+				<= 1 want to, -1 dont want to, 0 don't care
+		*/
+		char Vote();
+		/*
 			Destructor
 		*/
 		~ProgrammerBot();

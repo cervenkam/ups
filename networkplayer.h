@@ -53,9 +53,20 @@ class NetworkPlayer: public Algorithm{
 			Sets the card which should player use
 		*/
 		void SetCard(Card* card);
+		/*
+			Sets the vote for this player
+				=> vote
+		*/
+		void SetVote(char vote);
+		/*
+			Selects if this player wants to start new game
+				<= 1 want to, -1 dont want to, 0 don't care
+		*/
+		char Vote();
 	private:
 		Commands* m_commands;
 		Card* m_card;
+		char m_vote;
 		/* Plays when player is disconnected */
 		ProgrammerBot* m_bot;
 };

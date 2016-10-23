@@ -23,6 +23,11 @@ class Algorithm{
 		*/
 		virtual Card* Play(bool force) = 0;
 		/*
+			Selects if this player wants to start new game
+				<= 1 want to, -1 dont want to, 0 don't care
+		*/
+		virtual char Vote() = 0;
+		/*
 			Abstract algorithm constructor
 				=> player Name of the player
 				=> ch ID of this player
@@ -83,6 +88,11 @@ class Algorithm{
 		*/
 		Semaphore* GetSemaphore();
 		/*
+			Gets semapohore for this voting
+				<= Semaphore for voting
+		*/
+		Semaphore* GetSemaphoreForVote();
+		/*
 			Virtual destuctor
 		*/
 		virtual ~Algorithm();
@@ -110,6 +120,8 @@ class Algorithm{
 		bool m_ready = false;
 		/* Semaphore for all algorithms */
 		Semaphore* m_semaphore;
+		/* Semaphore for all algorithm votes */
+		Semaphore* m_semaphore_voting;
 		/* Is this algorithm only a copy? */
 		bool m_copy = false;
 };

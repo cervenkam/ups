@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.awt.image.BufferedImage;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
-import static cards.client.Common.SERVER_BUNDLE;
+import static cards.client.Common.*;
 public class GamePanel extends JPanel{
 	private static final int WIDTH = 800;
 	private static final int HEIGHT = 600;
@@ -56,6 +56,17 @@ public class GamePanel extends JPanel{
 				System.out.println("my card");
 				removeCard(getValue(split[0],split[1]));
 			}
+		});
+		client.addCallback("VoteCast",(s)->{
+			Object[] options = {
+				BUNDLE.getString("VoteYes"),
+				BUNDLE.getString("VoteNo"),
+				BUNDLE.getString("VoteDontCare")
+			};
+			int result = JOptionPane.showOptionDialog(this,BUNDLE.getString("VotingNextGame"),
+				BUNDLE.getString("Vote"),JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,
+				null,options,options[0]);
+			client.send(SERVER_BUNDLE.getString("VoteResult")+" "+SERVER_BUNDLE.getString("Vote"+result));
 		});
 		addKeyListener(new KeyAdapter(){
 			@Override
@@ -274,22 +285,14 @@ public class GamePanel extends JPanel{
 			}
 			pa.setRotate((position-1.5)*Math.PI/10);
 			pa.getCard(true);
-			repaintStackOfCards(my_cards);
 		}
 		repaint();
 	}
 	private void repaintStackOfCards(int[] cards){
-		if(true) return; //TODO
 		LayerManager lm = LayerManager.getInstance();
 		for(int b=0; b<cards.length; b++){
 			if(cards[b]>0){
 				lm.pushOnTop(lm.getCard(cards[b]));
-			}
-		}
-		repaint();
-		for(int b=0; b<cards.length; b++){
-			if(cards[b]>0){
-				lm.pushOnCorrectPosition(lm.getCard(cards[b]));
 			}
 		}
 	}

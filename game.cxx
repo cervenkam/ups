@@ -133,9 +133,18 @@ void Game::End(){
 	Starts the game
 */
 void Game::Start(){
-	if(Prepare()){
-		Loop();
+	do{
+		if(Prepare()){
+			Loop();
+		}
+	}while(VotePasses());
+}
+bool Game::VotePasses(){	
+	int votes = 0;
+	for(unsigned a=0; a<m_players; a++){
+		votes+=m_algos[a]->Vote();
 	}
+	return votes>=0;
 }
 /*
 	Stops the game in a thread

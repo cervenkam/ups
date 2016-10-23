@@ -36,7 +36,13 @@ void NetworkPlayer::SetGameForBothMeAndBot(Game* game){
 NetworkPlayer::~NetworkPlayer(){
 	delete m_bot; //created in constructor
 }
-
+/*
+	Sets the vote for this player
+		=> vote
+*/
+void NetworkPlayer::SetVote(char vote){
+	m_vote = vote;
+}
 /*
 	Is called when a card is used (with any player)
 		=> card Player card
@@ -74,6 +80,19 @@ Card* NetworkPlayer::Play(bool force){
 	m_commands->GetServer()->Send(m_commands->GetSocket(),RESPONSE_PLAY);
 	GetSemaphore()->Wait();
 	return m_card;
+}
+
+/*
+	Selects if this player wants to start new game
+		<= 1 want to, -1 dont want to, 0 don't care
+*/
+char NetworkPlayer::Vote(){
+	if(m_commands == nullptr){
+		return m_bot->Vote();
+	}
+	m_commands->GetServer()->Send(m_commands->GetSocket(),RESPONSE_VOTE);
+	GetSemaphoreForVote()->Wait();
+	return m_vote;
 }
 
 /*

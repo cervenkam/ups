@@ -7,7 +7,7 @@
 #include <thread>
 #include "../game.h"
 
-#define COMMANDS 8
+#define COMMANDS 9
 
 class Server;
 class NetworkPlayer;
@@ -40,6 +40,7 @@ class Commands{
 		void      BadCommand(const char*);
 		void      CreateGame(char*);
 		void           Login(char*);
+		void            Vote(char*);
 		void        SendCard(char*);
 		void         MyCards(char*);
 		void         Welcome(char*);

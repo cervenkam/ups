@@ -102,3 +102,18 @@ Card* Person::Play(bool force){
 	}
 	return nullptr;
 }
+/*
+	Selects if this player wants to start new game
+		<= 1 want to, -1 dont want to, 0 don't care
+*/
+char Person::Vote(){
+	char end;
+	OUT(CONTINUE);
+	cin >> end;
+	switch(end){
+		case NO[0]: return -1; break;
+		case YES[0]: return 1; break;
+		default: return 0; break;
+	}
+	return end!=NO[0]; //"don't care" vote
+}

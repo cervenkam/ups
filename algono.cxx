@@ -43,6 +43,16 @@ Card* AlgoNo::Play(bool force){
 	}
 	return hand->Get(0); //HACK dangerous
 }
+/*
+	Selects if this player wants to start new game
+		<= 1 want to, -1 dont want to, 0 don't care
+*/
+char AlgoNo::Vote(){
+	return 0; //"don't care" vote
+}
+/*
+	Destructor
+*/
 AlgoNo::~AlgoNo(){
 
 }

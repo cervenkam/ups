@@ -38,6 +38,11 @@ class Game{
 		unsigned GetCountOfPlayers();
 
 		/*
+			Creates voting system for all players to repeat this game
+				<= Should be game repeated
+		*/
+		bool VotePasses();
+		/*
 			Starts the game
 		*/
 		void Start();
