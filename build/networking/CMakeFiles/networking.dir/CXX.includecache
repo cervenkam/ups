@@ -41,28 +41,12 @@ config.h
 /home/martin/skola/UPS/SP/config.h
 thread
 -
-vector
--
 
 /home/martin/skola/UPS/SP/hand.h
 card.h
 /home/martin/skola/UPS/SP/card.h
 
-/home/martin/skola/UPS/SP/networking/commands.cxx
-commands.h
-/home/martin/skola/UPS/SP/networking/commands.h
-../config.h
-/home/martin/skola/UPS/SP/config.h
-lang.h
-/home/martin/skola/UPS/SP/networking/lang.h
-cstring
--
-iostream
--
-unistd.h
--
-../stdmcr.h
-/home/martin/skola/UPS/SP/stdmcr.h
+/home/martin/skola/UPS/SP/lang.h
 
 /home/martin/skola/UPS/SP/networking/commands.h
 server.h
@@ -88,7 +72,23 @@ netinet/in.h
 netdb.h
 -
 
-/home/martin/skola/UPS/SP/networking/lang.h
+/home/martin/skola/UPS/SP/networking/server.cxx
+server.h
+/home/martin/skola/UPS/SP/networking/server.h
+../stdmcr.h
+/home/martin/skola/UPS/SP/stdmcr.h
+unistd.h
+-
+iostream
+-
+cstring
+-
+thread
+-
+vector
+-
+commonnetwork.h
+/home/martin/skola/UPS/SP/networking/commonnetwork.h
 
 /home/martin/skola/UPS/SP/networking/server.h
 commands.h
@@ -97,8 +97,6 @@ commonnetwork.h
 /home/martin/skola/UPS/SP/networking/commonnetwork.h
 ../game.h
 /home/martin/skola/UPS/SP/game.h
-vector
--
 thread
 -
 ../semaphore.h

@@ -22,8 +22,8 @@ bool Semaphore::Wait(unsigned timeout){
 		}
 		ret_value = false;
 	}
-	return ret_value;
 	m_count--;
+	return ret_value;
 }
 
 void Semaphore::Notify(){

@@ -17,10 +17,6 @@ class Commands{
 		Commands();
 		~Commands();
 		Commands(int,Server*,NetworkPlayer*,Game*);
-		int GetSocket();
-		Server* GetServer();
-		NetworkPlayer* GetPlayer();
-		Game* GetGame();
 		void SetSocket(int);
 		void SetServer(Server*);
 		void SetPlayer(NetworkPlayer*);
@@ -28,12 +24,17 @@ class Commands{
 		void Call(char* command);
 		void Start();
 		void SetThread(thread*);
-		thread* GetThread();
 		void SetConnected(bool);
-		bool IsConnected();
 		void SetRunning(bool);
-		bool IsRunning();
-		Semaphore* GetSemaphore();
+		//GETTERS
+		Semaphore* GetSemaphore();//GETTER
+		thread* GetThread();//GETTER
+		bool IsConnected();//GETTER
+		bool IsRunning();//GETTER
+		int GetSocket();//GETTER
+		Server* GetServer();//GETTER
+		NetworkPlayer* GetPlayer();//GETTER
+		Game* GetGame();//GETTER
 
 		void      Disconnect(char*);  
 		void  DisconnectHard(char*);  

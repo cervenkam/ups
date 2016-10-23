@@ -43,8 +43,7 @@ void Deck::Print(){
 		<= First card on this deck
 */
 Card* Deck::Pop(){
-	unsigned char size=Size();
-	Card* popped = m_cards[size-1];
+	Card* popped = m_cards[Size()-1];
 	m_count--;
 	return popped;	
 }
@@ -61,15 +60,9 @@ Card* Deck::Peek(){
 		=> card Card to be pushed
 		<= Is successfully pushed?
 */
-bool Deck::Push(Card* card){
-	unsigned char size = Size();
-	if(size == ms_COUNT){
-		return false;
-	}else{
-		m_cards[m_count]=card;
-		m_count++;
-		return true;
-	}
+void Deck::Push(Card* card){
+	m_cards[m_count]=card;
+	m_count++;
 }
 /*
 	Returns size of this deck

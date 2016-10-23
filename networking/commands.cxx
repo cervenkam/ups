@@ -72,7 +72,7 @@ void Commands::Start(){
 	Welcome(nullptr);
 	while(m_running){
 		while(m_running && m_is_connected){
-			char* msg = m_server->Receive(this,m_sock);
+			char* msg = m_server->Receive(m_sock);
 			if(msg){
 				Call(msg);
 			}else{

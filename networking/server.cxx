@@ -48,10 +48,6 @@ void Server::Start(){
 		TEST_ERR_DO(errno>0,STDMSG("0;36","Stopping"),break);
 		TEST_ERR_DO(sckt<0,"Cannot accept socket",close(m_sock))
 		STDMSG("0;36","Connection: " << inet_ntoa(in_addr.sin_addr) << ":" << ntohs(in_addr.sin_port));
-		/*struct timeval tv;
-		tv.tv_sec = 30;
-		tv.tv_usec = 0;
-		setsockopt(sckt,SOL_SOCKET,SO_RCVTIMEO,(char*)&tv,sizeof(struct timeval));*/
 		Commands* cmd = new Commands(); //deleted in GarbageCollector function
 		cmd->SetServer(this);
 		cmd->SetSocket(sckt);
@@ -132,27 +128,21 @@ void Server::TidyUp(Commands* cmds){
 	m_semaphore->Notify();
 	cmds=nullptr;
 }
-char* Server::Receive(Commands* cmds,int sock){
+char* Server::Receive(int sock){
 	uint32_t netlen;
 	int rcv = recv(sock,&netlen,sizeof(uint32_t),0);
 	if(errno==EAGAIN || errno==EWOULDBLOCK){
-		STDMSG("0;36","Disconnect: timeout exceeded");
-		cmds->Disconnect(nullptr);
-		TidyUp(cmds);
 		return nullptr;
 	}else if(rcv<0){
-		cmds->SetConnected(false);
+		errno=-1;
 		return nullptr;
 	}
 	unsigned length = ntohl(netlen);
 	rcv = recv(sock,&m_internal_storage,sizeof(char)*MAX_LEN,0);
 	if(errno==EAGAIN || errno==EWOULDBLOCK){
-		STDMSG("0;36","Disconnect: timeout exceeded");
-		cmds->Disconnect(nullptr);
-		TidyUp(cmds);
+		errno=-1;
 		return nullptr;
 	}else if(rcv<0){
-		cmds->SetConnected(false);
 		return nullptr;
 	}
 	m_internal_storage[length]='\0';
@@ -179,14 +169,6 @@ Game* Server::GetGame(unsigned index){
 
 void Server::AddGame(Game* game){
 	m_games.push_back(game);
-}
-
-unsigned Server::GetCountOfCommands(){
-	return m_commands.size();
-}
-
-Commands* Server::GetCommands(unsigned index){
-	return m_commands[index];
 }
 
 void Server::AddCommands(Commands* command){

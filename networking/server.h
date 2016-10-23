@@ -4,7 +4,6 @@
 #include "commands.h"
 #include "commonnetwork.h"
 #include "../game.h"
-#include <vector>
 #include <thread>
 #include "../semaphore.h"
 
@@ -13,18 +12,17 @@ class Server{
 	public:
 		void Start();
 		void Stop();
-		char* Receive(Commands*,int sock);
+		char* Receive(int sock);
 		Server(unsigned port);
 		~Server();
 		void Send(int sock,const char* message);
-		unsigned GetCountOfGames();
-		Game* GetGame(unsigned index);
 		void AddGame(Game* game);
-		unsigned GetCountOfCommands();
-		Commands* GetCommands(unsigned index);
 		void AddCommands(Commands* command);
 		void GarbageCollector();
 		void TidyUp(Commands* commands);
+		//GETTERS
+		unsigned GetCountOfGames(); //GETTER
+		Game* GetGame(unsigned index); //GETTER
 	private:
 		void StopGame();
 
