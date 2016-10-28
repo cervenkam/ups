@@ -20,15 +20,14 @@ class Card{
 	public:
 		Card(unsigned char value);
 		~Card();
-		//GETTERS
-		unsigned char GetColor() const;//GETTER
-		unsigned char GetRank() const;//GETTER
-		friend ostream& operator<<(ostream& os,const Card& card);//GETTER
-		bool IsPlayable(Card* card) const;//GETTER
-		bool IsSpecial() const;//GETTER
-		bool IsValuable() const;//GETTER
-		char* ToString();//GETTER
-		static unsigned char FromString(const char* const str);//GETTER
+		unsigned char GetColor() const;
+		unsigned char GetRank() const;
+		friend ostream& operator<<(ostream& os,const Card& card);//NON VALID GETTER
+		bool IsPlayable(const Card* card) const;
+		bool IsSpecial() const;
+		bool IsValuable() const;
+		char* ToString() const;
+		static unsigned char FromString(const char* const str);
 	private:
 		static unsigned ColorFromString(char* str);
 		static unsigned ValueFromString(char* str);

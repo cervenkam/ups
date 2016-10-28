@@ -10,7 +10,7 @@
 	Returns size of the hand (number of cards)
 		<= Number of cards in hand
 */
-unsigned char Hand::Size(){
+unsigned char Hand::Size() const{
 	return m_count;
 }
 /*
@@ -18,7 +18,7 @@ unsigned char Hand::Size(){
 		<= index Specified position
 		=> Card on position
 */
-Card* Hand::Get(unsigned char index){
+const Card* Hand::Get(unsigned char index) const{
 	if(index>=m_count){
 		return nullptr;
 	}else{
@@ -30,12 +30,12 @@ Card* Hand::Get(unsigned char index){
 		=> index Position of the card in hand
 		<= Card to be used
 */
-Card* Hand::Use(unsigned char index){
+const Card* Hand::Use(unsigned char index){
 	if(index>=m_count){
 		cerr << "Card does not exists" << endl;
 		return nullptr;
 	}
-	Card* tmp = m_cards[index];
+	const Card* tmp = m_cards[index];
 	m_cards[index]=m_cards[--m_count];
 	return tmp;
 }
@@ -44,7 +44,7 @@ Card* Hand::Use(unsigned char index){
 		=> card Card to be added
 		<= Has been added?
 */
-bool Hand::Add(Card* card){
+bool Hand::Add(const Card* card){
 	if(m_count==ms_SIZE){
 		return false;
 	}

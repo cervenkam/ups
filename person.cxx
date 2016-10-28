@@ -27,16 +27,16 @@ Person::Person(const char* player,unsigned char ch): Algorithm(player,ch){
 		=> card Played card
 		=> player Player which used card
 */
-void Person::Used(Card* card,unsigned char player){
+void Person::Used(const Card* card,unsigned char player){
 	if(card==nullptr){
 		OUT(m_game->GetAlgorithm(player)->m_player << " " << ENDS << endl);
 	}else{
 		OUT(m_game->GetAlgorithm(player)->m_player << " " << USED << " " << *card << endl);
 	}
 }
-void Person::Print(unsigned card,bool){
+void Person::Print(unsigned card,bool) const{
 	OUT(MOVED(99) << MOVEC(MOVE_X) << MOVEA(2));
-	Hand* hand = GetHand();
+	const Hand* hand = GetHand();
 	unsigned char size = hand->Size();
 	for(unsigned char b=0; b<size; b++){
 		OUT(*hand->Get(b));
@@ -56,13 +56,13 @@ void Person::Print(unsigned card,bool){
 		<= Card which will be used
 */
 
-Card* Person::Play(bool force){
-	Hand* hand = GetHand();
+const Card* Person::Play(bool force) const{
+	const Hand* hand = GetHand();
 	while(hand->Size()>0){
 		unsigned card = 0;
 		while(OnePlay(hand,card)) {;}
 		if(card<hand->Size()){
-			Card* crd = hand->Get(card);
+			const Card* crd = hand->Get(card);
 			if(force || !m_game->FirstCard() || m_game->FirstCard()->IsPlayable(crd)){
 				return crd;
 			}
@@ -76,7 +76,7 @@ Card* Person::Play(bool force){
 	return nullptr;
 }
 
-bool Person::OnePlay(Hand* hand,unsigned& card){
+bool Person::OnePlay(const Hand* hand,unsigned& card) const{
 	Print(card,true);
 	READ(char c = getchar());
 	OUT(MOVED(5) << "     " << endl);
@@ -98,7 +98,7 @@ bool Person::OnePlay(Hand* hand,unsigned& card){
 	Selects if this player wants to start new game
 		<= 1 want to, -1 dont want to, 0 don't care
 */
-char Person::Vote(){
+char Person::Vote() const{
 	char end;
 	OUT(CONTINUE);
 	cin >> end;

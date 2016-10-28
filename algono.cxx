@@ -23,18 +23,18 @@ AlgoNo::AlgoNo(const char* player,unsigned char ch): Algorithm(player,ch){
 		=> card Player card
 		=> player ID of the player which played card
 */
-void AlgoNo::Used(Card* card,unsigned char player){ (void)card; (void)player; }
+void AlgoNo::Used(const Card*,unsigned char){}
 /*
 	Defines the card which this player will use
 		=> force Force the player to play? (he is not lay down the first card)
 		<= Card which will player use
 */
-Card* AlgoNo::Play(bool force){
+const Card* AlgoNo::Play(bool force) const{
 	if(!force){
 		return nullptr;
 	}
-	Hand* hand = GetHand();
-	Card* first = m_game->FirstCard();
+	const Hand* hand = GetHand();
+	const Card* first = m_game->FirstCard();
 	unsigned char size = hand->Size();
 	for(unsigned char a=0; a<size; a++){
 		if(first==nullptr || hand->Get(a)->IsPlayable(first)){
@@ -47,7 +47,7 @@ Card* AlgoNo::Play(bool force){
 	Selects if this player wants to start new game
 		<= 1 want to, -1 dont want to, 0 don't care
 */
-char AlgoNo::Vote(){
+char AlgoNo::Vote() const{
 	return 0; //"don't care" vote
 }
 /*

@@ -47,7 +47,7 @@ void Algorithm::SetGame(Game* game){
 	Lays down the card from player to table
 		=> card Played card
 */
-bool Algorithm::Send(Card* card){
+bool Algorithm::Send(const Card* card){
 	bool ok = (card==nullptr);
 	unsigned char count = m_hand->Size();
 	for(unsigned char a=0; !ok && a<count; a++){
@@ -84,7 +84,7 @@ Semaphore* Algorithm::GetSemaphoreForVote(){
 	Returns the player's hand
 		<= Player's card 
 */
-Hand* Algorithm::GetHand(){
+const Hand* Algorithm::GetHand() const{
 	return m_hand;
 }
 /*
@@ -142,4 +142,25 @@ Algorithm::~Algorithm(){
 		delete[] m_player; //created in Configuration::Load
 		STDMSG("1;35","Deleted:    Algorithm");
 	}
+}
+void Algorithm::VoteNotify() const{
+	m_semaphore_voting->Notify();
+}
+void Algorithm::Notify() const{
+	m_semaphore->Notify();
+}
+bool Algorithm::VoteWait(unsigned timeout) const{
+	return m_semaphore_voting->Wait(timeout);
+}
+bool Algorithm::Wait(unsigned timeout) const{
+	return m_semaphore->Wait(timeout);
+}
+bool Algorithm::AddCard(const Card* card){
+	return m_hand->Add(card);
+}
+void Algorithm::ClearCards(){
+	m_hand->Clear();
+}
+const Card* Algorithm::UseCard(unsigned index){
+	return m_hand->Use(index);
 }

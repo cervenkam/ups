@@ -10,17 +10,17 @@ class NetworkPlayer: public Algorithm{
 		NetworkPlayer(const char* player,unsigned char ch);
 		~NetworkPlayer();
 		void SetGameForBothMeAndBot(Game* game);
-		void Used(Card*,unsigned char);
+		void Used(const Card*,unsigned char);
 		void SetCommands(Commands* commands);
-		void SetCard(Card* card);
+		void SetCard(const Card* card);
 		void SetVote(char vote);
-		//GETTERS
-		char Vote();//GETTER
-		Commands* GetCommands();//GETTER
-		Card* Play(bool force);//GETTER
+		char Vote() const;
+		const Card* Play(bool force) const;//NON VALID GETTER
+		void TrySend(char* buff);
 	private:
+		Commands* GetCommands();
 		Commands* m_commands;
-		Card* m_card;
+		const Card* m_card;
 		char m_vote;
 		ProgrammerBot* m_bot;
 };

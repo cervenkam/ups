@@ -5,13 +5,12 @@
 class Person: public Algorithm{
 	public:
 		Person(const char* player,unsigned char ch);
-		void Used(Card* card,unsigned char player);
-		void Print(unsigned card,bool clear);
-		//GETTERS
-		Card* Play(bool force);//GETTER
-		char Vote();//GETTER
+		void Used(const Card* card,unsigned char player);
+		void Print(unsigned card,bool clear) const;
+		const Card* Play(bool force) const;//NON VALID GETTER
+		char Vote() const;
 	private:
-		bool OnePlay(Hand*,unsigned&);//GETTER
+		bool OnePlay(const Hand*,unsigned&) const;
 };
 
 #endif

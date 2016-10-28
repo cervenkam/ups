@@ -10,20 +10,21 @@
 using namespace std;
 Server::Server(unsigned port){
 	m_port = port;
+	m_semaphore_gc = new Semaphore(0);
 }
 
 Server::~Server(){
 	unsigned len=m_commands.size();
 	for(unsigned a=0; a<len; a++){
 		m_commands[a]->SetSocket(0);
-		m_commands[a]->GetThread()->join();
+		m_commands[a]->Join();
 		delete m_commands[a]; //created in Start funtion
 	}
 	len = m_games.size();
 	for(unsigned a=0; a<len; a++){
 		delete m_games[a]; //created in Commands::CreateGame
 	}
-	delete m_semaphore; //created in constructor
+	delete m_semaphore_gc; //created in constructor
 	STDMSG("1;35","Deleted:    Server");
 }
 
@@ -38,7 +39,27 @@ void Server::Listen(saddrin& addr){
 	int lsn = listen(m_sock, 10);
 	TEST_ERR(lsn<0,"Cannot listen")
 	STDMSG("0;36","Listen:     port " << m_port);
-	m_garbage_collector = new thread(&Commands::GarbageCollector); //deleted at the end of Start function
+	m_garbage_collector = new thread(&Server::GarbageCollector,this); //deleted at the end of Start function
+}
+void Server::GarbageCollector(){
+	while(IsRunning()){
+		GetGCSemaphore()->Wait();
+		if(GetCommands()){
+			GetCommands()->GarbageCollect();
+			delete GetCommands();
+			SetCommands(nullptr);
+		}
+	}
+}
+void Server::TidyUp(Commands* cmd){
+	SetCommands(cmd);
+	GetGCSemaphore()->Notify();
+}
+void Server::SetCommands(Commands* cmd){
+	m_cmds = cmd;
+}
+Commands* Server::GetCommands(){
+	return m_cmds;
 }
 void Server::Start(){
 	saddrin addr,in_addr;
@@ -52,7 +73,7 @@ void Server::Start(){
 	unsigned len = m_commands.size();
 	for(unsigned a=0; a<len; a++){
 		m_commands[a]->SetRunning(false);
-		m_commands[a]->GetSemaphore()->Notify();	
+		m_commands[a]->Notify();	
 	}
 	delete m_garbage_collector; //created in Listen function
 }
@@ -96,9 +117,8 @@ void Server::RemoveGame(Game* game){
 void Server::Stop(){
 	close(m_sock);
 }
-void Server::TidyUp(Commands* cmds){
-	cmds->GetGCSemaphore()->Notify();
-	delete cmds;
+Semaphore* Server::GetGCSemaphore(){
+	return m_semaphore_gc;
 }
 char* Server::Receive(int sock){
 	uint32_t netlen;

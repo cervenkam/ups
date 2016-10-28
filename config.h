@@ -9,12 +9,11 @@ class Configuration{
 		Configuration(string str);
 		~Configuration();
 		void SetCount(unsigned count);
-		//GETTERS
-		Algorithm* GetAlgorithm(const char* name,const char* player_name,unsigned id);//GETTER
-		bool AreOwnRules();//GETTER
-		Algorithm** GetAlgorithms();//GETTER
-		unsigned GetCount();//GETTER
+		bool AreOwnRules();
+		Algorithm** GetAlgorithms();//NON VALID GETTER
+		unsigned GetCount();
 	private:
+		Algorithm* GetAlgorithm(const char* name,const char* player_name,unsigned id);
 		bool ParseOneParameter(unsigned&,char*&,char*&,char*,char*);
 		void ReadLines(istringstream&,unsigned&,char*&,char*,char*);
 		void AddAlgorithm(unsigned&,char*&,char*);

@@ -11,10 +11,9 @@ class AlgoNo: public Algorithm{
 	public:
 		AlgoNo(const char* player,unsigned char ch);
 		~AlgoNo();
-		//GETTERS
-		void Used(Card*,unsigned char);//GETTER
-		Card* Play(bool force);//GETTER
-		char Vote();//GETTER
+		void Used(const Card*,unsigned char);
+		const Card* Play(bool force) const;//NON VALID GETTER
+		char Vote() const;
 };
 
 #endif

@@ -6,17 +6,16 @@ class ProgrammerBot: public Algorithm{
 	public:
 		ProgrammerBot(const char* player,unsigned char ch);
 		ProgrammerBot(const Algorithm& algo);
-		void Used(Card*,unsigned char);
+		void Used(const Card*,unsigned char);
 		~ProgrammerBot();
-		//GETTERS
-		Card* Play(bool force);//GETTER
-		char Vote();//GETTER
+		const Card* Play(bool force) const;//NON VALID GETTER
+		char Vote() const;
 	private:
-		Card* GetAnythingElse();
-		Card* TryPutFirstCard();
-		Card* TryValuableCard();
-		Card* GetRandomCard();
-		Card* TryByCardCounts(unsigned);
+		const Card* GetAnythingElse() const;
+		const Card* TryPutFirstCard() const;
+		const Card* TryValuableCard() const;
+		const Card* GetRandomCard() const;
+		const Card* TryByCardCounts(unsigned) const;
 		unsigned m_counterX = 0;
 		unsigned m_counterE = 0;
 		unsigned m_counter7 = 0;

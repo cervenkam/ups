@@ -104,8 +104,8 @@ bool Game::VotePasses(){
 void Game::StopParallel(){
 	m_end_of_game = true;
 	for(unsigned a=0; a<m_players; a++){
-		m_algos[a]->GetSemaphore()->Notify();
-		m_algos[a]->GetSemaphoreForVote()->Notify();
+		m_algos[a]->Notify();
+		m_algos[a]->VoteNotify();
 	}
 	if(m_thr != nullptr){
 		m_thr->join();
@@ -150,7 +150,7 @@ void Game::Loop(){
 		}
 	}
 }
-bool Game::ChooseCard(unsigned& player,unsigned& winner,Card*& card, bool& started){
+bool Game::ChooseCard(unsigned& player,unsigned& winner,const Card*& card, bool& started){
 	started = IsHeStarted(player);
 	card = m_algos[player]->Play(!started || !FirstCard());
 	if(!m_end_of_game && started && card){
@@ -166,7 +166,7 @@ bool Game::ChooseCard(unsigned& player,unsigned& winner,Card*& card, bool& start
 	}
 	return true;
 }
-bool Game::ReactOnCard(unsigned& player,unsigned& winner,Card*& card, bool& started){
+bool Game::ReactOnCard(unsigned& player,unsigned& winner,const Card*& card, bool& started){
 	if(FirstCard() && !FirstCard()->IsPlayable(card)){
 		card = nullptr;
 		started = false;
@@ -181,7 +181,7 @@ bool Game::FillHands(){
 	//fill the hands
 	for(unsigned y=0;; y++, y%=m_players){
 		unsigned char b = (y+GetStarted())%m_players;
-		if(m_deck->Size()>0 && m_algos[b]->GetHand()->Add(m_deck->Peek())){
+		if(m_deck->Size()>0 && m_algos[b]->AddCard(m_deck->Peek())){
 			m_deck->Pop();
 		}else{
 			break;
@@ -194,7 +194,7 @@ bool Game::FillHands(){
 	return false;
 }
 bool Game::OneHand(unsigned& winner,unsigned& player){
-	Card* card = nullptr;
+	const Card* card = nullptr;
 	bool started;
 	do{
 		if(!ChooseCard(player,winner,card,started)){
@@ -211,7 +211,7 @@ bool Game::OneHand(unsigned& winner,unsigned& player){
 	}
 	return !UseCard(card,player,winner);
 }
-bool Game::UseCard(Card* card,unsigned& player, unsigned& winner){
+bool Game::UseCard(const Card* card,unsigned& player, unsigned& winner){
 	m_algos[player]->Send(card);
 	if(!card){
 		if(UseNoCard(player,winner)){
@@ -224,7 +224,7 @@ bool Game::UseCard(Card* card,unsigned& player, unsigned& winner){
 	}
 	return false;
 }
-bool Game::UseValidCard(Card* card,unsigned& player, unsigned& winner){
+bool Game::UseValidCard(const Card* card,unsigned& player, unsigned& winner){
 	if(FirstCard() && FirstCard()->GetRank()==card->GetRank()){
 		counter_of_same_cards++;
 	}else{
@@ -262,7 +262,7 @@ bool Game::UseNoCard(unsigned& player, unsigned& winner){
 bool Game::SameCards(){
 	for(unsigned y=0; y<m_players; y++){
 		unsigned char b = (y+GetStarted())%m_players;
-		Hand* hand = m_algos[b]->GetHand();
+		const Hand* hand = m_algos[b]->GetHand();
 		unsigned size = hand->Size();
 		if(size!=Hand::ms_SIZE){
 			return false;
@@ -284,12 +284,12 @@ void Game::FoundSameCards(unsigned winner_index){
 	}
 	m_algos[winner_index]->AddPoints(10);
 	for(unsigned c=0; c<m_players; c++){
-		m_algos[c]->GetHand()->Clear();
+		m_algos[c]->ClearCards();
 	}
 	OUT(m_algos[winner_index]->m_player << " " << SAME_CARDS_HAND << endl);
 	End();
 }
-void Game::DetermineWinner(Card* card,unsigned& player, unsigned& winner){
+void Game::DetermineWinner(const Card* card,unsigned& player, unsigned& winner){
 	if(card->IsValuable()){
 		m_points++;
 	}
@@ -300,11 +300,11 @@ void Game::DetermineWinner(Card* card,unsigned& player, unsigned& winner){
 		//player = (winner+(players-1))%players;
 	}
 	//Search for the card
-	Hand* hand = m_algos[player]->GetHand();
+	const Hand* hand = m_algos[player]->GetHand();
 	unsigned char handsize = hand->Size();
 	for(unsigned char b=0; b<handsize; b++){
 		if(hand->Get(b)==card){
-			hand->Use(b); 
+			m_algos[player]->UseCard(b); 
 		}
 	}
 }
@@ -322,9 +322,12 @@ void Game::Print(){
 	}
 	OUT(endl);
 }
-Card* Game::FirstCard(){
+const Card* Game::FirstCard(){
 	return m_first;
 }
-void Game::SetFirstCard(Card* card){
+void Game::SetFirstCard(const Card* card){
 	m_first=card;
+}
+const char* Game::GetAlgorithmName(unsigned index){
+	return m_algos[index]->m_player;
 }

@@ -10,10 +10,10 @@
 #include <iostream>
 #define HAZARD 2
 #define FIND_DO(x,y) { \
-		Hand* hnd = GetHand(); \
+		const Hand* hnd = GetHand(); \
 		unsigned char sze = hnd->Size(); \
 		for(unsigned a=0; a<sze; a++){ \
-			Card* card = hnd->Get(a); \
+			const Card* card = hnd->Get(a); \
 			if(x){ \
 				y; \
 			} \
@@ -45,7 +45,7 @@ ProgrammerBot::ProgrammerBot(const Algorithm& algo): Algorithm(algo){
 		=> card Player card
 		=> player ID of the player which played card
 */
-void ProgrammerBot::Used(Card* card,unsigned char player){
+void ProgrammerBot::Used(const Card* card,unsigned char player){
 	if(card==nullptr){
 		return;
 	}
@@ -61,9 +61,9 @@ void ProgrammerBot::Used(Card* card,unsigned char player){
 		=> force Force the player to play? (he is not lay down the first card)
 		<= Card which will player use
 */
-Card* ProgrammerBot::Play(bool force){
+const Card* ProgrammerBot::Play(bool force) const{
 	if(force){
-		Card* crd = nullptr;
+		const Card* crd = nullptr;
 		if((crd = TryPutFirstCard())){
 			return crd;
 		}
@@ -80,7 +80,7 @@ Card* ProgrammerBot::Play(bool force){
 		return nullptr;
 	}
 }
-Card* ProgrammerBot::GetAnythingElse(){
+const Card* ProgrammerBot::GetAnythingElse() const{
 	if(!m_game->FirstCard()->IsValuable()){
 		FIND(card->GetRank()==m_game->FirstCard()->GetRank())
 	}
@@ -88,20 +88,20 @@ Card* ProgrammerBot::GetAnythingElse(){
 	FIND_P(0.7,card->GetRank()==CARD_7)
 	return GetHand()->Get(0); // TODO dangerous
 }
-Card* ProgrammerBot::TryPutFirstCard(){
+const Card* ProgrammerBot::TryPutFirstCard() const{
 	if(!m_game->FirstCard()){
 		return GetRandomCard();
 	}else{
 		return nullptr;
 	}
 }
-Card* ProgrammerBot::GetRandomCard(){
-	Hand* hand = GetHand();
+const Card* ProgrammerBot::GetRandomCard() const{
+	const Hand* hand = GetHand();
 	unsigned char size = hand->Size();
 	unsigned count = 0;
 	unsigned index = 0;
 	for(unsigned x=0; x<size; x++){
-		Card* c1 = hand->Get(x);
+		const Card* c1 = hand->Get(x);
 		if(c1->GetRank()==CARD_7){
 			continue;
 		}
@@ -114,7 +114,7 @@ Card* ProgrammerBot::GetRandomCard(){
 	}
 	return hand->Get(index);
 }
-Card* ProgrammerBot::TryValuableCard(){
+const Card* ProgrammerBot::TryValuableCard() const{
 	if(m_game->FirstCard()->IsValuable()){
 		int count = 0;
 		FIND_DO(card->GetRank()==m_game->FirstCard()->GetRank() || card->GetRank()==CARD_7,count++)
@@ -124,7 +124,7 @@ Card* ProgrammerBot::TryValuableCard(){
 	}
 	return nullptr;
 }
-Card* ProgrammerBot::TryByCardCounts(unsigned count){
+const Card* ProgrammerBot::TryByCardCounts(unsigned count) const{
 	unsigned alreadyPlayed = m_counter7;
 	if(m_game->FirstCard()->GetRank()==CARD_X){
 		alreadyPlayed += m_counterX;
@@ -142,7 +142,7 @@ Card* ProgrammerBot::TryByCardCounts(unsigned count){
 	Selects if this player wants to start new game
 		<= 1 want to, -1 dont want to, 0 don't care
 */
-char ProgrammerBot::Vote(){
+char ProgrammerBot::Vote() const{
 	return 0; //"don't care" vote
 }
 /*

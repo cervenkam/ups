@@ -9,12 +9,11 @@ class Deck{
 		void Fill();
 		void Print();
 		void ThrowAway(unsigned char count);
-		void Push(Card* card);//GETTER
+		void Push(Card* card);
 		~Deck();
-		//GETTERS
-		Card* Pop();//GETTER
-		Card* Peek();//GETTER
-		unsigned char Size();//GETTER
+		Card* Pop();//NON VALID GETTER
+		Card* Peek();//NON VALID GETTER
+		unsigned char Size();
 	private:
 		Card* m_cards[ms_COUNT];
 		unsigned char m_count = 0;

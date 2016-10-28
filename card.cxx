@@ -66,7 +66,7 @@ ostream& operator<<(ostream& cout,const Card& card){
 		=> card THE card
 		<= Is playable?
 */
-bool Card::IsPlayable(Card* card) const{
+bool Card::IsPlayable(const Card* card) const{
 	if(card==nullptr){
 		return true;
 	}
@@ -96,7 +96,7 @@ bool Card::IsSpecial() const{
 	Converts number reprezentation to string
 		<= String reprezentation
 */
-char* Card::ToString(){
+char* Card::ToString() const{
 	return m_name;	
 }
 /*

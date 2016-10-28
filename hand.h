@@ -7,13 +7,12 @@ class Hand{
 		static const unsigned char ms_SIZE = 4;
 		void Clear();
 		~Hand();
-		//GETTERS
-		bool Add(Card* card);//GETTER
-		unsigned char Size();//GETTER
-		Card* Get(unsigned char index);//GETTER
-		Card* Use(unsigned char index);//GETTER
+		bool Add(const Card* card);
+		unsigned char Size() const;
+		const Card* Get(unsigned char index) const;//NON VALID GETTER
+		const Card* Use(unsigned char index);//NON VALID GETTER
 	private:
-		Card* m_cards[ms_SIZE];
+		const Card* m_cards[ms_SIZE];
 		unsigned char m_count = 0;
 };
 

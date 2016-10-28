@@ -51,15 +51,15 @@ void NetworkPlayer::SetVote(char vote){
 		=> card Player card
 		=> player ID of the player which played card
 */
-void NetworkPlayer::Used(Card* card,unsigned char player){
+void NetworkPlayer::Used(const Card* card,unsigned char player){
 	m_bot->Used(card,player);
-	if(m_commands && m_commands->GetServer() && m_commands->IsConnected()){
+	if(m_commands && m_commands->IsConnected()){
 		char* buff = new char[MAX_LEN]; //deleted at the end of this function
 		const char* text = "NULL";
 		if(card != nullptr){
 			text = card->ToString();
 		}
-		Append(Append(Add(buff,RESPONSE_USED_CARD),text),m_commands->GetGame()->GetAlgorithm(player)->m_player);
+		Append(Append(Add(buff,RESPONSE_USED_CARD),text),m_commands->GetAlgorithmName(player));
 		m_commands->TrySend(m_commands->GetSocket(),buff);
 		delete[] buff; //created at the start of this function
 	}
@@ -69,29 +69,31 @@ void NetworkPlayer::Used(Card* card,unsigned char player){
 		=> force Force the player to play? (he is not lay down the first card)
 		<= Card which will player use
 */
-Card* NetworkPlayer::Play(bool force){
+const Card* NetworkPlayer::Play(bool force) const{
 	if(m_commands == nullptr){
 		return m_bot->Play(force);
 	}
 	if(m_commands->IsConnected()){
-		m_commands->GetServer()->Send(m_commands->GetSocket(),RESPONSE_PLAY);
+		m_commands->TrySend(m_commands->GetSocket(),RESPONSE_PLAY);
 	}
-	if(GetSemaphore()->Wait(TIMEOUT)){
+	if(Wait(TIMEOUT)){
 		return m_bot->Play(force);
 	}
 	return m_card;
 }
-
+void NetworkPlayer::TrySend(char* buff){
+	GetCommands()->TrySend(GetCommands(),buff);
+}
 /*
 	Selects if this player wants to start new game
 		<= 1 want to, -1 dont want to, 0 don't care
 */
-char NetworkPlayer::Vote(){
+char NetworkPlayer::Vote() const{
 	if(m_commands == nullptr){
 		return m_bot->Vote();
 	}
-	m_commands->GetServer()->Send(m_commands->GetSocket(),RESPONSE_VOTE);
-	if(GetSemaphoreForVote()->Wait(TIMEOUT_VOTE)){
+	m_commands->TrySend(m_commands->GetSocket(),RESPONSE_VOTE);
+	if(VoteWait(TIMEOUT_VOTE)){
 		return -1;
 	}
 	return m_vote;
@@ -116,6 +118,6 @@ void NetworkPlayer::SetCommands(Commands* commands){
 /*
 	Sets the card which should player use
 */
-void NetworkPlayer::SetCard(Card* card){
+void NetworkPlayer::SetCard(const Card* card){
 	m_card = card;
 }

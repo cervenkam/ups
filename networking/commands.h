@@ -25,15 +25,13 @@ class Commands{
 		void SetThread(thread* const);
 		void SetConnected(bool);
 		void SetRunning(bool);
-		//GETTERS
-		Semaphore* GetSemaphore() const;//GETTER
-		thread* GetThread() const;//GETTER
-		bool IsConnected() const;//GETTER
-		bool IsRunning() const;//GETTER
-		int GetSocket() const;//GETTER
-		Server* GetServer() const;//GETTER
-		NetworkPlayer* GetPlayer() const;//GETTER
-		Game* GetGame() const;//GETTER
+		bool IsConnected() const;
+		bool IsRunning() const;
+		int GetSocket() const;
+		void GarbageCollect();
+		void Join() const;
+		void Notify() const;
+		const char* GetAlgorithmName(unsigned);
 
 		bool     TrySend(Commands*,const char* const) const;
 		bool     TrySend(int      ,const char* const) const;
@@ -56,21 +54,25 @@ class Commands{
 		void FindPlayerInGame(Game*,const char* const);
 		void TryStartMyGame();
 		static unsigned NumberOfSameLetters(const char* const,const char* const,unsigned);
-		void GarbageCollector();
 		void StopGame();
-		Semaphore* GetGCSemaphore();
+		bool FindReasonToStay(unsigned);
+		thread* GetThread() const;
+		Semaphore* GetSemaphore() const;
+		Server* GetServer() const;
+		NetworkPlayer* GetPlayer() const;
+		Game* GetGame() const;
 
 		Server* m_server;
 		int m_sock;
 		NetworkPlayer* m_player;
 		Game* m_game;
-		Card* m_card_to_play;
+		const Card* m_card_to_play;
 		thread* m_thread;
 		bool m_is_connected = true;
 		bool m_running = true;
 		Semaphore* m_semaphore;
-		Semaphore* m_semaphore_gc;
 
+		static Commands* ms_cmds;
 		static funcptr ms_commands[COMMANDS];
 		static const char* const ms_texts[COMMANDS];
 

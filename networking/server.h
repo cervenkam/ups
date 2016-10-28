@@ -19,16 +19,19 @@ class Server{
 		void AddGame(Game* game);
 		void AddCommands(Commands* command);
 		void TidyUp(Commands* commands);
-		//GETTERS
-		bool NewConnection(saddrin); //GETTER
-		unsigned GetCountOfGames(); //GETTER
-		Game* GetGame(unsigned index); //GETTER
+		bool NewConnection(saddrin); 
+		unsigned GetCountOfGames(); 
 		bool IsRunning();
 		void RemoveCommands(Commands*);
 		void RemoveGame(Game*);
+		void GarbageCollector();
+		void SetCommands(Commands*);
+		Game* GetGame(unsigned index); //NON VALID GETTER
 	private:
 		void StopGame();
 		void Listen(saddrin&);
+		Commands* GetCommands();
+		Semaphore* GetGCSemaphore();
 
 		unsigned m_port;
 		char m_internal_storage[MAX_LEN];
@@ -36,6 +39,7 @@ class Server{
 		vector<Game*> m_games;
 		thread* m_garbage_collector;
 		Commands* m_cmds;
+		Semaphore* m_semaphore_gc;
 		int m_sock;
 };
 

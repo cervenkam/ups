@@ -36,7 +36,6 @@ Commands::Commands(){
 	m_player = nullptr;
 	m_game = nullptr;
 	m_semaphore = new Semaphore(0); //deleted in destructor
-	m_semaphore_gc = new Semaphore(0); //deleted in destructor
 }
 
 void Commands::SendMessage(const char* const message) const{
@@ -47,8 +46,7 @@ void Commands::SendMessage(const char* const message) const{
 		Algorithm* algo = m_game->GetAlgorithm(a);
 		NetworkPlayer* np;
 		if((np = dynamic_cast<NetworkPlayer*>(algo))){
-			Commands* cmd = np->GetCommands();
-			TrySend(cmd,buff);
+			np->TrySend(buff);
 		}
 	}
 }
@@ -202,7 +200,7 @@ void Commands::MyCards(const char* const) const{
 	char* ptr = Add(buff,RESPONSE_YOUR_CARDS);
 	unsigned cardcount = m_player->GetHand()->Size();
 	for(unsigned c=0; c<cardcount; c++){
-		Card* card = m_player->GetHand()->Get(c);
+		const Card* card = m_player->GetHand()->Get(c);
 		char* str = card->ToString();
 		ptr = Append(ptr,str);
 	}
@@ -297,13 +295,13 @@ void Commands::SendCard(const char* const message){
 	unsigned b = value>>2;
 	unsigned cardcount = m_player->GetHand()->Size();
 	for(unsigned c=0; c<cardcount; c++){
-		Card* card = m_player->GetHand()->Get(c);
+		const Card* card = m_player->GetHand()->Get(c);
 		if(card->GetColor()==a && card->GetRank()==b){
 			m_card_to_play = card;
 		}
 	}
 	m_player->SetCard(m_card_to_play);
-	m_player->GetSemaphore()->Notify();
+	m_player->Notify();
 }
 
 void Commands::Vote(const char* const message) const{
@@ -314,7 +312,7 @@ void Commands::Vote(const char* const message) const{
 		vote = -1;
 	}
 	m_player->SetVote(vote);
-	m_player->GetSemaphoreForVote()->Notify();
+	m_player->VoteNotify();
 }
 
 void Commands::CreateGame(const char* const message) const{
@@ -338,26 +336,21 @@ void Commands::CreateGame(const char* const message) const{
 }
 Commands::~Commands(){
 	delete m_semaphore; //created in constructor
-	delete m_semaphore_gc; //created in constructor
 	delete m_thread; //created in Server::Start
 	STDMSG("1;35","Deleted:    Commands");
 }
-void Commands::GarbageCollector(){
-	while(GetServer()->IsRunning()){
-		GetGCSemaphore()->Wait();
-		if(!IsRunning()){
-			GetSemaphore()->Notify();	
-			GetServer()->RemoveCommands(this);
-			
-			GetThread()->join();
-			if(GetPlayer()!=nullptr){
-				GetPlayer()->SetReady(false);
-				GetPlayer()->SetCommands(nullptr);
-			}
-			StopGame();
-			STDMSG("0;36","Disconnected");
-			//delete m_cmds; //created in Start function TODO
+void Commands::GarbageCollect(){
+	if(!IsRunning()){
+		GetSemaphore()->Notify();	
+		GetServer()->RemoveCommands(this);
+		
+		GetThread()->join();
+		if(GetPlayer()!=nullptr){
+			GetPlayer()->SetReady(false);
+			GetPlayer()->SetCommands(nullptr);
 		}
+		StopGame();
+		STDMSG("0;36","Disconnected");
 	}
 }
 void Commands::StopGame(){
@@ -365,13 +358,9 @@ void Commands::StopGame(){
 		unsigned len = GetGame()->GetCountOfPlayers();
 		bool should_be_stopped = true;
 		for(unsigned a=0; a<len; a++){
-			Algorithm* algo = GetGame()->GetAlgorithm(a);
-			NetworkPlayer* player = nullptr;
-			if((player = dynamic_cast<NetworkPlayer*>(algo))){	
-				if(player != nullptr && player->IsReady()){
-					should_be_stopped=false;
-					break;
-				}
+			if(!FindReasonToStay(a)){
+				should_be_stopped = false;
+				break;
 			}
 		}
 		if(should_be_stopped){
@@ -380,8 +369,24 @@ void Commands::StopGame(){
 		}
 	}
 }
-Semaphore* Commands::GetGCSemaphore(){
-	return m_semaphore_gc;
+bool Commands::FindReasonToStay(unsigned algo_index){
+	Algorithm* algo = GetGame()->GetAlgorithm(algo_index);
+	NetworkPlayer* player = nullptr;
+	if((player = dynamic_cast<NetworkPlayer*>(algo))){	
+		if(player != nullptr && player->IsReady()){
+			return false;
+		}
+	}
+	return true;
+}
+void Commands::Join() const{
+	GetThread()->join();
+}
+void Commands::Notify() const{
+	GetSemaphore()->Notify();
+}
+const char* Commands::GetAlgorithmName(unsigned index){
+	return GetGame()->GetAlgorithmName(index);
 }
 void Commands::    _SendMessage(const char* msg){     SendMessage(msg); }
 void Commands::     _BadCommand(const char* msg){      BadCommand(msg); }
