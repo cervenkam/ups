@@ -7,6 +7,7 @@
 #include "networking/lang.h"
 #include "card.h"
 #include "hand.h"
+#include "stdmcr.h"
 #include <iostream>
 #include <cstring>
 
@@ -54,19 +55,12 @@ void NetworkPlayer::Used(Card* card,unsigned char player){
 	m_bot->Used(card,player);
 	if(m_commands && m_commands->GetServer() && m_commands->IsConnected()){
 		char* buff = new char[MAX_LEN]; //deleted at the end of this function
-		char* tmp = buff;
-		strcpy(buff,RESPONSE_USED_CARD);
-		tmp+=strlen(RESPONSE_USED_CARD);
-		tmp[0]=' ';
-		tmp++;
 		const char* text = "NULL";
 		if(card != nullptr){
 			text = card->ToString();
 		}
-		strcpy(tmp,text);
-		tmp+=strlen(text);
-		sprintf(tmp++," %s",m_commands->GetGame()->GetAlgorithm(player)->m_player); //automaticly appends '\0'
-		m_commands->GetServer()->Send(m_commands->GetSocket(),buff);
+		Append(Append(Add(buff,RESPONSE_USED_CARD),text),m_commands->GetGame()->GetAlgorithm(player)->m_player);
+		m_commands->TrySend(m_commands->GetSocket(),buff);
 		delete[] buff; //created at the start of this function
 	}
 }

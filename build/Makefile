@@ -412,6 +412,30 @@ semaphore.cxx.s:
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/semaphore.cxx.s
 .PHONY : semaphore.cxx.s
 
+stdmcr.o: stdmcr.cxx.o
+.PHONY : stdmcr.o
+
+# target to build an object file
+stdmcr.cxx.o:
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/stdmcr.cxx.o
+.PHONY : stdmcr.cxx.o
+
+stdmcr.i: stdmcr.cxx.i
+.PHONY : stdmcr.i
+
+# target to preprocess a source file
+stdmcr.cxx.i:
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/stdmcr.cxx.i
+.PHONY : stdmcr.cxx.i
+
+stdmcr.s: stdmcr.cxx.s
+.PHONY : stdmcr.s
+
+# target to generate assembly for a file
+stdmcr.cxx.s:
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/stdmcr.cxx.s
+.PHONY : stdmcr.cxx.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -458,6 +482,9 @@ help:
 	@echo "... semaphore.o"
 	@echo "... semaphore.i"
 	@echo "... semaphore.s"
+	@echo "... stdmcr.o"
+	@echo "... stdmcr.i"
+	@echo "... stdmcr.s"
 .PHONY : help
 
 

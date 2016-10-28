@@ -98,6 +98,7 @@ CMakeFiles/server.dir/networkplayer.cxx.o: ../networkplayer.cxx
 CMakeFiles/server.dir/networkplayer.cxx.o: ../networkplayer.h
 CMakeFiles/server.dir/networkplayer.cxx.o: ../programmerbot.h
 CMakeFiles/server.dir/networkplayer.cxx.o: ../semaphore.h
+CMakeFiles/server.dir/networkplayer.cxx.o: ../stdmcr.h
 
 CMakeFiles/server.dir/person.cxx.o: ../algorithm.h
 CMakeFiles/server.dir/person.cxx.o: ../card.h
@@ -124,4 +125,7 @@ CMakeFiles/server.dir/programmerbot.cxx.o: ../semaphore.h
 
 CMakeFiles/server.dir/semaphore.cxx.o: ../semaphore.cxx
 CMakeFiles/server.dir/semaphore.cxx.o: ../semaphore.h
+
+CMakeFiles/server.dir/stdmcr.cxx.o: ../stdmcr.cxx
+CMakeFiles/server.dir/stdmcr.cxx.o: ../stdmcr.h
 

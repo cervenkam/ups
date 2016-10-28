@@ -12,42 +12,53 @@
 class Server;
 class NetworkPlayer;
 class Commands{
-	typedef void (Commands::*funcptr)(char*);
+	typedef void (Commands::*funcptr)(const char* const);
 	public:
 		Commands();
 		~Commands();
-		Commands(int,Server*,NetworkPlayer*,Game*);
+		Commands(int,Server* const,NetworkPlayer* const,Game* const);
 		void SetSocket(int);
-		void SetServer(Server*);
-		void SetPlayer(NetworkPlayer*);
-		void SetGame(Game*);
-		void Call(char* command);
+		void SetServer(Server* const);
+		void SetPlayer(NetworkPlayer* const);
+		void SetGame(Game* const);
 		void Start();
-		void SetThread(thread*);
+		void SetThread(thread* const);
 		void SetConnected(bool);
 		void SetRunning(bool);
 		//GETTERS
-		Semaphore* GetSemaphore();//GETTER
-		thread* GetThread();//GETTER
-		bool IsConnected();//GETTER
-		bool IsRunning();//GETTER
-		int GetSocket();//GETTER
-		Server* GetServer();//GETTER
-		NetworkPlayer* GetPlayer();//GETTER
-		Game* GetGame();//GETTER
+		Semaphore* GetSemaphore() const;//GETTER
+		thread* GetThread() const;//GETTER
+		bool IsConnected() const;//GETTER
+		bool IsRunning() const;//GETTER
+		int GetSocket() const;//GETTER
+		Server* GetServer() const;//GETTER
+		NetworkPlayer* GetPlayer() const;//GETTER
+		Game* GetGame() const;//GETTER
 
-		void      Disconnect(char*);  
-		void  DisconnectHard(char*);  
+		bool     TrySend(Commands*,const char* const) const;
+		bool     TrySend(int      ,const char* const) const;
+		char* TryReceive(int sock                   ) const;
+		void             Call(const char* const);
+		void       Disconnect(const char* const);  
 	private:
-		void      BadCommand(const char*);
-		void      CreateGame(char*);
-		void           Login(char*);
-		void            Vote(char*);
-		void        SendCard(char*);
-		void         MyCards(char*);
-		void         Welcome(char*);
-		void GetCountOfCards(char*);
-		void     SendMessage(char*);
+		void            Login(const char* const);
+		void         SendCard(const char* const);
+		void      SendMessage(const char* const) const;
+		void       BadCommand(const char* const) const;
+		void       CreateGame(const char* const) const;
+		void             Vote(const char* const) const;
+		void          MyCards(const char* const) const;
+		void          Welcome(const char* const) const;
+		void  GetCountOfCards(const char* const) const;
+
+		int FindMethod(const char* const);
+		void InitPlayer(Game*);
+		void FindPlayerInGame(Game*,const char* const);
+		void TryStartMyGame();
+		static unsigned NumberOfSameLetters(const char* const,const char* const,unsigned);
+		void GarbageCollector();
+		void StopGame();
+		Semaphore* GetGCSemaphore();
 
 		Server* m_server;
 		int m_sock;
@@ -58,9 +69,18 @@ class Commands{
 		bool m_is_connected = true;
 		bool m_running = true;
 		Semaphore* m_semaphore;
+		Semaphore* m_semaphore_gc;
 
 		static funcptr ms_commands[COMMANDS];
-		static const char* ms_texts[COMMANDS];
+		static const char* const ms_texts[COMMANDS];
+
+		void     _SendMessage(const char* const);
+		void      _BadCommand(const char* const);
+		void      _CreateGame(const char* const);
+		void            _Vote(const char* const);
+		void         _MyCards(const char* const);
+		void         _Welcome(const char* const);
+		void _GetCountOfCards(const char* const);
 };
 
 

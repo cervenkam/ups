@@ -10,15 +10,15 @@ Commands::funcptr Commands::ms_commands[COMMANDS] = {
 	&Commands::Login,
 	&Commands::Disconnect,
 	&Commands::SendCard,
-	&Commands::CreateGame,
-	&Commands::MyCards,
-	&Commands::Welcome,
-	&Commands::GetCountOfCards,
-	&Commands::SendMessage,
-	&Commands::Vote
+	&Commands::_CreateGame,
+	&Commands::_MyCards,
+	&Commands::_Welcome,
+	&Commands::_GetCountOfCards,
+	&Commands::_SendMessage,
+	&Commands::_Vote
 };
 //requires first letter distinct
-const char* Commands::ms_texts[COMMANDS] = {
+const char* const Commands::ms_texts[COMMANDS] = {
 	QUERY_LOGIN,
 	QUERY_DISCONNECT,
 	QUERY_PLAY,
@@ -36,28 +36,19 @@ Commands::Commands(){
 	m_player = nullptr;
 	m_game = nullptr;
 	m_semaphore = new Semaphore(0); //deleted in destructor
+	m_semaphore_gc = new Semaphore(0); //deleted in destructor
 }
 
-void Commands::SendMessage(char* message){
+void Commands::SendMessage(const char* const message) const{
 	char buff[MAX_LEN];
-	strcpy(buff,RESPONSE_MESSAGE);
-	char* ptr = buff+strlen(RESPONSE_MESSAGE);
-	ptr[0] = ' ';
-	ptr++;
-	strcpy(ptr,m_player->m_player);
-	ptr+=strlen(m_player->m_player);
-	ptr[0] = ' ';
-	ptr++;
-	strcpy(ptr++,message);
+	Append(Append(Add(buff,RESPONSE_MESSAGE),m_player->m_player),message);
 	unsigned count = m_game->GetCountOfPlayers();
 	for(unsigned a=0; a<count; a++){
 		Algorithm* algo = m_game->GetAlgorithm(a);
 		NetworkPlayer* np;
 		if((np = dynamic_cast<NetworkPlayer*>(algo))){
 			Commands* cmd = np->GetCommands();
-			if(cmd!=nullptr && cmd->IsConnected()){
-				m_server->Send(cmd->m_sock,buff);
-			}
+			TrySend(cmd,buff);
 		}
 	}
 }
@@ -68,114 +59,113 @@ Commands::Commands(int sock,Server* server,NetworkPlayer* player,Game* game){
 	player->SetGameForBothMeAndBot(game);
 }
 
+
+bool Commands::TrySend(Commands* cmd,const char* const msg) const{
+	if(cmd==nullptr){
+		return false;
+	}
+	return TrySend(cmd->m_sock,msg);
+}
+bool Commands::TrySend(int sock,const char* const msg) const{
+	if(GetServer() && IsConnected() && IsRunning()){
+		m_server->Send(sock,msg);
+		return true;
+	}
+	return false;
+}
+char* Commands::TryReceive(int sock) const{
+	if(GetServer() && IsConnected() && IsRunning()){
+		return m_server->Receive(sock);
+	}
+	return nullptr;
+}
 void Commands::Start(){
 	Welcome(nullptr);
-	while(m_running){
-		while(m_running && m_is_connected){
-			char* msg = m_server->Receive(m_sock);
-			if(msg){
-				Call(msg);
-			}else{
-				m_is_connected = false;
-			}
+	while(IsRunning()){
+		for(char* msg;(msg = TryReceive(m_sock));){
+			Call(msg);
 		}
-		if(!m_running){
+		SetConnected(false);
+		if(!IsRunning()){
 			Disconnect(nullptr);
 			return;
 		}
 		STDMSG("0;36","Waiting:    For reconnection");
-		m_semaphore->Wait(TIMEOUT_CONNECTION);	
-		if(!m_is_connected){
-			DisconnectHard(nullptr);
+		GetSemaphore()->Wait(TIMEOUT_CONNECTION);	
+		if(!IsConnected()){
+			Disconnect(nullptr);
 			return;
 		}
 	}
 }
 
+Semaphore* Commands::GetSemaphore() const{
+	return m_semaphore;
+}
 void Commands::SetConnected(bool is_connected){
-	cout << "SET CONNECTED TO: " << is_connected << endl;
 	m_is_connected = is_connected;
 }
-bool Commands::IsConnected(){
+bool Commands::IsConnected() const{
 	return m_is_connected;
 }
 void Commands::SetRunning(bool running){
 	m_running = running;
 }
-bool Commands::IsRunning(){
+bool Commands::IsRunning() const{
 	return m_running;
 }
 void Commands::SetSocket(int sock){
 	m_sock=sock;
 }
 
-int Commands::GetSocket(){
+int Commands::GetSocket() const{
 	return m_sock;
 }
 
-void Commands::SetServer(Server* server){
+void Commands::SetServer(Server* const server){
 	m_server=server;
 }
 
-Server* Commands::GetServer(){
+Server* Commands::GetServer() const{
 	return m_server;
 }
 
-void Commands::SetPlayer(NetworkPlayer* player){
+void Commands::SetPlayer(NetworkPlayer* const player){
 	m_player=player;
 }
 
-NetworkPlayer* Commands::GetPlayer(){
+NetworkPlayer* Commands::GetPlayer() const{
 	return m_player;
 }
 
-void Commands::SetGame(Game* game){
+void Commands::SetGame(Game* const game){
 	m_game=game;
 }
 
-Game* Commands::GetGame(){
+Game* Commands::GetGame() const{
 	return m_game;
 }
 
-void Commands::SetThread(thread* thread){
+void Commands::SetThread(thread* const thread){
 	m_thread = thread;
 }
 
-thread* Commands::GetThread(){
+thread* Commands::GetThread() const{
 	return m_thread;
 }
 
-void Commands::Welcome(char*){
-	if(IsConnected()){
-		m_server->Send(m_sock,RESPONSE_WELCOME);
-	}
+void Commands::Welcome(const char* const) const{
+	TrySend(m_sock,RESPONSE_WELCOME);
 }
-void Commands::BadCommand(const char* command){
+void Commands::BadCommand(const char* const command) const{
 	cerr << BAD_COMMAND << command << endl;
 }
-void Commands::Call(char* command){
+void Commands::Call(const char* const command){
 	if(command == nullptr){
-		m_is_connected=false;
 		return;
 	}
-	unsigned max_len = 0;
-	unsigned index = 0;
-	unsigned cmdlen = strlen(command);
-	for(unsigned a=0; a<COMMANDS; a++){
-		unsigned len = strlen(ms_texts[a]);
-		unsigned min_len = len > cmdlen ? cmdlen : len;
-		unsigned b;
-		for(b=0; b<min_len; b++){
-			if(command[b] != ms_texts[a][b]){
-				break;
-			}
-		}
-		if(max_len < b){
-			max_len = b;
-			index = a;
-		}
-	}
-	if(max_len > 0){
+	int index = FindMethod(command);
+	if(index>=0){
 		(this->*ms_commands[index])(command+strlen(ms_texts[index])+1);
 	}else{
 		BadCommand(command);
@@ -183,111 +173,120 @@ void Commands::Call(char* command){
 	return;
 }
 
-void Commands::MyCards(char*){
+int Commands::FindMethod(const char* const command){
+	unsigned max_len = 0;
+	int index = -1;
+	unsigned cmdlen = strlen(command);
+	for(int a=0; a<COMMANDS; a++){
+		unsigned len = strlen(ms_texts[a]);
+		unsigned min_len = len > cmdlen ? cmdlen : len;
+		unsigned b = NumberOfSameLetters(command,ms_texts[a],min_len);
+		if(max_len < b){
+			max_len = b;
+			index = a;
+		}
+	}
+	return index;
+}
+unsigned Commands::NumberOfSameLetters(const char* const cmp1,const char* const cmp2,unsigned len){
+	unsigned a;
+	for(a=0; a<len; a++){
+		if(cmp1[a] != cmp2[a]){
+			break;
+		}
+	}
+	return a;
+}
+void Commands::MyCards(const char* const) const{
 	char* buff = new char[MAX_LEN]; //deleted at the end of this function
-	strcpy(buff,RESPONSE_YOUR_CARDS);
-	char* ptr = buff+strlen(RESPONSE_YOUR_CARDS);
+	char* ptr = Add(buff,RESPONSE_YOUR_CARDS);
 	unsigned cardcount = m_player->GetHand()->Size();
 	for(unsigned c=0; c<cardcount; c++){
 		Card* card = m_player->GetHand()->Get(c);
 		char* str = card->ToString();
-		ptr[0] = ' ';
-		ptr++;
-		strcpy(ptr,str);
-		ptr+=strlen(str);
+		ptr = Append(ptr,str);
 	}
-	if(IsConnected()){
-		m_server->Send(m_sock,buff);
-	}
+	TrySend(m_sock,buff);
 	delete[] buff; //created an the start of this function
 }
-void Commands::GetCountOfCards(char*){
+void Commands::GetCountOfCards(const char* const) const{
 	char* buff = new char[MAX_LEN]; //deleted at the end of this function
-	strcpy(buff,RESPONSE_COUNT_CARDS);
-	char* ptr = buff+strlen(RESPONSE_COUNT_CARDS);
+	char* ptr = Add(buff,RESPONSE_COUNT_CARDS);
 	unsigned playerscount = m_game->GetCountOfPlayers();
 	for(unsigned c=0; c<playerscount; c++){
 		Algorithm* alg = m_game->GetAlgorithm(c);
 		if(alg != m_player){
-			ptr[0] = ' ';
-			ptr++;
-			strcpy(ptr,alg->m_player);
-			ptr+=strlen(alg->m_player);
-			ptr[0] = ' ';
-			ptr++;
-			ptr+=sprintf(ptr,"%d",alg->GetHand()->Size());
+			ptr = Append(ptr,alg->m_player);
+			ptr = Append(ptr,alg->GetHand()->Size());
 		}
 	}
-	if(IsConnected()){
-		m_server->Send(m_sock,buff);
-	}
+	TrySend(m_sock,buff);
 	delete[] buff; //created at the start of this function
 }
 	
-void Commands::Login(char* message){
-	char* player_name = message;
+void Commands::Login(const char* const message){
+	const char* player_name = message;
 	unsigned games_len = m_server->GetCountOfGames();
 	for(unsigned a=0; a<games_len; a++){
 		Game* game = m_server->GetGame(a);
-		unsigned players_len = game->GetCountOfPlayers();
-		for(unsigned b=0; b<players_len; b++){
-			Algorithm* algo = game->GetAlgorithm(b);
-			if(!strcmp(algo->m_player,player_name)){
-				if((m_player = dynamic_cast<NetworkPlayer*>(algo))){	
-					if(m_player->IsReady() && IsConnected()){
-						m_server->Send(m_sock,RESPONSE_PLAYER_EXISTS);
-						return;
-					}
-					m_player->SetCommands(this);
-					SetConnected(true);
-					m_game = game;
-					m_server->Send(m_sock,RESPONSE_A_GAME);
-					m_player->SetReady();
-					m_player->SetGameForBothMeAndBot(m_game);
-					break;
-				}else{
-					if(IsConnected()){
-						m_server->Send(m_sock,RESPONSE_NO_GAME);
-					}
-					return;
-				}
-			}
-		}
+		FindPlayerInGame(game,player_name);
 	}
 	if(m_player == nullptr){
-		if(IsConnected()){
-			m_server->Send(m_sock,RESPONSE_NO_GAME);
-		}
+		TrySend(m_sock,RESPONSE_NO_GAME);
 		return;
 	}else{
-		bool game_is_ready = true;
-		unsigned players_len = m_game->GetCountOfPlayers();
-		for(unsigned a=0; a<players_len; a++){
-			if(!m_game->GetAlgorithm(a)->IsReady()){
-				game_is_ready = false;
+		TryStartMyGame();
+	}
+}
+void Commands::FindPlayerInGame(Game* game,const char* const player_name){
+	unsigned players_len = game->GetCountOfPlayers();
+	for(unsigned b=0; b<players_len; b++){
+		Algorithm* algo = game->GetAlgorithm(b);
+		if(!strcmp(algo->m_player,player_name)){
+			if((m_player = dynamic_cast<NetworkPlayer*>(algo))){	
+				InitPlayer(game);
 				break;
+			}else{
+				TrySend(m_sock,RESPONSE_NO_GAME);
+				return;
 			}
 		}
-		if(game_is_ready){
-			m_game->StartParallel();
+	}
+}
+void Commands::TryStartMyGame(){
+	bool game_is_ready = true;
+	unsigned players_len = m_game->GetCountOfPlayers();
+	for(unsigned a=0; a<players_len; a++){
+		if(!m_game->GetAlgorithm(a)->IsReady()){
+			game_is_ready = false;
+			break;
 		}
 	}
-}
-
-void Commands::Disconnect(char* msg){
-	if(IsConnected()){
-		m_server->Send(m_sock,RESPONSE_BYE);
+	if(game_is_ready){
+		GetGame()->StartParallel();
 	}
-	DisconnectHard(msg);
 }
-void Commands::DisconnectHard(char*){
+void Commands::InitPlayer(Game* game){
+	if(m_player->IsReady()){
+		TrySend(m_sock,RESPONSE_PLAYER_EXISTS);
+		return;
+	}
+	m_player->SetCommands(this);
+	SetConnected(true);
+	m_game = game;
+	TrySend(m_sock,RESPONSE_A_GAME);
+	m_player->SetReady();
+	m_player->SetGameForBothMeAndBot(m_game);
+}
+void Commands::Disconnect(const char* const){
+	TrySend(GetSocket(),RESPONSE_BYE);
 	close(m_sock);
-	m_is_connected = false;
-	m_running = false;
-	m_server->TidyUp(this);
+	SetConnected(false);
+	SetRunning(false);
+	GetServer()->TidyUp(this);
 }
 
-void Commands::SendCard(char* message){
+void Commands::SendCard(const char* const message){
 	m_card_to_play = nullptr;
 	//finding the card
 	unsigned value = Card::FromString(message);
@@ -307,7 +306,7 @@ void Commands::SendCard(char* message){
 	m_player->GetSemaphore()->Notify();
 }
 
-void Commands::Vote(char* message){
+void Commands::Vote(const char* const message) const{
 	int vote = 0;
 	if(!strcmp(message,VOTE_YES)){
 		vote = 1;
@@ -318,13 +317,14 @@ void Commands::Vote(char* message){
 	m_player->GetSemaphoreForVote()->Notify();
 }
 
-void Commands::CreateGame(char* message){
+void Commands::CreateGame(const char* const message) const{
 	unsigned length = strlen(message);
-	char* game_name = message;
-	char* params = message;
+	char* game_name = new char[length+1];
+	strcpy(game_name,message);
+	const char* params = game_name;
 	for(unsigned a=1; a<length; a++){
 		if(message[a-1]==' '){
-			message[a-1]='\0';
+			game_name[a-1]='\0';
 			params=message+a;	
 			break;
 		}
@@ -333,15 +333,60 @@ void Commands::CreateGame(char* message){
 	Game* game = new Game(configuration); //deleted in Server::StopGame || Server destructor
 	game->SetName(game_name);
 	m_server->AddGame(game);
-	if(IsConnected()){
-		m_server->Send(m_sock,RESPONSE_GAME_CREATED);
-	}
-}
-Semaphore* Commands::GetSemaphore(){
-	return m_semaphore;
+	TrySend(m_sock,RESPONSE_GAME_CREATED);
+	delete[] game_name;
 }
 Commands::~Commands(){
 	delete m_semaphore; //created in constructor
+	delete m_semaphore_gc; //created in constructor
 	delete m_thread; //created in Server::Start
 	STDMSG("1;35","Deleted:    Commands");
 }
+void Commands::GarbageCollector(){
+	while(GetServer()->IsRunning()){
+		GetGCSemaphore()->Wait();
+		if(!IsRunning()){
+			GetSemaphore()->Notify();	
+			GetServer()->RemoveCommands(this);
+			
+			GetThread()->join();
+			if(GetPlayer()!=nullptr){
+				GetPlayer()->SetReady(false);
+				GetPlayer()->SetCommands(nullptr);
+			}
+			StopGame();
+			STDMSG("0;36","Disconnected");
+			//delete m_cmds; //created in Start function TODO
+		}
+	}
+}
+void Commands::StopGame(){
+	if(GetGame()!=nullptr){
+		unsigned len = GetGame()->GetCountOfPlayers();
+		bool should_be_stopped = true;
+		for(unsigned a=0; a<len; a++){
+			Algorithm* algo = GetGame()->GetAlgorithm(a);
+			NetworkPlayer* player = nullptr;
+			if((player = dynamic_cast<NetworkPlayer*>(algo))){	
+				if(player != nullptr && player->IsReady()){
+					should_be_stopped=false;
+					break;
+				}
+			}
+		}
+		if(should_be_stopped){
+			GetGame()->StopParallel();
+			GetServer()->RemoveGame(GetGame());
+		}
+	}
+}
+Semaphore* Commands::GetGCSemaphore(){
+	return m_semaphore_gc;
+}
+void Commands::    _SendMessage(const char* msg){     SendMessage(msg); }
+void Commands::     _BadCommand(const char* msg){      BadCommand(msg); }
+void Commands::     _CreateGame(const char* msg){      CreateGame(msg); }
+void Commands::           _Vote(const char* msg){            Vote(msg); }
+void Commands::        _MyCards(const char* msg){         MyCards(msg); }
+void Commands::        _Welcome(const char* msg){         Welcome(msg); }
+void Commands::_GetCountOfCards(const char* msg){ GetCountOfCards(msg); }

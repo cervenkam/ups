@@ -59,11 +59,7 @@ unsigned char Card::GetColor() const{
 		<= Output stream sent as os
 */
 ostream& operator<<(ostream& cout,const Card& card){
-	unsigned color = 1;
-	if(card.IsSpecial()){
-		color = 7;
-	}
-	return COLOR(color << ";3" << (card.GetColor()+1)," " << Card::ms_ranks[card.GetRank()][0] << " ");
+	return COLOR((card.IsSpecial()?7:1) << ";3" << (card.GetColor()+1)," " << Card::ms_ranks[card.GetRank()][0] << " ");
 }
 /*
 	Is the card playable on this card
@@ -108,7 +104,7 @@ char* Card::ToString(){
 		=> str String reprezentation
 		<= Number reprezentation
 */
-unsigned char Card::FromString(char* str){
+unsigned char Card::FromString(const char* const str){
 	if(!strcmp(str,"NULL")){
 		return 1<<5;
 	}
@@ -122,25 +118,17 @@ unsigned char Card::FromString(char* str){
 			sec = copy_of_str+a+1;
 		}
 	}
-	unsigned a=0;
-	char l1 = copy_of_str[0];
-	char l2 = sec[0];
-#ifdef LANG_CS
-	unsigned len1 = strlen(copy_of_str);
-	char m1 = len1=0?'\0':copy_of_str[1];
-	a|=(m1!='E')? 2:0; //Kule, Zaludy
-	a|=(l1=='Z')? 1:0; //Zeleny, Zaludy
-#else
-	a|=(l1<='B')? 2:0; //Bell, Acorn
-	a|=(l1=='A' || l1=='L')? 1:0; //Leaf, Acorn
-#endif
-	if(strcmp(ms_colors[a],copy_of_str)){
-		return 1<<6;
-	}
+	unsigned a=ColorFromString(copy_of_str);
+	unsigned b=ValueFromString(sec);
+	delete[] copy_of_str; //created at the start of this function
+	return ((b<<2)|a);
+}
+unsigned Card::ValueFromString(char* str){
 	unsigned b=0;
+	char l2 = str[0];
 #ifdef LANG_CS
-	unsigned len2 = strlen(sec);
-	char m2 = len2=0?'\0':sec[1];
+	unsigned len2 = strlen(str);
+	char m2 = len2==0?'\0':str[1];
 	b|=(l2>='E')? 4:0; //Spodek, Svrsek, Kral, Eso
 	b|=(l2!='S' && l2!='7' && l2!='8')? 2:0; //9, 10, Kral, Eso
 	b|=(m2>='S' || l2=='8' || l2=='1')? 1:0; //8, 10, Svrsek, Eso
@@ -149,9 +137,25 @@ unsigned char Card::FromString(char* str){
 	b|=(l2>='9' && l2!='J' && l2!='Q')? 2:0; //9, X, King, Ace
 	b|=((l2&2)==0 && l2!='9')? 1:0; //8, X, Queen, Ace
 #endif
-	if(strcmp(ms_ranks[b],sec)){
+	if(strcmp(ms_ranks[b],str)){
 		return 1<<6;
 	}
-	delete[] copy_of_str; //created at the start of this function
-	return ((b<<2)|a);
+	return b;
+}
+unsigned Card::ColorFromString(char* str){
+	unsigned a=0;
+	char l1 = str[0];
+#ifdef LANG_CS
+	unsigned len1 = strlen(str);
+	char m1 = len1==0?'\0':str[1];
+	a|=(m1!='E')? 2:0; //Kule, Zaludy
+	a|=(l1=='Z')? 1:0; //Zeleny, Zaludy
+#else
+	a|=(l1<='B')? 2:0; //Bell, Acorn
+	a|=(l1=='A' || l1=='L')? 1:0; //Leaf, Acorn
+#endif
+	if(strcmp(ms_colors[a],str)){
+		return 1<<6;
+	}
+	return a;
 }

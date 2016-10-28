@@ -12,6 +12,11 @@ class ProgrammerBot: public Algorithm{
 		Card* Play(bool force);//GETTER
 		char Vote();//GETTER
 	private:
+		Card* GetAnythingElse();
+		Card* TryPutFirstCard();
+		Card* TryValuableCard();
+		Card* GetRandomCard();
+		Card* TryByCardCounts(unsigned);
 		unsigned m_counterX = 0;
 		unsigned m_counterE = 0;
 		unsigned m_counter7 = 0;

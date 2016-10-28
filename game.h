@@ -30,6 +30,11 @@ class Game{
 	private:
 		void Loop();
 		void DetermineWinner(Card* card,unsigned& player, unsigned& winner);
+		void PrintWinners(unsigned max_value);
+		unsigned FindMaxPoints(unsigned& count);
+		void FoundSameCards(unsigned);
+		bool UseValidCard(Card*,unsigned&,unsigned&);
+		bool UseNoCard(unsigned&,unsigned&);
 		Card* m_first = nullptr;
 		unsigned char m_players;
 		unsigned char m_started = 0;
@@ -42,7 +47,8 @@ class Game{
 		bool m_end_of_game = false;
 		//GETTERS
 		bool Prepare();//GETTER
-		bool ChooseCard(unsigned& player,unsigned& winner,Card*& card, bool& started);//GETTER
+		bool ChooseCard(unsigned&,unsigned&,Card*&, bool&);//GETTER
+		bool ReactOnCard(unsigned&,unsigned&,Card*&, bool&);//GETTER
 		bool FillHands();//GETTER
 		bool OneHand(unsigned& winner, unsigned& player);//GETTER
 		bool UseCard(Card* card,unsigned& player, unsigned& winner);//GETTER

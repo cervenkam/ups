@@ -9,7 +9,6 @@ class Hand{
 		~Hand();
 		//GETTERS
 		bool Add(Card* card);//GETTER
-		bool Set(unsigned char position,Card* card);//GETTER
 		unsigned char Size();//GETTER
 		Card* Get(unsigned char index);//GETTER
 		Card* Use(unsigned char index);//GETTER

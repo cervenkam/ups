@@ -99,6 +99,7 @@ CMakeFiles/server.dir/networkplayer.cxx.o
  /home/martin/skola/UPS/SP/networkplayer.h
  /home/martin/skola/UPS/SP/programmerbot.h
  /home/martin/skola/UPS/SP/semaphore.h
+ /home/martin/skola/UPS/SP/stdmcr.h
 CMakeFiles/server.dir/person.cxx.o
  /home/martin/skola/UPS/SP/algorithm.h
  /home/martin/skola/UPS/SP/card.h
@@ -125,3 +126,6 @@ CMakeFiles/server.dir/programmerbot.cxx.o
 CMakeFiles/server.dir/semaphore.cxx.o
  /home/martin/skola/UPS/SP/semaphore.cxx
  /home/martin/skola/UPS/SP/semaphore.h
+CMakeFiles/server.dir/stdmcr.cxx.o
+ /home/martin/skola/UPS/SP/stdmcr.cxx
+ /home/martin/skola/UPS/SP/stdmcr.h

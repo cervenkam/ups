@@ -18,20 +18,23 @@ class Server{
 		void Send(int sock,const char* message);
 		void AddGame(Game* game);
 		void AddCommands(Commands* command);
-		void GarbageCollector();
 		void TidyUp(Commands* commands);
 		//GETTERS
+		bool NewConnection(saddrin); //GETTER
 		unsigned GetCountOfGames(); //GETTER
 		Game* GetGame(unsigned index); //GETTER
+		bool IsRunning();
+		void RemoveCommands(Commands*);
+		void RemoveGame(Game*);
 	private:
 		void StopGame();
+		void Listen(saddrin&);
 
 		unsigned m_port;
 		char m_internal_storage[MAX_LEN];
 		vector<Commands*> m_commands;
 		vector<Game*> m_games;
 		thread* m_garbage_collector;
-		Semaphore* m_semaphore;
 		Commands* m_cmds;
 		int m_sock;
 };

@@ -15,6 +15,11 @@ class Configuration{
 		Algorithm** GetAlgorithms();//GETTER
 		unsigned GetCount();//GETTER
 	private:
+		bool ParseOneParameter(unsigned&,char*&,char*&,char*,char*);
+		void ReadLines(istringstream&,unsigned&,char*&,char*,char*);
+		void AddAlgorithm(unsigned&,char*&,char*);
+		void InitAlgorithms(unsigned);
+		bool UpdatePointer(char*& strtmp);
 		static const char* ms_def;
 		void Load(string str);
 		bool m_rules = false;

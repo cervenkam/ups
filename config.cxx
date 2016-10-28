@@ -51,54 +51,68 @@ Algorithm* Configuration::GetAlgorithm(const char* name,const char* player_name,
 */
 void Configuration::Load(string in_str){
 	istringstream in(in_str);
-	if(in.fail()){
-		OUT(ERR_NOT_FOUND << endl);
-		exit(1);
-	}
-	char* str = new char[512]; //deleted at the end of this function
-	char* strtmp = str;
 	char* command = new char[512]; //deleted at the end of this function
 	char* parameter = new char[512]; //deleted at the end of this function
 	char* name = new char[512]; //deleted at the end of this function (1/n) || in Algorithm destructor ((n-1)/n)
 	strcpy(name,PLAYER);
 	unsigned counter = 0;
-	while(in.getline(str,512)){
-		while(sscanf(strtmp,"%511[^=]=%511s",command,parameter)){
-			if(!strcmp(command,PLAYER_COUNT)){
-				SetCount(atoi(parameter));	
-				if(m_algos == nullptr){
-					m_algos = new Algorithm*[GetCount()]; //deleted in destructor
-				}
-			}else if(!strcmp(command,DEFAULT)){
-				ms_def = parameter;
-			}else if(!strcmp(command,PLAYER)){
-				if(m_algos != nullptr && counter < GetCount()){
-					m_algos[counter] = GetAlgorithm(parameter,name,counter);
-					name = new char[512]; //deleted in Algorithm destuctor ((n-1)/n) || end of this function (1/n)
-					strcpy(name,PLAYER);
-					counter++;
-				}
-			}else if(!strcmp(command,NAME)){
-				strcpy(name,parameter);
-			}else if(!strcmp(command,RULES)){
-				m_rules=true;
-			}
-			while(strtmp[0]!=' ' && strtmp[0]!='\0'){
-				strtmp++;
-			}
-			if(strtmp[0]=='\0'){
-				break;
-			}
-			strtmp++;
-		}
-	}
+	ReadLines(in,counter,name,command,parameter);
 	for(unsigned a=counter; a<m_count; a++){
 		m_algos[a] = GetAlgorithm(ms_def,name,a);
 	}
-	delete[] name; //created at the start of this function (1/n) || at the middle of this function ((n-1)/n)
+	delete[] name; //created at the start of this function (1/n) || in ParseOneParameter function ((n-1)/n)
 	delete[] parameter; //created at the start of this function
 	delete[] command; //created at the start of this function
+}
+void Configuration::ReadLines(istringstream& in, unsigned& counter,char*& name,char* command,char* parameter){
+	char* str = new char[512]; //deleted at the end of this function
+	char* strtmp = str;
+	while(in.getline(str,512)){
+		while(sscanf(strtmp,"%511[^=]=%511s",command,parameter)){
+			if(!ParseOneParameter(counter,strtmp,name,command,parameter)){
+				break;
+			}
+		}
+	}
 	delete[] str; //created at the start of this function
+}
+void Configuration::InitAlgorithms(unsigned count){
+	SetCount(count);	
+	if(m_algos == nullptr){
+		m_algos = new Algorithm*[GetCount()]; //deleted in destructor
+	}
+}
+void Configuration::AddAlgorithm(unsigned& counter,char*& name, char* parameter){
+	if(m_algos != nullptr && counter < GetCount()){
+		m_algos[counter] = GetAlgorithm(parameter,name,counter);
+		name = new char[512]; //deleted in Algorithm destuctor ((n-1)/n) || in caller function (1/n)
+		strcpy(name,PLAYER);
+		counter++;
+	}
+}
+bool Configuration::ParseOneParameter(unsigned& counter,char*& strtmp,char*& name,char* command,char* parameter){
+	if(!strcmp(command,PLAYER_COUNT)){
+		InitAlgorithms(atoi(parameter));
+	}else if(!strcmp(command,DEFAULT)){
+		ms_def = parameter;
+	}else if(!strcmp(command,PLAYER)){
+		AddAlgorithm(counter,name,parameter);
+	}else if(!strcmp(command,NAME)){
+		strcpy(name,parameter);
+	}else if(!strcmp(command,RULES)){
+		m_rules=true;
+	}
+	return UpdatePointer(strtmp);
+}
+bool Configuration::UpdatePointer(char*& strtmp){
+	while(strtmp[0]!=' ' && strtmp[0]!='\0'){
+		strtmp++;
+	}
+	if(strtmp[0]=='\0'){
+		return false;
+	}
+	strtmp++;
+	return true;
 }
 /*
 	Destruct this configuration

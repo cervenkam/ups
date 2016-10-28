@@ -9,13 +9,16 @@
 #include "limits.h"
 #include <iostream>
 #define HAZARD 2
-#define FIND_DO(x,y) \
-		for(unsigned a=0; a<size; a++){ \
-			Card* card = hand->Get(a); \
+#define FIND_DO(x,y) { \
+		Hand* hnd = GetHand(); \
+		unsigned char sze = hnd->Size(); \
+		for(unsigned a=0; a<sze; a++){ \
+			Card* card = hnd->Get(a); \
 			if(x){ \
 				y; \
 			} \
-		} 
+		}\
+	}
 #define FIND(x) FIND_DO(x,return card)
 #define FIND_DO_P(p,x,y) \
 	if((double)rand()/RAND_MAX < p){ \
@@ -59,71 +62,81 @@ void ProgrammerBot::Used(Card* card,unsigned char player){
 		<= Card which will player use
 */
 Card* ProgrammerBot::Play(bool force){
-	Hand* hand = GetHand();
-	unsigned char size = hand->Size();
 	if(force){
-		//I should put first card
-		if(m_game->FirstCard()==nullptr){
-			//find strong rank
-			unsigned count = 0;
-			unsigned index = 0;
-			for(unsigned x=0; x<size; x++){
-				Card* c1 = hand->Get(x);
-				//I dont want to use 7 as first card
-				if(c1->GetRank()==CARD_7){
-					continue;
-				}
-				unsigned duplicates = 0;
-				FIND_DO_P(0.95,c1->GetRank()==card->GetRank(),duplicates++)
-				if(duplicates>count){
-					count = duplicates;
-					index = x;
-				}
-			}
-			return hand->Get(index);
+		Card* crd = nullptr;
+		if((crd = TryPutFirstCard())){
+			return crd;
 		}
-		//is there a fight about valuable cards
-		if(m_game->FirstCard()->IsValuable()){
-			int count = 0;
-			//I'll have "count" number of cards to fight against
-			FIND_DO(card->GetRank()==m_game->FirstCard()->GetRank() || card->GetRank()==CARD_7,count++)
-			if(count>0){
-				unsigned alreadyPlayed = m_counter7;
-				if(m_game->FirstCard()->GetRank()==CARD_X){
-					alreadyPlayed += m_counterX;
-				}else{
-					alreadyPlayed += m_counterE;
-				}
-				int rest = 8 - alreadyPlayed - count;
-				if(rest-HAZARD<count){
-					//ok, lets fight - find valuable card
-					FIND(card->GetRank()==m_game->FirstCard()->GetRank())
-					//else use 7
-					FIND(card->GetRank()==CARD_7)
-				}
-			}
+		if((crd = TryValuableCard())){
+			return crd;
 		}
-		//Find same rank card if it is non-valuable
-		if(!m_game->FirstCard()->IsValuable()){
-			FIND(card->GetRank()==m_game->FirstCard()->GetRank())
-		}
-		//Find some not special card
-		FIND_P(0.9,!card->IsSpecial())
-		//I have to give special card - so find 7 ;)
-		FIND_P(0.7,card->GetRank()==CARD_7)
-		//ok then, I have to play X or E, so give first card
-		return hand->Get(0); // TODO dangerous
+		return GetAnythingElse();
 	}else{
-		//I can collect values - do it
 		if(m_game->FirstCard()->IsValuable()){
 			return nullptr;
 		}else if(!m_game->FirstCard()->IsSpecial()){
-			//force next loop with non-valuable card
 			FIND(card->GetRank()==m_game->FirstCard()->GetRank())
 		}
-		//do not continue
 		return nullptr;
 	}
+}
+Card* ProgrammerBot::GetAnythingElse(){
+	if(!m_game->FirstCard()->IsValuable()){
+		FIND(card->GetRank()==m_game->FirstCard()->GetRank())
+	}
+	FIND_P(0.9,!card->IsSpecial())
+	FIND_P(0.7,card->GetRank()==CARD_7)
+	return GetHand()->Get(0); // TODO dangerous
+}
+Card* ProgrammerBot::TryPutFirstCard(){
+	if(!m_game->FirstCard()){
+		return GetRandomCard();
+	}else{
+		return nullptr;
+	}
+}
+Card* ProgrammerBot::GetRandomCard(){
+	Hand* hand = GetHand();
+	unsigned char size = hand->Size();
+	unsigned count = 0;
+	unsigned index = 0;
+	for(unsigned x=0; x<size; x++){
+		Card* c1 = hand->Get(x);
+		if(c1->GetRank()==CARD_7){
+			continue;
+		}
+		unsigned duplicates = 0;
+		FIND_DO_P(0.95,c1->GetRank()==card->GetRank(),duplicates++)
+		if(duplicates>count){
+			count = duplicates;
+			index = x;
+		}
+	}
+	return hand->Get(index);
+}
+Card* ProgrammerBot::TryValuableCard(){
+	if(m_game->FirstCard()->IsValuable()){
+		int count = 0;
+		FIND_DO(card->GetRank()==m_game->FirstCard()->GetRank() || card->GetRank()==CARD_7,count++)
+		if(count>0){
+			return TryByCardCounts(count);
+		}
+	}
+	return nullptr;
+}
+Card* ProgrammerBot::TryByCardCounts(unsigned count){
+	unsigned alreadyPlayed = m_counter7;
+	if(m_game->FirstCard()->GetRank()==CARD_X){
+		alreadyPlayed += m_counterX;
+	}else{
+		alreadyPlayed += m_counterE;
+	}
+	unsigned rest = 8 - alreadyPlayed - count;
+	if(rest-HAZARD<count){
+		FIND(card->GetRank()==m_game->FirstCard()->GetRank())
+		FIND(card->GetRank()==CARD_7)
+	}
+	return nullptr;
 }
 /*
 	Selects if this player wants to start new game

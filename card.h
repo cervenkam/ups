@@ -28,8 +28,10 @@ class Card{
 		bool IsSpecial() const;//GETTER
 		bool IsValuable() const;//GETTER
 		char* ToString();//GETTER
-		static unsigned char FromString(char* str);//GETTER
+		static unsigned char FromString(const char* const str);//GETTER
 	private:
+		static unsigned ColorFromString(char* str);
+		static unsigned ValueFromString(char* str);
 		unsigned char m_value;
 		char* m_name;
 		static const char* ms_ranks[8]; //OK

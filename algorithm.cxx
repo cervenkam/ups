@@ -33,6 +33,7 @@ Algorithm::Algorithm(const Algorithm& algorithm){
 	m_hand = algorithm.m_hand;
 	m_semaphore = algorithm.m_semaphore;
 	m_game = algorithm.m_game;
+	m_semaphore_voting = algorithm.m_semaphore_voting;
 	m_copy = true;
 }
 /*

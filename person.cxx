@@ -34,8 +34,7 @@ void Person::Used(Card* card,unsigned char player){
 		OUT(m_game->GetAlgorithm(player)->m_player << " " << USED << " " << *card << endl);
 	}
 }
-void Person::Print(unsigned card,bool clear){
-	(void)clear;
+void Person::Print(unsigned card,bool){
 	OUT(MOVED(99) << MOVEC(MOVE_X) << MOVEA(2));
 	Hand* hand = GetHand();
 	unsigned char size = hand->Size();
@@ -49,11 +48,7 @@ void Person::Print(unsigned card,bool clear){
 	for(unsigned char b=0; b<size; b++){
 		OUT(((b==card)?" @ ":"   "));
 	}
-	if(card==size){
-		OUT("-->");
-	}else{
-		OUT("   ");
-	}
+	OUT(((card==size)?"-->":"   "));
 }
 /*
 	Chooses the card which will be used
@@ -65,29 +60,7 @@ Card* Person::Play(bool force){
 	Hand* hand = GetHand();
 	while(hand->Size()>0){
 		unsigned card = 0;
-		while(1){
-			Print(card,true);
-			RAW_READ;
-			char c = getchar();
-			COOKED_READ;
-			OUT(MOVED(5) << "     " << endl);
-			if(c==91){
-				RAW_READ;
-				c = getchar();
-				COOKED_READ;
-				if(c==68){
-					card+=hand->Size();
-				}else if(c==67){
-					card++;
-				}
-				card%=(hand->Size()+1);
-			}else if(c==13){
-				break;
-			}else if(c==3){
-				CLEAR;
-				exit(0);
-			}
-		}
+		while(OnePlay(hand,card)) {;}
 		if(card<hand->Size()){
 			Card* crd = hand->Get(card);
 			if(force || !m_game->FirstCard() || m_game->FirstCard()->IsPlayable(crd)){
@@ -101,6 +74,25 @@ Card* Person::Play(bool force){
 		}
 	}
 	return nullptr;
+}
+
+bool Person::OnePlay(Hand* hand,unsigned& card){
+	Print(card,true);
+	READ(char c = getchar());
+	OUT(MOVED(5) << "     " << endl);
+	switch(c){
+		case 91:
+			READ(c = getchar());
+			switch(c){
+				case 68: card+=hand->Size(); break;
+				case 67: card++; break;
+			}
+			card%=(hand->Size()+1);
+			break;
+		case 13: return false;
+		case 3: CLEAR; exit(0);
+	}
+	return true;
 }
 /*
 	Selects if this player wants to start new game

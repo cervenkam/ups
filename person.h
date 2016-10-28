@@ -10,6 +10,8 @@ class Person: public Algorithm{
 		//GETTERS
 		Card* Play(bool force);//GETTER
 		char Vote();//GETTER
+	private:
+		bool OnePlay(Hand*,unsigned&);//GETTER
 };
 
 #endif

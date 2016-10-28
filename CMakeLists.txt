@@ -3,6 +3,7 @@ project(Cards)
 
 set(CMAKE_CXX_FLAGS "-Wl,--no-as-needed -std=c++11 -Wall -Wextra -Wno-conversion-null -g -lpthread")
 set(SRCS
+	stdmcr.cxx
 	semaphore.cxx
 	config.cxx
 	programmerbot.cxx

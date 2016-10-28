@@ -21,10 +21,15 @@
 	#define RAW_READ
 	#define COOKED_READ
 #endif
+#define READ(X) RAW_READ; X; COOKED_READ
 #define MOVEA(x) __MOVE_D__(x,"A")
 #define MOVEB(x) __MOVE_D__(x,"B")
 #define MOVEC(x) __MOVE_D__(x,"C")
 #define MOVED(x) __MOVE_D__(x,"D")
 #define STDMSG(X,Y) COLOR(X,"[ " << (long int)(time(0)) << " ] " << Y << endl)
+
+extern char* Add(char* array,const char* text);
+extern char* Append(char* array, const int value);
+extern char* Append(char* array, const char* text);
 
 #endif

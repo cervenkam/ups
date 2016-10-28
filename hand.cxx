@@ -7,20 +7,6 @@
 #include <iostream>
 
 /*
-	Sets the card of specified position
-	DEPRECATED - do not use this method, use Add instead
-		=> position Position to set
-		=> card Card which will be pushed on this position
-*/
-bool Hand::Set(unsigned char position,Card* card){
-	if(position<ms_SIZE){
-		m_cards[position]=card;
-		m_count = position+1;
-		return true;
-	}
-	return false;
-}
-/*
 	Returns size of the hand (number of cards)
 		<= Number of cards in hand
 */
