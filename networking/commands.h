@@ -38,6 +38,8 @@ class Commands{
 		char* TryReceive(int sock                   ) const;
 		void             Call(const char* const);
 		void       Disconnect(const char* const);  
+		void          MyCards(const char* const) const;
+		void  GetCountOfCards(const char* const) const;
 	private:
 		void            Login(const char* const);
 		void         SendCard(const char* const);
@@ -45,9 +47,7 @@ class Commands{
 		void       BadCommand(const char* const) const;
 		void       CreateGame(const char* const) const;
 		void             Vote(const char* const) const;
-		void          MyCards(const char* const) const;
 		void          Welcome(const char* const) const;
-		void  GetCountOfCards(const char* const) const;
 
 		int FindMethod(const char* const);
 		void InitPlayer(Game*);

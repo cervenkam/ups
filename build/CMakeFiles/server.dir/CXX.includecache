@@ -6,10 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/home/martin/skola/UPS/SP/algono.h
-algorithm.h
-/home/martin/skola/UPS/SP/algorithm.h
-
 /home/martin/skola/UPS/SP/algorithm.h
 card.h
 /home/martin/skola/UPS/SP/card.h
@@ -26,32 +22,6 @@ semaphore.h
 
 /home/martin/skola/UPS/SP/card.h
 ostream
--
-
-/home/martin/skola/UPS/SP/config.cxx
-config.h
-/home/martin/skola/UPS/SP/config.h
-lang.h
-/home/martin/skola/UPS/SP/lang.h
-stdmcr.h
-/home/martin/skola/UPS/SP/stdmcr.h
-algorithm.h
-/home/martin/skola/UPS/SP/algorithm.h
-person.h
-/home/martin/skola/UPS/SP/person.h
-algono.h
-/home/martin/skola/UPS/SP/algono.h
-programmerbot.h
-/home/martin/skola/UPS/SP/programmerbot.h
-networkplayer.h
-/home/martin/skola/UPS/SP/networkplayer.h
-cstring
--
-sstream
--
-iostream
--
-fstream
 -
 
 /home/martin/skola/UPS/SP/config.h
@@ -77,20 +47,6 @@ card.h
 /home/martin/skola/UPS/SP/card.h
 
 /home/martin/skola/UPS/SP/lang.h
-
-/home/martin/skola/UPS/SP/main.cxx
-networking/server.h
-/home/martin/skola/UPS/SP/networking/server.h
-cstdlib
--
-cstdio
--
-iostream
--
-signal.h
--
-exception
--
 
 /home/martin/skola/UPS/SP/networking/commands.h
 server.h
@@ -153,10 +109,6 @@ programmerbot.h
 /home/martin/skola/UPS/SP/programmerbot.h
 networking/commands.h
 /home/martin/skola/UPS/SP/networking/commands.h
-
-/home/martin/skola/UPS/SP/person.h
-algorithm.h
-/home/martin/skola/UPS/SP/algorithm.h
 
 /home/martin/skola/UPS/SP/programmerbot.h
 algorithm.h

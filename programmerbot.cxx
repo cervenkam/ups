@@ -94,6 +94,9 @@ const Card* ProgrammerBot::TryPutFirstCard() const{
 		return nullptr;
 	}
 }
+void ProgrammerBot::NewHand() const{
+
+}
 const Card* ProgrammerBot::GetRandomCard() const{
 	unsigned char size = GetCardCount();
 	unsigned count = 0;

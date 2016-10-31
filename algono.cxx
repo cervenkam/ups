@@ -49,6 +49,9 @@ const Card* AlgoNo::Play(bool force) const{
 char AlgoNo::Vote() const{
 	return 0; //"don't care" vote
 }
+void AlgoNo::NewHand() const{
+
+}
 /*
 	Destructor
 */

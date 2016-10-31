@@ -105,6 +105,7 @@ char* Card::ToString() const{
 		<= Number reprezentation
 */
 unsigned char Card::FromString(const char* const str){
+	cout << str << endl;
 	if(!strcmp(str,"NULL")){
 		return 1<<5;
 	}
@@ -124,6 +125,7 @@ unsigned char Card::FromString(const char* const str){
 	return ((b<<2)|a);
 }
 unsigned Card::ValueFromString(char* str){
+	cout << str << endl;
 	unsigned b=0;
 	char l2 = str[0];
 #ifdef LANG_CS
@@ -143,6 +145,7 @@ unsigned Card::ValueFromString(char* str){
 	return b;
 }
 unsigned Card::ColorFromString(char* str){
+	cout << str << endl;
 	unsigned a=0;
 	char l1 = str[0];
 #ifdef LANG_CS

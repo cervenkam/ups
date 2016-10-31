@@ -10,6 +10,7 @@ class ProgrammerBot: public Algorithm{
 		~ProgrammerBot();
 		const Card* Play(bool force) const;//NON VALID GETTER
 		char Vote() const;
+		void NewHand() const;
 	private:
 		const Card* GetAnythingElse() const;
 		const Card* TryPutFirstCard() const;

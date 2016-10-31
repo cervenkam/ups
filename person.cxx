@@ -74,6 +74,10 @@ const Card* Person::Play(bool force) const{
 	return nullptr;
 }
 
+void Person::NewHand() const{
+
+}
+
 bool Person::OnePlay(unsigned& card) const{
 	Print(card,true);
 	READ(char c = getchar());

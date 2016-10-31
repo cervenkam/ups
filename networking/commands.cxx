@@ -281,15 +281,14 @@ void Commands::Disconnect(const char* const){
 
 void Commands::SendCard(const char* const message){
 	m_card_to_play = nullptr;
-	//finding the card
 	unsigned value = Card::FromString(message);
 	if(value>>6){
 		return;
 	}
+	cout << value << endl;
 	unsigned a = value&3;
 	unsigned b = value>>2;
 	GetPlayer()->SetNextCard(a,b);
-	GetPlayer()->SetCard(m_card_to_play);
 	GetPlayer()->Notify();
 }
 

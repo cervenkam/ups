@@ -15,6 +15,7 @@ class NetworkPlayer: public Algorithm{
 		void SetCard(const Card* card);
 		void SetVote(char vote);
 		char Vote() const;
+		void NewHand() const;
 		const Card* Play(bool force) const;//NON VALID GETTER
 		void TrySend(char* buff);
 		void SetNextCard(unsigned,unsigned);

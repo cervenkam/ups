@@ -8,6 +8,7 @@ class Person: public Algorithm{
 		void Used(const Card* card,unsigned char player);
 		void Print(unsigned card,bool clear) const;
 		const Card* Play(bool force) const;//NON VALID GETTER
+		void NewHand() const;
 		char Vote() const;
 	private:
 		bool OnePlay(unsigned&) const;

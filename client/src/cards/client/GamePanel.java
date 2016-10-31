@@ -36,12 +36,11 @@ public class GamePanel extends JPanel{
 		loadLayers();
 		setFocusable(true);
 		requestFocusInWindow();
-		client.addCallback("Play",(s)->{
-			client.send(SERVER_BUNDLE.getString("MyCards"));
-		});
+		/*client.addCallback("Play",(s)->{
+			//TODO
+		});*/
 		client.addCallback("Cards",(s)->{
 			setCards(s);
-			client.send(SERVER_BUNDLE.getString("CardCountQuery"));
 		});
 		client.addCallback("CardCount",(s)->{
 			setOponentsCards(s);
@@ -90,7 +89,6 @@ public class GamePanel extends JPanel{
 				}
 			}
 		});
-		client.send(SERVER_BUNDLE.getString("MyCards"));
 		setPreferredSize(new Dimension(WIDTH,HEIGHT));
 	}
 	private void animateMouse(int card){

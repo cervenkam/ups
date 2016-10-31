@@ -46,6 +46,12 @@ NetworkPlayer::~NetworkPlayer(){
 void NetworkPlayer::SetVote(char vote){
 	m_vote = vote;
 }
+void NetworkPlayer::NewHand() const{
+	if(m_commands){
+		m_commands->MyCards(nullptr);
+		m_commands->GetCountOfCards(nullptr);
+	}
+}
 /*
 	Is called when a card is used (with any player)
 		=> card Player card

@@ -135,16 +135,12 @@ bool Game::Prepare(){
 	return true;
 }
 void Game::Loop(){
-	//player which win this hand
 	unsigned winner = 0;
 	SetStarted(0);
-	//lets start the game
 	for(unsigned a=0;;a++,a%=m_players){
-		//card which player plays
 		if(!OneHand(winner,a)){
 			break;
 		}
-		//if it is end of game
 		if(m_end_of_game){
 			return;
 		}
@@ -196,16 +192,18 @@ bool Game::FillHands(){
 bool Game::OneHand(unsigned& winner,unsigned& player){
 	const Card* card = nullptr;
 	bool started;
+	unsigned len = GetCountOfPlayers();
+	for(unsigned a=0; a<len; a++){
+		m_algos[a]->NewHand();
+	}
 	do{
 		if(!ChooseCard(player,winner,card,started)){
 			continue;
 		}
 	}while(!card && !started && !m_end_of_game);
-	//if it is end of game
 	if(m_end_of_game){
 		return true;
 	}
-	//sets the first card
 	if((card && !FirstCard()) || (!card && FirstCard())){
 		SetFirstCard(card);
 	}

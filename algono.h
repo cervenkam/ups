@@ -14,6 +14,7 @@ class AlgoNo: public Algorithm{
 		void Used(const Card*,unsigned char);
 		const Card* Play(bool force) const;//NON VALID GETTER
 		char Vote() const;
+		void NewHand() const;
 };
 
 #endif

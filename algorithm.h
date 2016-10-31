@@ -36,6 +36,7 @@ class Algorithm{
 		virtual char Vote() const = 0;
 		void FillCardsString(char* buff);
 		const Card* GetCard(unsigned) const; //NON VALID GETTER
+		virtual void NewHand() const = 0;
 	protected:
 		virtual void Used(const Card* card,unsigned char player) = 0;
 		unsigned char m_myID;
