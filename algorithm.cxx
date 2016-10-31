@@ -84,7 +84,7 @@ Semaphore* Algorithm::GetSemaphoreForVote(){
 	Returns the player's hand
 		<= Player's card 
 */
-const Hand* Algorithm::GetHand() const{
+Hand* Algorithm::GetHand() const{
 	return m_hand;
 }
 /*
@@ -159,8 +159,22 @@ bool Algorithm::AddCard(const Card* card){
 	return m_hand->Add(card);
 }
 void Algorithm::ClearCards(){
-	m_hand->Clear();
+	GetHand()->Clear();
 }
 const Card* Algorithm::UseCard(unsigned index){
-	return m_hand->Use(index);
+	return GetHand()->Use(index);
+}
+unsigned Algorithm::GetCardCount() const{
+	return GetHand()->Size();
+}
+void Algorithm::FillCardsString(char* buff){
+	unsigned cardcount = GetCardCount();
+	for(unsigned c=0; c<cardcount; c++){
+		const Card* card = GetCard(c);
+		char* str = card->ToString();
+		buff = Append(buff,str);
+	}
+}
+const Card* Algorithm::GetCard(unsigned index) const{
+	return GetHand()->Get(index);
 }

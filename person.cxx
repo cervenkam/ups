@@ -36,10 +36,9 @@ void Person::Used(const Card* card,unsigned char player){
 }
 void Person::Print(unsigned card,bool) const{
 	OUT(MOVED(99) << MOVEC(MOVE_X) << MOVEA(2));
-	const Hand* hand = GetHand();
-	unsigned char size = hand->Size();
+	unsigned char size = GetCardCount();
 	for(unsigned char b=0; b<size; b++){
-		OUT(*hand->Get(b));
+		OUT(*GetCard(b));
 	}
 	for(unsigned char b=size; b<Hand::ms_SIZE; b++){
 		OUT("   ");
@@ -57,12 +56,11 @@ void Person::Print(unsigned card,bool) const{
 */
 
 const Card* Person::Play(bool force) const{
-	const Hand* hand = GetHand();
-	while(hand->Size()>0){
+	while(GetCardCount()>0){
 		unsigned card = 0;
-		while(OnePlay(hand,card)) {;}
-		if(card<hand->Size()){
-			const Card* crd = hand->Get(card);
+		while(OnePlay(card)) {;}
+		if(card<GetCardCount()){
+			const Card* crd = GetCard(card);
 			if(force || !m_game->FirstCard() || m_game->FirstCard()->IsPlayable(crd)){
 				return crd;
 			}
@@ -76,7 +74,7 @@ const Card* Person::Play(bool force) const{
 	return nullptr;
 }
 
-bool Person::OnePlay(const Hand* hand,unsigned& card) const{
+bool Person::OnePlay(unsigned& card) const{
 	Print(card,true);
 	READ(char c = getchar());
 	OUT(MOVED(5) << "     " << endl);
@@ -84,10 +82,10 @@ bool Person::OnePlay(const Hand* hand,unsigned& card) const{
 		case 91:
 			READ(c = getchar());
 			switch(c){
-				case 68: card+=hand->Size(); break;
+				case 68: card+=GetCardCount(); break;
 				case 67: card++; break;
 			}
-			card%=(hand->Size()+1);
+			card%=(GetCardCount()+1);
 			break;
 		case 13: return false;
 		case 3: CLEAR; exit(0);

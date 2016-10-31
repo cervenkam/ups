@@ -58,7 +58,7 @@ void Server::TidyUp(Commands* cmd){
 void Server::SetCommands(Commands* cmd){
 	m_cmds = cmd;
 }
-Commands* Server::GetCommands(){
+Commands* Server::GetCommands() const{
 	return m_cmds;
 }
 void Server::Start(){
@@ -92,7 +92,7 @@ bool Server::NewConnection(saddrin in_addr){
 	m_commands.push_back(cmd);
 	return true;
 }
-bool Server::IsRunning(){
+bool Server::IsRunning() const{
 	return m_port;
 }
 void Server::RemoveCommands(Commands* commands){
@@ -117,10 +117,10 @@ void Server::RemoveGame(Game* game){
 void Server::Stop(){
 	close(m_sock);
 }
-Semaphore* Server::GetGCSemaphore(){
+Semaphore* Server::GetGCSemaphore() const{
 	return m_semaphore_gc;
 }
-char* Server::Receive(int sock){
+char* Server::Receive(int sock) const{
 	uint32_t netlen;
 	int rcv = recv(sock,&netlen,sizeof(uint32_t),0);
 	if(rcv<0 || errno==EAGAIN || errno==EWOULDBLOCK){
@@ -135,7 +135,7 @@ char* Server::Receive(int sock){
 	STDMSG("1;33","Received:   " << m_internal_storage);
 	return m_internal_storage;
 }
-void Server::Send(int sock,const char* message){
+void Server::Send(int sock,const char* message) const{
 	STDMSG("0;32","Sending:    " << message);
 	unsigned length = strlen(message);
 	uint32_t netlen = htonl(length);
@@ -145,11 +145,11 @@ void Server::Send(int sock,const char* message){
 	TEST_ERR(snd<0,"Cannot send message")
 }
 
-unsigned Server::GetCountOfGames(){
+unsigned Server::GetCountOfGames() const{
 	return m_games.size();
 }
 
-Game* Server::GetGame(unsigned index){
+Game* Server::GetGame(unsigned index) const{
 	return m_games[index];
 }
 

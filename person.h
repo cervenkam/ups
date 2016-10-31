@@ -10,7 +10,7 @@ class Person: public Algorithm{
 		const Card* Play(bool force) const;//NON VALID GETTER
 		char Vote() const;
 	private:
-		bool OnePlay(const Hand*,unsigned&) const;
+		bool OnePlay(unsigned&) const;
 };
 
 #endif

@@ -198,12 +198,7 @@ unsigned Commands::NumberOfSameLetters(const char* const cmp1,const char* const 
 void Commands::MyCards(const char* const) const{
 	char* buff = new char[MAX_LEN]; //deleted at the end of this function
 	char* ptr = Add(buff,RESPONSE_YOUR_CARDS);
-	unsigned cardcount = m_player->GetHand()->Size();
-	for(unsigned c=0; c<cardcount; c++){
-		const Card* card = m_player->GetHand()->Get(c);
-		char* str = card->ToString();
-		ptr = Append(ptr,str);
-	}
+	GetPlayer()->FillCardsString(ptr);
 	TrySend(m_sock,buff);
 	delete[] buff; //created an the start of this function
 }
@@ -215,7 +210,7 @@ void Commands::GetCountOfCards(const char* const) const{
 		Algorithm* alg = m_game->GetAlgorithm(c);
 		if(alg != m_player){
 			ptr = Append(ptr,alg->m_player);
-			ptr = Append(ptr,alg->GetHand()->Size());
+			ptr = Append(ptr,alg->GetCardCount());
 		}
 	}
 	TrySend(m_sock,buff);
@@ -293,15 +288,9 @@ void Commands::SendCard(const char* const message){
 	}
 	unsigned a = value&3;
 	unsigned b = value>>2;
-	unsigned cardcount = m_player->GetHand()->Size();
-	for(unsigned c=0; c<cardcount; c++){
-		const Card* card = m_player->GetHand()->Get(c);
-		if(card->GetColor()==a && card->GetRank()==b){
-			m_card_to_play = card;
-		}
-	}
-	m_player->SetCard(m_card_to_play);
-	m_player->Notify();
+	GetPlayer()->SetNextCard(a,b);
+	GetPlayer()->SetCard(m_card_to_play);
+	GetPlayer()->Notify();
 }
 
 void Commands::Vote(const char* const message) const{

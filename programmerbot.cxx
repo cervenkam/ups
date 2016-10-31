@@ -10,10 +10,9 @@
 #include <iostream>
 #define HAZARD 2
 #define FIND_DO(x,y) { \
-		const Hand* hnd = GetHand(); \
-		unsigned char sze = hnd->Size(); \
+		unsigned char sze = GetCardCount(); \
 		for(unsigned a=0; a<sze; a++){ \
-			const Card* card = hnd->Get(a); \
+			const Card* card = GetCard(a); \
 			if(x){ \
 				y; \
 			} \
@@ -86,7 +85,7 @@ const Card* ProgrammerBot::GetAnythingElse() const{
 	}
 	FIND_P(0.9,!card->IsSpecial())
 	FIND_P(0.7,card->GetRank()==CARD_7)
-	return GetHand()->Get(0); // TODO dangerous
+	return GetCard(0); // TODO dangerous
 }
 const Card* ProgrammerBot::TryPutFirstCard() const{
 	if(!m_game->FirstCard()){
@@ -96,12 +95,11 @@ const Card* ProgrammerBot::TryPutFirstCard() const{
 	}
 }
 const Card* ProgrammerBot::GetRandomCard() const{
-	const Hand* hand = GetHand();
-	unsigned char size = hand->Size();
+	unsigned char size = GetCardCount();
 	unsigned count = 0;
 	unsigned index = 0;
 	for(unsigned x=0; x<size; x++){
-		const Card* c1 = hand->Get(x);
+		const Card* c1 = GetCard(x);
 		if(c1->GetRank()==CARD_7){
 			continue;
 		}
@@ -112,7 +110,7 @@ const Card* ProgrammerBot::GetRandomCard() const{
 			index = x;
 		}
 	}
-	return hand->Get(index);
+	return GetCard(index);
 }
 const Card* ProgrammerBot::TryValuableCard() const{
 	if(m_game->FirstCard()->IsValuable()){

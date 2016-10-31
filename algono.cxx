@@ -33,15 +33,14 @@ const Card* AlgoNo::Play(bool force) const{
 	if(!force){
 		return nullptr;
 	}
-	const Hand* hand = GetHand();
 	const Card* first = m_game->FirstCard();
-	unsigned char size = hand->Size();
+	unsigned char size = GetCardCount();
 	for(unsigned char a=0; a<size; a++){
-		if(first==nullptr || hand->Get(a)->IsPlayable(first)){
-			return hand->Get(a);
+		if(first==nullptr || GetCard(a)->IsPlayable(first)){
+			return GetCard(a);
 		}
 	}
-	return hand->Get(0); //HACK dangerous
+	return GetCard(0); //HACK dangerous
 }
 /*
 	Selects if this player wants to start new game

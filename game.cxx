@@ -251,7 +251,7 @@ bool Game::UseNoCard(unsigned& player, unsigned& winner){
 		return true;
 	}
 	//end of game
-	if(!m_algos[GetStarted()]->GetHand()->Size()){
+	if(!m_algos[GetStarted()]->GetCardCount()){
 		OUT(m_algos[GetStarted()]->m_player << " " << RECEIVED << " " << LAST_POINT << endl);
 		m_algos[GetStarted()]->AddPoints(1);
 		End();
@@ -262,13 +262,12 @@ bool Game::UseNoCard(unsigned& player, unsigned& winner){
 bool Game::SameCards(){
 	for(unsigned y=0; y<m_players; y++){
 		unsigned char b = (y+GetStarted())%m_players;
-		const Hand* hand = m_algos[b]->GetHand();
-		unsigned size = hand->Size();
+		unsigned size = m_algos[b]->GetCardCount();
 		if(size!=Hand::ms_SIZE){
 			return false;
 		}
 		for(unsigned c=1; c<size; c++){
-			if(hand->Get(c-1)->GetRank()!=hand->Get(c)->GetRank()){
+			if(m_algos[b]->GetCard(c-1)->GetRank()!=m_algos[b]->GetCard(c)->GetRank()){
 				goto outer;
 			}
 		}
@@ -300,10 +299,9 @@ void Game::DetermineWinner(const Card* card,unsigned& player, unsigned& winner){
 		//player = (winner+(players-1))%players;
 	}
 	//Search for the card
-	const Hand* hand = m_algos[player]->GetHand();
-	unsigned char handsize = hand->Size();
+	unsigned char handsize = m_algos[player]->GetCardCount();
 	for(unsigned char b=0; b<handsize; b++){
-		if(hand->Get(b)==card){
+		if(m_algos[player]->GetCard(b)==card){
 			m_algos[player]->UseCard(b); 
 		}
 	}
@@ -314,9 +312,9 @@ void Game::Print(){
 	OUT(endl);
 	for(unsigned char a=0; a<m_players; a++){
 		Algorithm* alg = m_algos[a];
-		unsigned char size = alg->GetHand()->Size();
+		unsigned char size = alg->GetCardCount();
 		for(unsigned char b=0; b<size; b++){
-			OUT(*alg->GetHand()->Get(b));
+			OUT(*alg->GetCard(b));
 		}
 		OUT("\t");
 	}

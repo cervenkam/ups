@@ -31,15 +31,18 @@ class Algorithm{
 		bool AddCard(const Card*);
 		void ClearCards();
 		const Card* UseCard(unsigned); //NON VALID GETTER
-		const Hand* GetHand() const;//NON VALID GETTER
+		unsigned GetCardCount() const;
 		virtual const Card* Play(bool force) const = 0;//NON VALID GETTER
 		virtual char Vote() const = 0;
+		void FillCardsString(char* buff);
+		const Card* GetCard(unsigned) const; //NON VALID GETTER
 	protected:
 		virtual void Used(const Card* card,unsigned char player) = 0;
 		unsigned char m_myID;
 		const char* m_name = "algorithm";
 		Game* m_game = nullptr;
 	private:
+		Hand* GetHand() const;
 		Semaphore* GetSemaphoreForVote();
 		Semaphore* GetSemaphore();
 		Hand* m_hand;

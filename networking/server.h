@@ -12,29 +12,29 @@ class Server{
 	public:
 		void Start();
 		void Stop();
-		char* Receive(int sock);
+		char* Receive(int sock) const;
 		Server(unsigned port);
 		~Server();
-		void Send(int sock,const char* message);
+		void Send(int sock,const char* message) const;
 		void AddGame(Game* game);
 		void AddCommands(Commands* command);
 		void TidyUp(Commands* commands);
 		bool NewConnection(saddrin); 
-		unsigned GetCountOfGames(); 
-		bool IsRunning();
+		unsigned GetCountOfGames() const; 
+		bool IsRunning() const;
 		void RemoveCommands(Commands*);
 		void RemoveGame(Game*);
 		void GarbageCollector();
 		void SetCommands(Commands*);
-		Game* GetGame(unsigned index); //NON VALID GETTER
+		Game* GetGame(unsigned index) const; //NON VALID GETTER
 	private:
 		void StopGame();
 		void Listen(saddrin&);
-		Commands* GetCommands();
-		Semaphore* GetGCSemaphore();
+		Commands* GetCommands() const;
+		Semaphore* GetGCSemaphore() const;
 
 		unsigned m_port;
-		char m_internal_storage[MAX_LEN];
+		mutable char m_internal_storage[MAX_LEN];
 		vector<Commands*> m_commands;
 		vector<Game*> m_games;
 		thread* m_garbage_collector;

@@ -121,3 +121,15 @@ void NetworkPlayer::SetCommands(Commands* commands){
 void NetworkPlayer::SetCard(const Card* card){
 	m_card = card;
 }
+void NetworkPlayer::SetNextCard(unsigned color,unsigned rank){
+	const Card* next_card = nullptr;
+	unsigned cardcount = GetCardCount();
+	for(unsigned c=0; c<cardcount; c++){
+		const Card* card = GetCard(c);
+		if(card->GetColor()==color && card->GetRank()==rank){
+			next_card = card;
+			break;
+		}
+	}
+	SetCard(next_card);
+}

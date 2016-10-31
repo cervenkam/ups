@@ -17,6 +17,7 @@ class NetworkPlayer: public Algorithm{
 		char Vote() const;
 		const Card* Play(bool force) const;//NON VALID GETTER
 		void TrySend(char* buff);
+		void SetNextCard(unsigned,unsigned);
 	private:
 		Commands* GetCommands();
 		Commands* m_commands;
