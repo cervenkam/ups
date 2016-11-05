@@ -69,6 +69,7 @@ void Server::Start(){
 	}
 	m_cmds = nullptr;
 	m_port = 0;
+	GetGCSemaphore()->Notify();
 	m_garbage_collector->join();
 	unsigned len = m_commands.size();
 	for(unsigned a=0; a<len; a++){

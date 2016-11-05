@@ -40,6 +40,14 @@ Commands::Commands(){
 
 void Commands::SendMessage(const char* const message) const{
 	char buff[MAX_LEN];
+	if(!GetPlayer()){
+		BadCommand("Player not exists");
+		return;
+	}
+	if(!GetGame()){
+		BadCommand("Game not exists");
+		return;
+	}
 	Append(Append(Add(buff,RESPONSE_MESSAGE),m_player->m_player),message);
 	unsigned count = m_game->GetCountOfPlayers();
 	for(unsigned a=0; a<count; a++){
@@ -54,7 +62,9 @@ Commands::Commands(int sock,Server* server,NetworkPlayer* player,Game* game){
 	SetSocket(sock);
 	SetServer(server);
 	SetPlayer(player);
-	player->SetGameForBothMeAndBot(game);
+	if(GetPlayer()){
+		GetPlayer()->SetGameForBothMeAndBot(game);
+	}
 }
 
 
@@ -89,7 +99,11 @@ void Commands::Start(){
 			return;
 		}
 		STDMSG("0;36","Waiting:    For reconnection");
-		GetSemaphore()->Wait(TIMEOUT_CONNECTION);	
+		if(GetSemaphore()){
+			BadCommand("Cannot start");
+			Disconnect(nullptr);
+		}
+		GetSemaphore()->Wait(TIMEOUT_CONNECTION);
 		if(!IsConnected()){
 			Disconnect(nullptr);
 			return;
@@ -163,7 +177,7 @@ void Commands::Call(const char* const command){
 		return;
 	}
 	int index = FindMethod(command);
-	if(index>=0){
+	if(index>=0 && index<COMMANDS){
 		(this->*ms_commands[index])(command+strlen(ms_texts[index])+1);
 	}else{
 		BadCommand(command);
@@ -174,6 +188,10 @@ void Commands::Call(const char* const command){
 int Commands::FindMethod(const char* const command){
 	unsigned max_len = 0;
 	int index = -1;
+	if(!command){
+		BadCommand("NULL command");
+		return index;
+	}
 	unsigned cmdlen = strlen(command);
 	for(int a=0; a<COMMANDS; a++){
 		unsigned len = strlen(ms_texts[a]);
@@ -198,30 +216,42 @@ unsigned Commands::NumberOfSameLetters(const char* const cmp1,const char* const 
 void Commands::MyCards(const char* const) const{
 	char* buff = new char[MAX_LEN]; //deleted at the end of this function
 	char* ptr = Add(buff,RESPONSE_YOUR_CARDS);
-	GetPlayer()->FillCardsString(ptr);
-	TrySend(m_sock,buff);
+	if(!GetPlayer()){
+		BadCommand("Player does not exists");
+	}else{
+		GetPlayer()->FillCardsString(ptr);
+		TrySend(m_sock,buff);
+	}
 	delete[] buff; //created an the start of this function
 }
 void Commands::GetCountOfCards(const char* const) const{
 	char* buff = new char[MAX_LEN]; //deleted at the end of this function
 	char* ptr = Add(buff,RESPONSE_COUNT_CARDS);
-	unsigned playerscount = m_game->GetCountOfPlayers();
-	for(unsigned c=0; c<playerscount; c++){
-		Algorithm* alg = m_game->GetAlgorithm(c);
-		if(alg != m_player){
-			ptr = Append(ptr,alg->m_player);
-			ptr = Append(ptr,alg->GetCardCount());
+	if(!GetGame()){
+		BadCommand("Game does not exists");
+	}else{
+		unsigned playerscount = GetGame()->GetCountOfPlayers();
+		for(unsigned c=0; c<playerscount; c++){
+			Algorithm* alg = GetGame()->GetAlgorithm(c);
+			if(alg && alg != GetPlayer()){
+				ptr = Append(ptr,alg->m_player);
+				ptr = Append(ptr,alg->GetCardCount());
+			}
 		}
+		TrySend(m_sock,buff);
 	}
-	TrySend(m_sock,buff);
 	delete[] buff; //created at the start of this function
 }
 	
 void Commands::Login(const char* const message){
 	const char* player_name = message;
-	unsigned games_len = m_server->GetCountOfGames();
+	if(!GetServer()){
+		BadCommand("Server does not exists");
+		return;
+	}
+	unsigned games_len = GetServer()->GetCountOfGames();
 	for(unsigned a=0; a<games_len; a++){
-		Game* game = m_server->GetGame(a);
+		Game* game = GetServer()->GetGame(a);
 		FindPlayerInGame(game,player_name);
 	}
 	if(m_player == nullptr){
@@ -232,10 +262,13 @@ void Commands::Login(const char* const message){
 	}
 }
 void Commands::FindPlayerInGame(Game* game,const char* const player_name){
+	if(!game){
+		return;
+	}
 	unsigned players_len = game->GetCountOfPlayers();
 	for(unsigned b=0; b<players_len; b++){
 		Algorithm* algo = game->GetAlgorithm(b);
-		if(!strcmp(algo->m_player,player_name)){
+		if(algo && !strcmp(algo->m_player,player_name)){
 			if((m_player = dynamic_cast<NetworkPlayer*>(algo))){	
 				InitPlayer(game);
 				break;
@@ -248,9 +281,13 @@ void Commands::FindPlayerInGame(Game* game,const char* const player_name){
 }
 void Commands::TryStartMyGame(){
 	bool game_is_ready = true;
-	unsigned players_len = m_game->GetCountOfPlayers();
+	if(!GetGame()){
+		BadCommand("Game not exists");
+		return;
+	}
+	unsigned players_len = GetGame()->GetCountOfPlayers();
 	for(unsigned a=0; a<players_len; a++){
-		if(!m_game->GetAlgorithm(a)->IsReady()){
+		if(!GetGame()->GetAlgorithm(a)->IsReady()){
 			game_is_ready = false;
 			break;
 		}
@@ -260,26 +297,38 @@ void Commands::TryStartMyGame(){
 	}
 }
 void Commands::InitPlayer(Game* game){
-	if(m_player->IsReady()){
-		TrySend(m_sock,RESPONSE_PLAYER_EXISTS);
+	if(!GetPlayer()){
+		BadCommand("Player does not exists");
 		return;
 	}
-	m_player->SetCommands(this);
+	if(GetPlayer()->IsReady()){
+		TrySend(GetSocket(),RESPONSE_PLAYER_EXISTS);
+		return;
+	}
+	GetPlayer()->SetCommands(this);
 	SetConnected(true);
 	m_game = game;
-	TrySend(m_sock,RESPONSE_A_GAME);
-	m_player->SetReady();
-	m_player->SetGameForBothMeAndBot(m_game);
+	TrySend(GetSocket(),RESPONSE_A_GAME);
+	GetPlayer()->SetReady();
+	GetPlayer()->SetGameForBothMeAndBot(GetGame());
 }
 void Commands::Disconnect(const char* const){
+	if(!GetServer()){
+		BadCommand("Server does not exists");
+		return;
+	}
 	TrySend(GetSocket(),RESPONSE_BYE);
-	close(m_sock);
+	close(GetSocket());
 	SetConnected(false);
 	SetRunning(false);
 	GetServer()->TidyUp(this);
 }
 
 void Commands::SendCard(const char* const message){
+	if(!GetPlayer()){
+		BadCommand("Player does not exists");
+		return;
+	}
 	m_card_to_play = nullptr;
 	unsigned value = Card::FromString(message);
 	if(value>>6){
@@ -293,17 +342,29 @@ void Commands::SendCard(const char* const message){
 }
 
 void Commands::Vote(const char* const message) const{
+	if(!GetPlayer()){
+		BadCommand("Player does not exists");
+		return;
+	}
 	int vote = 0;
-	if(!strcmp(message,VOTE_YES)){
+	if(message && !strcmp(message,VOTE_YES)){
 		vote = 1;
-	}else if(!strcmp(message,VOTE_NO)){
+	}else if(message && !strcmp(message,VOTE_NO)){
 		vote = -1;
 	}
-	m_player->SetVote(vote);
-	m_player->VoteNotify();
+	GetPlayer()->SetVote(vote);
+	GetPlayer()->VoteNotify();
 }
 
 void Commands::CreateGame(const char* const message) const{
+	if(!message){
+		BadCommand("Bad parameter");
+		return;
+	}
+	if(!GetServer()){
+		BadCommand("Server does not exists");
+		return;
+	}
 	unsigned length = strlen(message);
 	char* game_name = new char[length+1];
 	strcpy(game_name,message);
@@ -318,8 +379,8 @@ void Commands::CreateGame(const char* const message) const{
 	Configuration* configuration = new Configuration(params); //deleted in game destructor
 	Game* game = new Game(configuration); //deleted in Server::StopGame || Server destructor
 	game->SetName(game_name);
-	m_server->AddGame(game);
-	TrySend(m_sock,RESPONSE_GAME_CREATED);
+	GetServer()->AddGame(game);
+	TrySend(GetSocket(),RESPONSE_GAME_CREATED);
 	delete[] game_name;
 }
 Commands::~Commands(){
@@ -342,7 +403,7 @@ void Commands::GarbageCollect(){
 	}
 }
 void Commands::StopGame(){
-	if(GetGame()!=nullptr){
+	if(GetGame()){
 		unsigned len = GetGame()->GetCountOfPlayers();
 		bool should_be_stopped = true;
 		for(unsigned a=0; a<len; a++){
@@ -353,27 +414,41 @@ void Commands::StopGame(){
 		}
 		if(should_be_stopped){
 			GetGame()->StopParallel();
-			GetServer()->RemoveGame(GetGame());
+			if(GetServer()){
+				GetServer()->RemoveGame(GetGame());
+			}
 		}
 	}
 }
 bool Commands::FindReasonToStay(unsigned algo_index){
+	if(!GetGame()){
+		BadCommand("Game does not exists");
+		return true;
+	}
 	Algorithm* algo = GetGame()->GetAlgorithm(algo_index);
 	NetworkPlayer* player = nullptr;
 	if((player = dynamic_cast<NetworkPlayer*>(algo))){	
-		if(player != nullptr && player->IsReady()){
+		if(player->IsReady()){
 			return false;
 		}
 	}
 	return true;
 }
 void Commands::Join() const{
-	GetThread()->join();
+	if(GetThread()){
+		GetThread()->join();
+	}
 }
 void Commands::Notify() const{
-	GetSemaphore()->Notify();
+	if(GetSemaphore()){
+		GetSemaphore()->Notify();
+	}
 }
 const char* Commands::GetAlgorithmName(unsigned index){
+	if(!GetGame()){
+		BadCommand("Game does not exists");
+		return "";
+	}
 	return GetGame()->GetAlgorithmName(index);
 }
 void Commands::    _SendMessage(const char* msg){     SendMessage(msg); }

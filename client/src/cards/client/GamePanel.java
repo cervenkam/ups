@@ -28,6 +28,7 @@ public class GamePanel extends JPanel{
 	private double previous_rotate = 0;
 	private int previous_card = -1;
 	private boolean running_quard = true;
+	private final List<Integer> cards_on_table = new ArrayList<Integer>();
 	public GamePanel(Client client,String name){
 		this.name = name;
 		this.client = client;
@@ -40,6 +41,7 @@ public class GamePanel extends JPanel{
 			//TODO
 		});*/
 		client.addCallback("Cards",(s)->{
+			clearTable();
 			setCards(s);
 		});
 		client.addCallback("CardCount",(s)->{
@@ -90,6 +92,18 @@ public class GamePanel extends JPanel{
 			}
 		});
 		setPreferredSize(new Dimension(WIDTH,HEIGHT));
+	}
+	private void clearTable(){
+		for(int index: cards_on_table){
+			LayerManager lm = LayerManager.getInstance();
+			Layer layer = lm.getCard(index);
+			PredefinedAnimations pa = new PredefinedAnimations(layer,this);
+			pa.setPosition(WIDTH+100,HEIGHT>>1);
+			pa.setRotate(Math.random()*2*Math.PI);
+			pa.getCard(true);
+			repaint();
+		}
+		cards_on_table.clear();
 	}
 	private void animateMouse(int card){
 		LayerManager lm = LayerManager.getInstance();
@@ -162,9 +176,7 @@ public class GamePanel extends JPanel{
 				int card = plyr.pickRandom();
 				to_swap = lm.getCard(card);
 				plyr.setCard(card,-1);
-				System.out.println("SWAP:   "+layer+" with "+to_swap);
-				to_swap.swap(layer); //TODO does not working
-				System.out.println("SWAPED: "+layer+" with "+to_swap);
+				to_swap.swap(layer);
 				repaint();
 				break;
 			}
@@ -172,6 +184,7 @@ public class GamePanel extends JPanel{
 		if(to_swap == null){
 			return;
 		}
+		cards_on_table.add(index);
 		PredefinedAnimations pa = new PredefinedAnimations(layer,this);
 		pa.setPosition((int)played_cards.getX(),(int)played_cards.getY());
 		pa.setRotate(Math.random()*2*Math.PI);

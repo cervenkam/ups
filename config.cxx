@@ -93,11 +93,11 @@ void Configuration::AddAlgorithm(unsigned& counter,char*& name, char* parameter)
 bool Configuration::ParseOneParameter(unsigned& counter,char*& strtmp,char*& name,char* command,char* parameter){
 	if(!strcmp(command,PLAYER_COUNT)){
 		InitAlgorithms(atoi(parameter));
-	}else if(!strcmp(command,DEFAULT)){
+	}else if(!strcmp(command,DEFAULT) && parameter){
 		ms_def = parameter;
-	}else if(!strcmp(command,PLAYER)){
+	}else if(!strcmp(command,PLAYER) && parameter){
 		AddAlgorithm(counter,name,parameter);
-	}else if(!strcmp(command,NAME)){
+	}else if(!strcmp(command,NAME) && parameter){
 		strcpy(name,parameter);
 	}else if(!strcmp(command,RULES)){
 		m_rules=true;
@@ -105,13 +105,15 @@ bool Configuration::ParseOneParameter(unsigned& counter,char*& strtmp,char*& nam
 	return UpdatePointer(strtmp);
 }
 bool Configuration::UpdatePointer(char*& strtmp){
-	while(strtmp[0]!=' ' && strtmp[0]!='\0'){
+	while(strtmp && strtmp[0]!=' ' && strtmp[0]!='\0'){
 		strtmp++;
 	}
-	if(strtmp[0]=='\0'){
+	if(strtmp && strtmp[0]=='\0'){
 		return false;
 	}
-	strtmp++;
+	if(strtmp){
+		strtmp++;
+	}
 	return true;
 }
 /*

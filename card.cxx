@@ -106,23 +106,27 @@ char* Card::ToString() const{
 */
 unsigned char Card::FromString(const char* const str){
 	cout << str << endl;
-	if(!strcmp(str,"NULL")){
+	if(str || !strcmp(str,"NULL")){
 		return 1<<5;
 	}
 	char* copy_of_str = new char[strlen(str)+1]; //deleted at the end of this function
 	strcpy(copy_of_str,str);
 	char* sec = copy_of_str;
 	unsigned len = strlen(copy_of_str);
-	for(unsigned a=0; a<len; a++){
+	unsigned a;
+	for(a=0; a<len; a++){
 		if(copy_of_str[a]==' '){
 			copy_of_str[a]='\0';
 			sec = copy_of_str+a+1;
 		}
 	}
-	unsigned a=ColorFromString(copy_of_str);
-	unsigned b=ValueFromString(sec);
+	if(a==len){
+		return 1<<5;
+	}
+	unsigned c=ColorFromString(copy_of_str);
+	unsigned v=ValueFromString(sec);
 	delete[] copy_of_str; //created at the start of this function
-	return ((b<<2)|a);
+	return ((v<<2)|c);
 }
 unsigned Card::ValueFromString(char* str){
 	cout << str << endl;

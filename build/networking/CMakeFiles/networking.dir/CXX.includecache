@@ -48,22 +48,6 @@ card.h
 
 /home/martin/skola/UPS/SP/lang.h
 
-/home/martin/skola/UPS/SP/networking/commands.cxx
-commands.h
-/home/martin/skola/UPS/SP/networking/commands.h
-../config.h
-/home/martin/skola/UPS/SP/config.h
-lang.h
-/home/martin/skola/UPS/SP/networking/lang.h
-cstring
--
-iostream
--
-unistd.h
--
-../stdmcr.h
-/home/martin/skola/UPS/SP/stdmcr.h
-
 /home/martin/skola/UPS/SP/networking/commands.h
 server.h
 /home/martin/skola/UPS/SP/networking/server.h
@@ -87,8 +71,6 @@ netinet/in.h
 -
 netdb.h
 -
-
-/home/martin/skola/UPS/SP/networking/lang.h
 
 /home/martin/skola/UPS/SP/networking/server.cxx
 server.h
