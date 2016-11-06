@@ -122,27 +122,23 @@ Semaphore* Server::GetGCSemaphore() const{
 	return m_semaphore_gc;
 }
 char* Server::Receive(int sock) const{
-	uint32_t netlen;
-	int rcv = recv(sock,&netlen,sizeof(uint32_t),0);
-	if(rcv<0 || errno==EAGAIN || errno==EWOULDBLOCK){
+	int rcv = recv(sock,&m_internal_storage,sizeof(char)*MAX_LEN,0);
+	if(rcv>=MAX_LEN || rcv<0 || errno==EAGAIN || errno==EWOULDBLOCK){
 		return nullptr;
 	}
-	unsigned length = ntohl(netlen);
-	rcv = recv(sock,&m_internal_storage,sizeof(char)*MAX_LEN,0);
-	if(rcv<0 || errno==EAGAIN || errno==EWOULDBLOCK){
-		return nullptr;
-	}
-	m_internal_storage[length]='\0';
+	m_internal_storage[rcv]='\0';
 	STDMSG("1;33","Received:   " << m_internal_storage);
 	return m_internal_storage;
 }
 void Server::Send(int sock,const char* message) const{
 	STDMSG("0;32","Sending:    " << message);
 	unsigned length = strlen(message);
-	uint32_t netlen = htonl(length);
-	int snd = send(sock,&netlen,sizeof(uint32_t),0);
-	TEST_ERR(snd<0,"Cannot send message length")
-	snd = send(sock,message,sizeof(char)*length,0);
+	char* extended = new char[length+2];
+	strcpy(extended,message);
+	extended[length]='\n';
+	extended[length+1]='\0';
+	int snd = send(sock,extended,sizeof(char)*(length+1),0);
+	delete[] extended;
 	TEST_ERR(snd<0,"Cannot send message")
 }
 

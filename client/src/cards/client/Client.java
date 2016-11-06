@@ -3,6 +3,9 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.ConnectException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.OutputStream;
 import java.util.Map;
 import java.util.Set;
@@ -59,21 +62,20 @@ public class Client extends Thread{
 			out = socket.getOutputStream();
 			InputStream in = socket.getInputStream();
 			while(running){
-				int msglen = 0;
-				for(char a=0; a<4; a++){ //32bit number
-					msglen<<=8;
-					msglen|=in.read();
-				}
-				int count = in.read(buffer,0,msglen);
+				int count = in.read(buffer,0,buffer.length);
 				if(count<0){
 					System.out.println("EOS");
 					break;
-				}else if(count==msglen){
-					String data = new String(buffer, 0, count);
-					System.out.println("Received: "+data); //TODO lang
-					notifyObserver(data);
+				}else if(count<buffer.length){
+					BufferedReader br = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(buffer,0,count)));
+					String data;
+					while((data = br.readLine()) != null){
+						System.out.println("Received: "+data); //TODO lang
+						notifyObserver(data);
+					}
+					br.close();
 				}else{
-					System.err.println("Bad message size: "+msglen); //TODO lang
+					System.err.println("Bad message size - more than "+buffer.length); //TODO lang
 					System.err.println(new String(buffer, 0 ,count)); //TODO dangerous
 				}
 			}
