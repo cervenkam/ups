@@ -11,6 +11,7 @@ using namespace std;
 Server::Server(unsigned port){
 	m_port = port;
 	m_semaphore_gc = new Semaphore(0);
+	STDMSG("1;35","Created:    Server");
 }
 
 Server::~Server(){
@@ -123,13 +124,17 @@ Semaphore* Server::GetGCSemaphore() const{
 }
 char* Server::Receive(int sock) const{
 	int rcv = recv(sock,&m_internal_storage,sizeof(char)*MAX_LEN,0);
-	if(rcv>=MAX_LEN || rcv<0 || errno==EAGAIN || errno==EWOULDBLOCK){
+	if(rcv>=MAX_LEN || rcv<=0 || errno==EAGAIN || errno==EWOULDBLOCK){
 		return nullptr;
 	}
-	m_internal_storage[rcv]='\0';
+	m_internal_storage[rcv-1]='\0'; //get rid of \n
 	STDMSG("1;33","Received:   " << m_internal_storage);
-	return m_internal_storage;
+	char* to_ret = new char[rcv];
+	strcpy(to_ret,m_internal_storage);
+	return to_ret;
 }
+
+
 void Server::Send(int sock,const char* message) const{
 	STDMSG("0;32","Sending:    " << message);
 	unsigned length = strlen(message);

@@ -26,7 +26,7 @@ class Server{
 		void RemoveGame(Game*);
 		void GarbageCollector();
 		void SetCommands(Commands*);
-		Game* GetGame(unsigned index) const; //NON VALID GETTER
+		Game* GetGame(unsigned index) const;
 	private:
 		void StopGame();
 		void Listen(saddrin&);

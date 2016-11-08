@@ -92,6 +92,7 @@ public class GamePanel extends JPanel{
 			}
 		});
 		setPreferredSize(new Dimension(WIDTH,HEIGHT));
+		client.send(SERVER_BUNDLE.getString("MyCards"));
 	}
 	private void clearTable(){
 		for(int index: cards_on_table){

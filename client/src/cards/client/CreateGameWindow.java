@@ -76,15 +76,15 @@ class CreateGameWindow extends JFrame implements Runnable{
 		create_players_button.addActionListener((x)->{
 			String command = getCommand();
 			client.send(command);
-			client.addCallback("GameCreated",(e)->{
-				client.removeCallback("GameCreated");
-				client.send(SERVER_BUNDLE.getString("Login")+" "+name);
-			});
-			client.addCallback("Game",(e)->{
-				client.removeCallback("Game");
-				dispose();
-				new GameWindow(client,name).setVisible(true);
-			});
+		});
+		client.addCallback("GameCreated",(e)->{
+			client.removeCallback("GameCreated");
+			client.send(SERVER_BUNDLE.getString("Login")+" "+name);
+		});
+		client.addCallback("Game",(e)->{
+			client.removeCallback("Game");
+			dispose();
+			new GameWindow(client,name).setVisible(true);
 		});
 	}
 	private String getCommand(){

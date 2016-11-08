@@ -1,7 +1,5 @@
 server:
    OK	osetrit Configuration pred spatnym vstupem
-	navrat do hry nefunkcni - log.txt
-	ukonceni serveru nefunguje
 	vyresit memoryleaky
 klient:
 	zobrazit ze je hrac na tahu
@@ -9,10 +7,17 @@ klient:
 	presun balicku po odehrani
 	prijmout kartu vzdy z balicku, ne z protihracovy ruky
 oboji:
-	predelat ukonceni zpravy z binarni podoby
+   OK   predelat ukonceni zpravy z binarni podoby
+	send - nepridava \n a klient to taky neresi
 ostatni:
 	dokumentace
-testy:
 	pripravit testovaci scenare
 	nesmyslne zpravy
-	zpravy ktere by nemely prijit v dany okamzik - prihlaseni prihlaseneho...
+
+do bonusu:
+	server:
+		osetrit CREATE GAME jmeno bez dalsich argumentu
+		navrat do hry nefunkcni - log.txt
+		ukonceni serveru nefunguje
+	testy:
+		zpravy ktere by nemely prijit v dany okamzik - prihlaseni prihlaseneho...

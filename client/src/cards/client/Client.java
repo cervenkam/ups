@@ -25,10 +25,10 @@ public class Client extends Thread{
 		this.host = host;
 		this.port = port;
 	}
-	public void addCallback(String str,Consumer<String> func){
+	public synchronized void addCallback(String str,Consumer<String> func){
 		callbacks.put(SERVER_BUNDLE.getString(str),func);
 	}
-	public void removeCallback(String command){
+	public synchronized void removeCallback(String command){
 		command = SERVER_BUNDLE.getString(command);
 		Set<Entry<String,Consumer<String>>> set = callbacks.entrySet();
 		for(Entry<String,Consumer<String>> ent: set){
@@ -40,8 +40,7 @@ public class Client extends Thread{
 	}
 	public void send(String message){
 		try{
-			out.write(htonl(message.length()));
-			out.write(message.getBytes());
+			out.write((message+'\n').getBytes());
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -88,11 +87,11 @@ public class Client extends Thread{
 	private void softstop(){
 		running = false;
 	}
-	private void notifyObserver(String command){
+	private synchronized void notifyObserver(String command){
 		Set<Entry<String,Consumer<String>>> set = callbacks.entrySet();
 		for(Entry<String,Consumer<String>> ent: set){
 			//System.out.println("\""+command+"\".startsWith(\""+ent.getKey()+"\")");
-			//System.out.println("\""+Arrays.toString(command.getBytes())+"\".startsWith(\""+Arrays.toString(ent.getKey().getBytes())+"\")");
+			System.out.println("\""+Arrays.toString(command.getBytes())+"\".startsWith(\""+Arrays.toString(ent.getKey().getBytes())+"\")");
 			if(command.startsWith(ent.getKey())){
 				//System.out.println("OK");
 				try{

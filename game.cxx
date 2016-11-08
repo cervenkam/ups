@@ -37,6 +37,7 @@ Game::Game(Configuration* conf){
 	m_name = "unnamed game";
 	m_deck = new Deck(); //deleted in destructor
 	m_thr = nullptr;
+	STDMSG("1;35","Created:    Game");
 }
 
 Game::~Game(){

@@ -36,6 +36,7 @@ Commands::Commands(){
 	m_player = nullptr;
 	m_game = nullptr;
 	m_semaphore = new Semaphore(0); //deleted in destructor
+	STDMSG("1;35","Created:    Commands");
 }
 
 void Commands::SendMessage(const char* const message) const{
@@ -88,7 +89,7 @@ char* Commands::TryReceive(int sock) const{
 	return nullptr;
 }
 void Commands::Start(){
-	Welcome(nullptr);
+	/*Welcome(nullptr);
 	while(IsRunning()){
 		for(char* msg;(msg = TryReceive(m_sock));){
 			Call(msg);
@@ -99,7 +100,7 @@ void Commands::Start(){
 			return;
 		}
 		STDMSG("0;36","Waiting:    For reconnection");
-		if(GetSemaphore()){
+		if(!GetSemaphore()){
 			BadCommand("Cannot start");
 			Disconnect(nullptr);
 		}
@@ -108,6 +109,15 @@ void Commands::Start(){
 			Disconnect(nullptr);
 			return;
 		}
+	}*/
+	Welcome(nullptr);
+	if(IsRunning()){
+		for(char* msg;(msg = TryReceive(m_sock));){
+			Call(msg);
+			delete[] msg;
+		}
+		SetConnected(false);
+		Disconnect(nullptr);
 	}
 }
 

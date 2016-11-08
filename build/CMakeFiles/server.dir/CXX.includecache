@@ -24,18 +24,6 @@ vector
 semaphore.h
 /home/martin/skola/UPS/SP/semaphore.h
 
-/home/martin/skola/UPS/SP/card.cxx
-ostream
--
-iostream
--
-cstring
--
-card.h
-/home/martin/skola/UPS/SP/card.h
-stdmcr.h
-/home/martin/skola/UPS/SP/stdmcr.h
-
 /home/martin/skola/UPS/SP/card.h
 ostream
 -
@@ -90,6 +78,20 @@ card.h
 
 /home/martin/skola/UPS/SP/lang.h
 
+/home/martin/skola/UPS/SP/main.cxx
+networking/server.h
+/home/martin/skola/UPS/SP/networking/server.h
+cstdlib
+-
+cstdio
+-
+iostream
+-
+signal.h
+-
+exception
+-
+
 /home/martin/skola/UPS/SP/networking/commands.h
 server.h
 /home/martin/skola/UPS/SP/networking/server.h
@@ -114,6 +116,8 @@ netinet/in.h
 netdb.h
 -
 
+/home/martin/skola/UPS/SP/networking/lang.h
+
 /home/martin/skola/UPS/SP/networking/server.h
 commands.h
 /home/martin/skola/UPS/SP/networking/commands.h
@@ -125,6 +129,22 @@ thread
 -
 ../semaphore.h
 /home/martin/skola/UPS/SP/semaphore.h
+
+/home/martin/skola/UPS/SP/networkplayer.cxx
+networkplayer.h
+/home/martin/skola/UPS/SP/networkplayer.h
+networking/lang.h
+/home/martin/skola/UPS/SP/networking/lang.h
+card.h
+/home/martin/skola/UPS/SP/card.h
+hand.h
+/home/martin/skola/UPS/SP/hand.h
+stdmcr.h
+/home/martin/skola/UPS/SP/stdmcr.h
+iostream
+-
+cstring
+-
 
 /home/martin/skola/UPS/SP/networkplayer.h
 algorithm.h
