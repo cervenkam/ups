@@ -105,8 +105,7 @@ char* Card::ToString() const{
 		<= Number reprezentation
 */
 unsigned char Card::FromString(const char* const str){
-	cout << str << endl;
-	if(str || !strcmp(str,"NULL")){
+	if(!str || !strcmp(str,"NULL")){
 		return 1<<5;
 	}
 	char* copy_of_str = new char[strlen(str)+1]; //deleted at the end of this function
@@ -118,6 +117,7 @@ unsigned char Card::FromString(const char* const str){
 		if(copy_of_str[a]==' '){
 			copy_of_str[a]='\0';
 			sec = copy_of_str+a+1;
+			break;
 		}
 	}
 	if(a==len){
@@ -129,7 +129,6 @@ unsigned char Card::FromString(const char* const str){
 	return ((v<<2)|c);
 }
 unsigned Card::ValueFromString(char* str){
-	cout << str << endl;
 	unsigned b=0;
 	char l2 = str[0];
 #ifdef LANG_CS
@@ -149,7 +148,6 @@ unsigned Card::ValueFromString(char* str){
 	return b;
 }
 unsigned Card::ColorFromString(char* str){
-	cout << str << endl;
 	unsigned a=0;
 	char l1 = str[0];
 #ifdef LANG_CS

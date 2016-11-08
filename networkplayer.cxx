@@ -29,7 +29,6 @@ NetworkPlayer::NetworkPlayer(const char* player,unsigned char ch): Algorithm(pla
 		=> Game in which this algorithm acts
 */
 void NetworkPlayer::SetGameForBothMeAndBot(Game* game){
-	cout << "Game set" << endl;
 	m_bot->SetGame(game);
 	SetGame(game);
 }

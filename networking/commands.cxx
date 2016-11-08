@@ -344,7 +344,6 @@ void Commands::SendCard(const char* const message){
 	if(value>>6){
 		return;
 	}
-	cout << value << endl;
 	unsigned a = value&3;
 	unsigned b = value>>2;
 	GetPlayer()->SetNextCard(a,b);
