@@ -111,8 +111,7 @@ unsigned char Card::FromString(const char* const str){
 	char* copy_of_str = new char[strlen(str)+1]; //deleted at the end of this function
 	strcpy(copy_of_str,str);
 	char* sec = copy_of_str;
-	unsigned len = strlen(copy_of_str);
-	unsigned a;
+	unsigned a,len = strlen(copy_of_str);
 	for(a=0; a<len; a++){
 		if(copy_of_str[a]==' '){
 			copy_of_str[a]='\0';
@@ -121,6 +120,7 @@ unsigned char Card::FromString(const char* const str){
 		}
 	}
 	if(a==len){
+		delete[] copy_of_str;
 		return 1<<5;
 	}
 	unsigned c=ColorFromString(copy_of_str);

@@ -40,6 +40,7 @@ public class Client extends Thread{
 	}
 	public void send(String message){
 		try{
+			System.out.println("Sending:  "+message);
 			out.write((message+'\n').getBytes());
 		}catch(Exception e){
 			e.printStackTrace();
@@ -49,7 +50,6 @@ public class Client extends Thread{
 		running = true;
 		try{
 			InetAddress address = InetAddress.getByName(host);
-			System.out.println(address);
 			Socket socket;
 			try{
 				socket = new Socket(address, port);
@@ -78,6 +78,7 @@ public class Client extends Thread{
 					System.err.println(new String(buffer, 0 ,count)); //TODO dangerous
 				}
 			}
+			socket.close();
 		}catch(Exception e){
 			error("ErrorGeneral");
 			e.printStackTrace();
@@ -91,7 +92,7 @@ public class Client extends Thread{
 		Set<Entry<String,Consumer<String>>> set = callbacks.entrySet();
 		for(Entry<String,Consumer<String>> ent: set){
 			//System.out.println("\""+command+"\".startsWith(\""+ent.getKey()+"\")");
-			System.out.println("\""+Arrays.toString(command.getBytes())+"\".startsWith(\""+Arrays.toString(ent.getKey().getBytes())+"\")");
+			//System.out.println("\""+Arrays.toString(command.getBytes())+"\".startsWith(\""+Arrays.toString(ent.getKey().getBytes())+"\")");
 			if(command.startsWith(ent.getKey())){
 				//System.out.println("OK");
 				try{

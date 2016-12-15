@@ -4,10 +4,7 @@
 	Author: Martin Cervenka
 	Version: 19.04.2016
 */
-#include "config.h"
-#include "lang.h"
 #include "stdmcr.h"
-#include "algorithm.h"
 #include "person.h"
 #include "algono.h"
 #include "programmerbot.h"
@@ -32,10 +29,12 @@ Algorithm* Configuration::GetAlgorithm(const char* name,const char* player_name,
 	CMP(ALGONO,"AlgoNo"){
 		return new AlgoNo(player_name,id); //deleted in destuctor (1/6)
 	}else CMP(PERSON,"Person"){
+		m_persons++;
 		return new Person(player_name,id); //deleted in destuctor (1/6)
 	}else CMP(PROGRAMMERBOT,"ProgrammerBot"){
 		return new ProgrammerBot(player_name,id); //deleted in destuctor (1/6)
 	}else CMP(NETWORKPLAYER,"NetworkPlayer"){
+		m_at_least_one_player = true;
 		return new NetworkPlayer(player_name,id); //deleted in destuctor (1/6)
 	}
 	if(!strcmp(name,ms_def)){
@@ -53,18 +52,22 @@ void Configuration::Load(string in_str){
 	istringstream in(in_str);
 	char* command = new char[512]; //deleted at the end of this function
 	char* parameter = new char[512]; //deleted at the end of this function
-	char* name = new char[512]; //deleted at the end of this function (1/n) || in Algorithm destructor ((n-1)/n)
-	strcpy(name,PLAYER);
 	unsigned counter = 0;
-	ReadLines(in,counter,name,command,parameter);
-	for(unsigned a=counter; a<m_count; a++){
-		m_algos[a] = GetAlgorithm(ms_def,name,a);
+	ReadLines(in,counter,command,parameter);
+	if(m_algos){
+		for(unsigned a=counter; a<m_count; a++){
+			char* name = new char[512]; //deleted at the end of this function (1/n) || in Algorithm destructor ((n-1)/n)
+			strcpy(name,PLAYER);
+			m_algos[a] = GetAlgorithm(ms_def,name,a);
+		}
+	}else{
+		m_valid = false;
 	}
-	delete[] name; //created at the start of this function (1/n) || in ParseOneParameter function ((n-1)/n)
 	delete[] parameter; //created at the start of this function
 	delete[] command; //created at the start of this function
 }
-void Configuration::ReadLines(istringstream& in, unsigned& counter,char*& name,char* command,char* parameter){
+void Configuration::ReadLines(istringstream& in, unsigned& counter,char* command,char* parameter){
+	char* name = new char[512]; //deleted at the end of this function (1/n) || in Algorithm destructor ((n-1)/n)
 	char* str = new char[512]; //deleted at the end of this function
 	char* strtmp = str;
 	while(in.getline(str,512)){
@@ -75,6 +78,7 @@ void Configuration::ReadLines(istringstream& in, unsigned& counter,char*& name,c
 		}
 	}
 	delete[] str; //created at the start of this function
+	delete[] name; //created at the start of this function (1/n) || in ParseOneParameter function ((n-1)/n)
 }
 void Configuration::InitAlgorithms(unsigned count){
 	SetCount(count);	
@@ -160,4 +164,8 @@ Configuration::Configuration(string str){
 */
 bool Configuration::AreOwnRules(){
 	return m_rules;
+}
+
+bool Configuration::IsValid(){
+	return m_valid && m_at_least_one_player && (m_persons < 2) && (m_count > 1) && (m_count < 8);
 }

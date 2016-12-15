@@ -1,5 +1,4 @@
 #include "commands.h"
-#include "../config.h"
 #include "lang.h"
 #include <cstring>
 #include <iostream>
@@ -15,9 +14,9 @@ Commands::funcptr Commands::ms_commands[COMMANDS] = {
 	&Commands::_Welcome,
 	&Commands::_GetCountOfCards,
 	&Commands::_SendMessage,
-	&Commands::_Vote
+	&Commands::_Vote,
+	&Commands::_Table
 };
-//requires first letter distinct
 const char* const Commands::ms_texts[COMMANDS] = {
 	QUERY_LOGIN,
 	QUERY_DISCONNECT,
@@ -27,7 +26,8 @@ const char* const Commands::ms_texts[COMMANDS] = {
 	QUERY_WELCOME,
 	QUERY_COUNT_OF_CARDS,
 	QUERY_MESSAGE,
-	QUERY_VOTE
+	QUERY_VOTE,
+	QUERY_TABLE,
 };
 
 Commands::Commands(){
@@ -54,9 +54,8 @@ void Commands::SendMessage(const char* const message) const{
 	for(unsigned a=0; a<count; a++){
 		Algorithm* algo = m_game->GetAlgorithm(a);
 		NetworkPlayer* np;
-		if((np = dynamic_cast<NetworkPlayer*>(algo))){
+		if((np = dynamic_cast<NetworkPlayer*>(algo)))
 			np->TrySend(buff);
-		}
 	}
 }
 Commands::Commands(int sock,Server* server,NetworkPlayer* player,Game* game){
@@ -89,27 +88,6 @@ char* Commands::TryReceive(int sock) const{
 	return nullptr;
 }
 void Commands::Start(){
-	/*Welcome(nullptr);
-	while(IsRunning()){
-		for(char* msg;(msg = TryReceive(m_sock));){
-			Call(msg);
-		}
-		SetConnected(false);
-		if(!IsRunning()){
-			Disconnect(nullptr);
-			return;
-		}
-		STDMSG("0;36","Waiting:    For reconnection");
-		if(!GetSemaphore()){
-			BadCommand("Cannot start");
-			Disconnect(nullptr);
-		}
-		GetSemaphore()->Wait(TIMEOUT_CONNECTION);
-		if(!IsConnected()){
-			Disconnect(nullptr);
-			return;
-		}
-	}*/
 	Welcome(nullptr);
 	if(IsRunning()){
 		for(char* msg;(msg = TryReceive(m_sock));){
@@ -180,8 +158,13 @@ void Commands::Welcome(const char* const) const{
 	TrySend(m_sock,RESPONSE_WELCOME);
 }
 void Commands::BadCommand(const char* const command) const{
-	cerr << BAD_COMMAND << command << endl;
+	char* buff = new char[MAX_LEN]; //deleted at the end of this function
+	char* ptr = Add(buff,BAD_COMMAND);
+	ptr = Append(ptr,command);
+	TrySend(m_sock,buff);
+	delete[] buff;
 }
+
 void Commands::Call(const char* const command){
 	if(command == nullptr){
 		return;
@@ -193,6 +176,19 @@ void Commands::Call(const char* const command){
 		BadCommand(command);
 	}
 	return;
+}
+
+bool Commands::TotalCompare(const char* const command,int index){
+	if(index<0){
+		return false;
+	}
+	unsigned len = strlen(ms_texts[index]);
+	for(unsigned a=0; a<len; a++){
+		if(command[a]!=ms_texts[index][a]){
+			return false;
+		}
+	}
+	return true;
 }
 
 int Commands::FindMethod(const char* const command){
@@ -212,7 +208,7 @@ int Commands::FindMethod(const char* const command){
 			index = a;
 		}
 	}
-	return index;
+	return TotalCompare(command,index)?index:-1;
 }
 unsigned Commands::NumberOfSameLetters(const char* const cmp1,const char* const cmp2,unsigned len){
 	unsigned a;
@@ -257,6 +253,10 @@ void Commands::Login(const char* const message){
 	const char* player_name = message;
 	if(!GetServer()){
 		BadCommand("Server does not exists");
+		return;
+	}
+	if(GetGame()){
+		BadCommand("You are already logged in");
 		return;
 	}
 	unsigned games_len = GetServer()->GetCountOfGames();
@@ -374,6 +374,10 @@ void Commands::CreateGame(const char* const message) const{
 		BadCommand("Server does not exists");
 		return;
 	}
+	if(GetGame()){
+		BadCommand("You are already logged in");
+		return;
+	}
 	unsigned length = strlen(message);
 	char* game_name = new char[length+1];
 	strcpy(game_name,message);
@@ -385,7 +389,15 @@ void Commands::CreateGame(const char* const message) const{
 			break;
 		}
 	}
+	if(game_name == params){
+		BadCommand("Missing parameters in " QUERY_CREATE_GAME " command");
+		return;
+	}
 	Configuration* configuration = new Configuration(params); //deleted in game destructor
+	if(!configuration->IsValid()){
+		BadCommand("Configuration is not valid");
+		return;
+	}
 	Game* game = new Game(configuration); //deleted in Server::StopGame || Server destructor
 	game->SetName(game_name);
 	GetServer()->AddGame(game);
@@ -410,6 +422,21 @@ void Commands::GarbageCollect(){
 		StopGame();
 		STDMSG("0;36","Disconnected");
 	}
+}
+void Commands::Table(const char*) const{
+	char* buffer = new char[2048];
+	char* ptr = buffer;
+	if(!GetGame()){
+		BadCommand("Game does not exists");
+		return;
+	}
+	const Deck* on_table = GetGame()->GetCardsOnTable();
+	ptr = Add(ptr,RESPONSE_TABLE);
+	on_table->ForEach([&ptr](const Card* card){
+		ptr = Append(ptr,card->ToString());
+	});
+	TrySend(m_sock,buffer);
+	delete[] buffer;
 }
 void Commands::StopGame(){
 	if(GetGame()){
@@ -467,3 +494,4 @@ void Commands::           _Vote(const char* msg){            Vote(msg); }
 void Commands::        _MyCards(const char* msg){         MyCards(msg); }
 void Commands::        _Welcome(const char* msg){         Welcome(msg); }
 void Commands::_GetCountOfCards(const char* msg){ GetCountOfCards(msg); }
+void Commands::          _Table(const char* msg){           Table(msg); }

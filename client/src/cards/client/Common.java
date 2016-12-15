@@ -8,6 +8,7 @@ import java.nio.ByteBuffer;
 import java.awt.event.WindowListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowAdapter;
+import static java.awt.EventQueue.invokeLater;
 import static javax.swing.JOptionPane.showMessageDialog;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 public class Common{
@@ -21,7 +22,11 @@ public class Common{
 		return new Dimension(x+(right?0:size.width)+INSETS,y+size.height+INSETS);
 	}
 	public static void error(String message){
-		showMessageDialog(null,BUNDLE.getString(message),BUNDLE.getString("Error"),ERROR_MESSAGE);
+		String messg = BUNDLE.getString(message);
+		String error = BUNDLE.getString("Error");
+		invokeLater(()->{
+			showMessageDialog(null,messg,error,ERROR_MESSAGE);
+		});
 	}
 	public static byte[] htonl(int val){
 		if(reverse){
@@ -32,10 +37,10 @@ public class Common{
 	public static WindowListener getWindowListener(Client client){
 		return new WindowAdapter(){
 			public void windowClosing(WindowEvent e){
-				client.send(SERVER_BUNDLE.getString("Disconnect"));
 				client.addCallback("Bye",(s)->{
 					System.exit(0);
 				});
+				client.send(SERVER_BUNDLE.getString("Disconnect"));
 			}
 		};
 	}

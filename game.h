@@ -27,6 +27,7 @@ class Game{
 		unsigned GetCountOfPlayers();
 		bool VotePasses();
 		const char* GetAlgorithmName(unsigned);
+		const Deck* GetCardsOnTable();
 	private:
 		void Loop();
 		void DetermineWinner(const Card* card,unsigned& player, unsigned& winner);
@@ -39,6 +40,7 @@ class Game{
 		unsigned char m_players;
 		unsigned char m_started = 0;
 		Deck* m_deck;
+		Deck* m_on_table;
 		Algorithm** m_algos;
 		unsigned char m_points = 0;
 		char* m_name;

@@ -4,8 +4,6 @@
 	Version: 10.04.2016
 */
 #include "programmerbot.h"
-#include "card.h"
-#include "hand.h"
 #include "limits.h"
 #include <iostream>
 #define HAZARD 2

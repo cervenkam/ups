@@ -33,6 +33,7 @@
 	#define ERR_NOT_FOUND "Chyba - konfigurace nenalezena"
 	#define SAME_CARDS_HAND "ma v ruce 4 stejne karty"
 	#define I_AM "Ja jsem "
+	#define YOU "Ty jsi"
 #else
 	#define PLAYER "Player"
 	#define DEFAULT "Default" PLAYER
@@ -62,4 +63,5 @@
 	#define ERR_NOT_FOUND "Error - configuration not found"
 	#define SAME_CARDS_HAND "has 4 same cards"
 	#define I_AM "I am "
+	#define YOU "You"
 #endif

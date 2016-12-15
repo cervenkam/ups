@@ -3,11 +3,9 @@
 
 #include "server.h"
 #include "../networkplayer.h"
-#include "../semaphore.h"
 #include <thread>
-#include "../game.h"
 
-#define COMMANDS 9
+#define COMMANDS 10
 
 class Server;
 class NetworkPlayer;
@@ -40,6 +38,7 @@ class Commands{
 		void       Disconnect(const char* const);  
 		void          MyCards(const char* const) const;
 		void  GetCountOfCards(const char* const) const;
+		void            Table(const char* const) const;
 	private:
 		void            Login(const char* const);
 		void         SendCard(const char* const);
@@ -50,6 +49,7 @@ class Commands{
 		void          Welcome(const char* const) const;
 
 		int FindMethod(const char* const);
+		bool TotalCompare(const char* const,int);
 		void InitPlayer(Game*);
 		void FindPlayerInGame(Game*,const char* const);
 		void TryStartMyGame();
@@ -80,6 +80,7 @@ class Commands{
 		void      _BadCommand(const char* const);
 		void      _CreateGame(const char* const);
 		void            _Vote(const char* const);
+		void           _Table(const char* const);
 		void         _MyCards(const char* const);
 		void         _Welcome(const char* const);
 		void _GetCountOfCards(const char* const);

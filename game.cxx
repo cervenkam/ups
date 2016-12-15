@@ -1,12 +1,5 @@
-#include "lang.h"
-#include "config.h"
-#include "stdmcr.h"
 #include "game.h"
-#include "hand.h"
-#include "deck.h"
-#include "algono.h"
-#include "programmerbot.h"
-#include "person.h"
+#include "stdmcr.h"
 #include <iostream>
 #include <fstream>
 #include <thread>
@@ -27,6 +20,9 @@ void Game::SetName(char* name){
 char* Game::GetName(){
 	return m_name;
 }
+const Deck* Game::GetCardsOnTable(){
+	return m_on_table;
+}
 Game::Game(Configuration* conf){
 	m_conf=conf;
 	m_players=conf->GetCount();
@@ -36,6 +32,7 @@ Game::Game(Configuration* conf){
 	}
 	m_name = "unnamed game";
 	m_deck = new Deck(); //deleted in destructor
+	m_on_table = new Deck(); //deleted in destructor
 	m_thr = nullptr;
 	STDMSG("1;35","Created:    Game");
 }
@@ -44,6 +41,7 @@ Game::~Game(){
 	StopParallel();
 	STDMSG("1;35","Deleted:    Game");
 	delete m_conf; //creates Commands::CreateGame
+	delete m_on_table;
 	delete m_deck; //created in constructor
 }
 Algorithm* Game::GetAlgorithm(unsigned player){
@@ -53,15 +51,10 @@ unsigned Game::GetCountOfPlayers(){
 	return m_players;
 }
 void Game::End(){
-	OUT(END_GAME << endl);
-	//Find max
 	unsigned count = 0;
 	unsigned max_value = FindMaxPoints(count);
-	OUT(((count>1)?WINNERS:WINNER) << ": " << endl);
-	PrintWinners(max_value);
 	for(unsigned a=0; a<m_players; a++){
-		OUT(m_algos[a]->m_player << " " << HAS << " " << (unsigned)m_algos[a]->GetPoints() <<
-			((m_algos[a]->GetPoints()==0)?"":"0") << " " << POINTS << endl);
+		m_algos[a]->EndOfGame(max_value,count);
 	}
 	SetFirstCard(nullptr);
 	SetStarted(0);
@@ -79,15 +72,6 @@ unsigned Game::FindMaxPoints(unsigned& count){
 	return max_value;	
 }
 
-void Game::PrintWinners(unsigned max_value){
-	for(unsigned a=0; a<m_players; a++){
-		if(m_algos[a]->GetPoints() == max_value){
-			OUT("\t");
-			COLOR("1;41",m_algos[a]->m_player);
-			OUT(endl);
-		}
-	}
-}
 void Game::Start(){
 	do{
 		if(Prepare()){
@@ -184,6 +168,8 @@ bool Game::FillHands(){
 			break;
 		}
 	}
+	//remove cards on table
+	m_on_table->Free();
 	//checks own rule - 4 same cards in hand
 	if(m_conf->AreOwnRules() && SameCards()){
 		return true;
@@ -198,9 +184,8 @@ bool Game::OneHand(unsigned& winner,unsigned& player){
 		m_algos[a]->NewHand();
 	}
 	do{
-		if(!ChooseCard(player,winner,card,started)){
+		if(!ChooseCard(player,winner,card,started))
 			continue;
-		}
 	}while(!card && !started && !m_end_of_game);
 	if(m_end_of_game){
 		return true;
@@ -251,6 +236,7 @@ bool Game::UseNoCard(unsigned& player, unsigned& winner){
 	}
 	//end of game
 	if(!m_algos[GetStarted()]->GetCardCount()){
+		m_on_table->Free();
 		OUT(m_algos[GetStarted()]->m_player << " " << RECEIVED << " " << LAST_POINT << endl);
 		m_algos[GetStarted()]->AddPoints(1);
 		End();
@@ -301,7 +287,7 @@ void Game::DetermineWinner(const Card* card,unsigned& player, unsigned& winner){
 	unsigned char handsize = m_algos[player]->GetCardCount();
 	for(unsigned char b=0; b<handsize; b++){
 		if(m_algos[player]->GetCard(b)==card){
-			m_algos[player]->UseCard(b); 
+			m_on_table->Push(m_algos[player]->UseCard(b)); 
 		}
 	}
 }

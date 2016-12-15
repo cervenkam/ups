@@ -3,11 +3,9 @@
 	Author: Martin Cervenka
 	Version: 30.03.2016
 */
-#include "lang.h"
-#include "stdmcr.h"
 #include "person.h"
-#include "card.h"
-#include "hand.h"
+#include "stdmcr.h"
+#include "networking/lang.h"
 #include <iostream>
 #include <fstream>
 #define MOVE_X 70
@@ -34,6 +32,20 @@ void Person::Used(const Card* card,unsigned char player){
 		OUT(m_game->GetAlgorithm(player)->m_player << " " << USED << " " << *card << endl);
 	}
 }
+void Person::EndOfGame(unsigned max_points,unsigned count){
+	const char* result;
+	if(GetPoints()==max_points){
+		if(count==1){
+			result = RESULT_WIN;
+		}else{
+			result = RESULT_DRAW;
+		}
+	}else{
+		result = RESULT_LOSE;
+	}
+	cout << YOU << " " << result << endl;
+}
+
 void Person::Print(unsigned card,bool) const{
 	OUT(MOVED(99) << MOVEC(MOVE_X) << MOVEA(2));
 	unsigned char size = GetCardCount();

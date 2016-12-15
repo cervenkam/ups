@@ -37,6 +37,7 @@ class Algorithm{
 		void FillCardsString(char* buff);
 		const Card* GetCard(unsigned) const; //NON VALID GETTER
 		virtual void NewHand() const = 0;
+		virtual void EndOfGame(unsigned,unsigned);
 	protected:
 		virtual void Used(const Card* card,unsigned char player) = 0;
 		unsigned char m_myID;

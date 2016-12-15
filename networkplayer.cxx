@@ -5,8 +5,6 @@
 */
 #include "networkplayer.h"
 #include "networking/lang.h"
-#include "card.h"
-#include "hand.h"
 #include "stdmcr.h"
 #include <iostream>
 #include <cstring>
@@ -45,10 +43,34 @@ NetworkPlayer::~NetworkPlayer(){
 void NetworkPlayer::SetVote(char vote){
 	m_vote = vote;
 }
+/*
+	Calls when it is end of game
+		=> max_points Maximal points, which winner has
+		=> count Count of winners
+*/
+void NetworkPlayer::EndOfGame(unsigned max_points,unsigned count){
+	const char* result;
+	char* tmp;
+	char* buff = new char[MAX_LEN];
+	tmp = Add(buff,RESPONSE_RESULT);
+	if(GetPoints()==max_points){
+		if(count==1){
+			result = RESULT_WIN;
+		}else{
+			result = RESULT_DRAW;
+		}
+	}else{
+		result = RESULT_LOSE;
+	}
+	tmp = Append(tmp,result);
+	GetCommands()->TrySend(GetCommands()->GetSocket(),buff);
+	delete[] buff;
+}
 void NetworkPlayer::NewHand() const{
 	if(m_commands){
 		m_commands->MyCards(nullptr);
 		m_commands->GetCountOfCards(nullptr);
+		m_commands->Table(nullptr);
 	}
 }
 /*

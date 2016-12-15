@@ -4,8 +4,6 @@
 	Version: 30.03.2016
 */
 #include "algono.h"
-#include "card.h"
-#include "hand.h"
 #include <iostream>
 
 /*

@@ -1,5 +1,4 @@
 package cards.client;
-import cards.animation.Layer;
 import java.util.ArrayList;
 public class Player{
 	public final String name;

@@ -1,21 +1,25 @@
 #ifndef DECK_H
 #define DECK_H
 
+#include <functional>
 #include "card.h"
+using namespace std;
 class Deck{
 	public:
 		static const unsigned char ms_COUNT = 32; //HACK do not change
 		void Shuffle();
 		void Fill();
 		void Print();
+		void Free();
 		void ThrowAway(unsigned char count);
-		void Push(Card* card);
+		void Push(const Card* card);
 		~Deck();
-		Card* Pop();//NON VALID GETTER
-		Card* Peek();//NON VALID GETTER
+		const Card* Pop();
+		const Card* Peek();
 		unsigned char Size();
+		void ForEach(function<void (const Card*)>) const;
 	private:
-		Card* m_cards[ms_COUNT];
+		const Card* m_cards[ms_COUNT];
 		unsigned char m_count = 0;
 };
 

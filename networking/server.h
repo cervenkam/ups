@@ -5,7 +5,6 @@
 #include "commonnetwork.h"
 #include "../game.h"
 #include <thread>
-#include "../semaphore.h"
 
 class Commands;
 class Server{

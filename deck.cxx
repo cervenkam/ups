@@ -4,7 +4,6 @@
 	Version: 30.03.2016
 */
 #include "deck.h"
-#include "card.h"
 #include "stdmcr.h"
 #include <iostream>
 #include <fstream>
@@ -17,10 +16,19 @@ void Deck::Shuffle(){
 	for(unsigned char a=0; a<size; a++){
 		unsigned char random = rand()%size;
 		//swap
-		Card* tmp = m_cards[random];
+		const Card* tmp = m_cards[random];
 		m_cards[random]=m_cards[a];
 		m_cards[a]=tmp;
 	}
+}
+/*
+	Frees the deck
+*/
+void Deck::Free(){
+	ForEach([](const Card* card){
+		delete card;
+	});
+	m_count=0;
 }
 /*
 	Prints this deck
@@ -42,8 +50,8 @@ void Deck::Print(){
 	Removes the card
 		<= First card on this deck
 */
-Card* Deck::Pop(){
-	Card* popped = m_cards[Size()-1];
+const Card* Deck::Pop(){
+	const Card* popped = m_cards[Size()-1];
 	m_count--;
 	return popped;	
 }
@@ -52,7 +60,7 @@ Card* Deck::Pop(){
 	Does not remove the card
 		<= First card on this deck
 */
-Card* Deck::Peek(){
+const Card* Deck::Peek(){
 	return m_cards[Size()-1];
 }
 /*
@@ -60,7 +68,7 @@ Card* Deck::Peek(){
 		=> card Card to be pushed
 		<= Is successfully pushed?
 */
-void Deck::Push(Card* card){
+void Deck::Push(const Card* card){
 	m_cards[m_count]=card;
 	m_count++;
 }
@@ -77,7 +85,7 @@ unsigned char Deck::Size(){
 void Deck::Fill(){
 	m_count=0;
 	for(unsigned char a=0; a<ms_COUNT; a++){
-		Card* card = new Card(a); //deleted in destructor (x/32) ||  Hand::Clear function ((32-x)/32)
+		const Card* card = new Card(a); //deleted in destructor (x/32) ||  Hand::Clear function ((32-x)/32)
 		Push(card); 
 	}
 }
@@ -99,7 +107,15 @@ void Deck::ThrowAway(unsigned char count){
 	Destruct the deck
 */
 Deck::~Deck(){
+	ForEach([](const Card* card){
+		delete card;
+	});
+}
+/*
+	For each
+*/
+void Deck::ForEach(function<void (const Card*)> func) const{
 	for(unsigned char a=0; a<m_count; a++){
-		delete m_cards[a]; //created in Fill function (x/32)
+		func(m_cards[a]);
 	}
 }

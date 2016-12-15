@@ -10,12 +10,13 @@ class Configuration{
 		~Configuration();
 		void SetCount(unsigned count);
 		bool AreOwnRules();
-		Algorithm** GetAlgorithms();//NON VALID GETTER
+		Algorithm** GetAlgorithms();
 		unsigned GetCount();
+		bool IsValid();
 	private:
 		Algorithm* GetAlgorithm(const char* name,const char* player_name,unsigned id);
 		bool ParseOneParameter(unsigned&,char*&,char*&,char*,char*);
-		void ReadLines(istringstream&,unsigned&,char*&,char*,char*);
+		void ReadLines(istringstream&,unsigned&,char*,char*);
 		void AddAlgorithm(unsigned&,char*&,char*);
 		void InitAlgorithms(unsigned);
 		bool UpdatePointer(char*& strtmp);
@@ -24,6 +25,9 @@ class Configuration{
 		bool m_rules = false;
 		unsigned m_count = 2;
 		Algorithm** m_algos;
+		bool m_valid = true;
+		bool m_at_least_one_player = false;
+		unsigned m_persons = 0;
 };
 
 #endif

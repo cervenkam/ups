@@ -4,8 +4,6 @@
 	Version: 30.03.2016
 */
 #include "algorithm.h"
-#include "card.h"
-#include "hand.h"
 #include <vector>
 #include <iostream>
 #include "stdmcr.h"
@@ -65,6 +63,7 @@ bool Algorithm::Send(const Card* card){
 	}
 	return true;
 }
+void Algorithm::EndOfGame(unsigned,unsigned){}
 /*
 	Gets semapohore for this object
 */
