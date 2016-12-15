@@ -1,2 +1,0 @@
-/home/martin/skola/UPS/SP/build/networking/CMakeFiles/networking.dir
-/home/martin/skola/UPS/SP/build/CMakeFiles/server.dir

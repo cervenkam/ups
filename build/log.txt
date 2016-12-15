@@ -1,8 +1,0 @@
-==2754== Memcheck, a memory error detector
-==2754== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
-==2754== Using Valgrind-3.10.1 and LibVEX; rerun with -h for copyright info
-==2754== Command: ./server 43158
-==2754== 
-[0;36m[ 1478025340 ] Listen:     port 43158
-[0m[0;36m[ 1478025345 ] Stopping
-[0m0x636668
