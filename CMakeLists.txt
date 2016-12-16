@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 project(Cards)
 
-set(CMAKE_CXX_FLAGS "-Wl,--no-as-needed -std=c++11 -Wall -Wextra -Wno-conversion-null -g -lpthread")
+set(CMAKE_CXX_FLAGS "-Wl,--no-as-needed -std=c++11 -Wall -Wextra -Wno-write-strings -g -lpthread")
 set(SRCS
 	stdmcr.cxx
 	semaphore.cxx

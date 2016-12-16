@@ -57,7 +57,7 @@ unsigned char Card::GetColor() const{
 		=> card Sending card
 		<= Output stream sent as os
 */
-std::ostream& operator<<(std::ostream& cout,const Card& card){
+std::ostream& operator<<(std::ostream&,const Card& card){
 	return COLOR((card.IsSpecial()?7:1) << ";3" << (card.GetColor()+1)," " << Card::ms_ranks[card.GetRank()][0] << " ");
 }
 /*
