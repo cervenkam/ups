@@ -1,7 +1,7 @@
 package cards.client;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.ConnectException;
+import java.net.SocketException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
@@ -53,7 +53,7 @@ public class Client extends Thread{
 			Socket socket;
 			try{
 				socket = new Socket(address, port);
-			}catch(ConnectException e){
+			}catch(SocketException e){
 				running = false;
 				error("ErrorConnection");
 				return;

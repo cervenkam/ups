@@ -1,0 +1,143 @@
+#!/bin/bash
+
+FOLDER_NAME="projekt"
+ABSOLUTE_PATH=$(pwd)"/"$FOLDER_NAME"/"
+RETARDER_PATH=$ABSOLUTE_PATH"socket_retarder/"
+PROJECT_PATH=$ABSOLUTE_PATH"ups/"
+CLIENT_PATH=$PROJECT_PATH"client/"
+SERVER_PATH=$PROJECT_PATH
+
+JAVA_PATH=""
+IPTABLES_PATH=""
+SUDO_PATH=""
+MAKE_PATH=""
+CMAKE_PATH=""
+GIT_PATH=""
+YES_PATH=""
+
+function echodo {
+	echo "$@"
+	$@
+}
+
+function project_init {
+	sudo update-alternatives --config java
+	mkdir $FOLDER_NAME
+	cd $FOLDER_NAME
+	echodo $GIT_PATH"git" clone https://github.com/dsiroky/socket_retarder.git
+	echodo $GIT_PATH"git" clone https://github.com/cervenkam/ups.git
+	cd - > /dev/null
+	client_compile
+	server_compile
+}
+
+function project_destroy {
+	echodo $YES_PATH"yes" | rm -r $FOLDER_NAME
+}
+
+function client_compile {
+	cd $CLIENT_PATH"src"
+	if [ ! -d ../bin ]; then
+		echodo mkdir ../bin
+	fi
+	echodo $JAVA_PATH"javac" cards/client/*.java -Xdiags:verbose -Xlint:unchecked -d ../bin/
+	cd - > /dev/null
+}
+
+function server_compile {
+	cd $SERVER_PATH
+	if [ ! -d build ]; then
+		echodo mkdir build
+	fi
+	cd - > /dev/null
+	cd $SERVER_PATH"build"
+	echodo $CMAKE_PATH"cmake" ..
+	echodo $MAKE_PATH"make"
+	cd - > /dev/null
+}
+
+function server_start {
+	cd $SERVER_PATH
+	if [ ! -d build ]; then
+		server_compile
+	fi
+	cd - > /dev/null
+	cd $SERVER_PATH"build"
+	./server 43158
+	cd - > /dev/null
+}
+
+function client_start {
+	cd $CLIENT_PATH
+	if [ ! -d bin ]; then
+		client_compile
+	fi
+	cd - > /dev/null
+	cd $CLIENT_PATH"bin"
+	$JAVA_PATH"java" -Djava.net.preferIPv4Stack=true cards.client.Main
+	cd - > /dev/null
+}
+
+function retarder_set {
+	cd $RETARDER_PATH
+	if [ ! -f libsocket_retarder.so ]; then
+		$MAKE_PATH"make"
+	fi
+	export LD_PRELOAD=$RETARDER_PATH"libsocket_retarder.so"
+	export SOCKET_RETARDER_DEBUG=2
+	export SOCKET_RETARDER_DNS=0
+	export SOCKET_RETARDER_NORMALDIST_MEAN=500
+	export SOCKET_RETARDER_NORMALDIST_VARIANCE=500
+	cd - > /dev/null
+}
+
+function retarder_reset {
+	export LD_PRELOAD=""
+}
+
+function iptables_drop {
+	echodo $SUDO_PATH"sudo" $IPTABLES_PATH"iptables" -A INPUT -j DROP
+}
+
+function iptables_reject {
+	echodo $SUDO_PATH"sudo" $IPTABLES_PATH"iptables" -A INPUT -j REJECT
+}
+
+function iptables_accept {
+	echodo $SUDO_PATH"sudo" $IPTABLES_PATH"iptables" -D INPUT 1
+}
+function usage {
+	echo "Usage:"
+	echo -e "\tr -  Starts retarder"
+	echo -e "\ts -  Starts server"
+	echo -e "\tc -  Starts client"
+	echo -e "\tp -  Inits (downloads) project"
+	echo -e "\ti -  ACCEPT iptables"
+	echo -e "\trr - Ends retarder"
+	echo -e "\tcc - Compiles client"
+	echo -e "\tsc - Compiles server"
+	echo -e "\tpc - Compiles project"
+	echo -e "\tpd - Destroys project"
+	echo -e "\tid - DROP   iptables"
+	echo -e "\tid - REJECT iptables"
+}
+if [ $# -eq 0 ]; then
+	usage
+	exit
+fi
+for a in "$@"; do
+	case $a in
+		r)  retarder_set;;
+		s)  server_start;;
+		c)  client_start;;
+		p)  project_init;;
+		i)  iptables_accept;;
+		rr) retarder_reset;;
+		cc) client_compile;;
+		sc) server_compile;;
+		pc) client_compile; server_compile;;
+		pd) project_destroy;;
+		id) iptables_drop;;
+		ir) iptables_reject;;
+	esac
+done
