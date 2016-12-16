@@ -22,6 +22,7 @@ function echodo {
 
 function project_init {
 	sudo update-alternatives --config java
+	sudo update-alternatives --config javac
 	mkdir $FOLDER_NAME
 	cd $FOLDER_NAME
 	echodo $GIT_PATH"git" clone https://github.com/dsiroky/socket_retarder.git

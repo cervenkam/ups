@@ -34,9 +34,9 @@ class Server{
 
 		unsigned m_port;
 		mutable char m_internal_storage[MAX_LEN];
-		vector<Commands*> m_commands;
-		vector<Game*> m_games;
-		thread* m_garbage_collector;
+		std::vector<Commands*> m_commands;
+		std::vector<Game*> m_games;
+		std::thread* m_garbage_collector;
 		Commands* m_cmds;
 		Semaphore* m_semaphore_gc;
 		int m_sock;

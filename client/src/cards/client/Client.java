@@ -2,6 +2,7 @@ package cards.client;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
@@ -49,8 +50,15 @@ public class Client extends Thread{
 	public void run(){
 		running = true;
 		try{
-			InetAddress address = InetAddress.getByName(host);
+			InetAddress address;
 			Socket socket;
+			try{
+				address = InetAddress.getByName(host);
+			}catch(UnknownHostException e){
+				running = false;
+				error("ErrorConnection");
+				return;
+			}
 			try{
 				socket = new Socket(address, port);
 			}catch(SocketException e){

@@ -1,7 +1,6 @@
 #include "semaphore.h"
 #include <iostream>
 
-using namespace std;
 using std::chrono::milliseconds;
 Semaphore::Semaphore(unsigned count){
 	m_count = count;
@@ -13,9 +12,9 @@ void Semaphore::Wait(){
 }
 bool Semaphore::Wait(unsigned timeout){
 	bool ret_value;
-	unique_lock<mutex> lock(m_mtx);
+	std::unique_lock<std::mutex> lock(m_mtx);
 	if(timeout){
-		ret_value = m_cond.wait_for(lock,milliseconds(timeout))==cv_status::timeout;
+		ret_value = m_cond.wait_for(lock,milliseconds(timeout))==std::cv_status::timeout;
 	}else{
 		while(!m_count){
 			m_cond.wait(lock);
@@ -27,7 +26,7 @@ bool Semaphore::Wait(unsigned timeout){
 }
 
 void Semaphore::Notify(){
-	unique_lock<mutex> lock(m_mtx);
+	std::unique_lock<std::mutex> lock(m_mtx);
 	m_count++;
 	m_cond.notify_one();
 }

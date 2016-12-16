@@ -38,12 +38,12 @@ void Deck::Print(){
 	for(unsigned a=0; a<size; a++){
 		OUT(*m_cards[a]);
 		if((a&15)==15){
-			OUT(endl);
+			OUT(std::endl);
 		}else{
 			OUT("  ");
 		}
 	}
-	OUT(endl);
+	OUT(std::endl);
 }
 /*
 	Pops the first card from this deck
@@ -114,7 +114,7 @@ Deck::~Deck(){
 /*
 	For each
 */
-void Deck::ForEach(function<void (const Card*)> func) const{
+void Deck::ForEach(std::function<void (const Card*)> func) const{
 	for(unsigned char a=0; a<m_count; a++){
 		func(m_cards[a]);
 	}

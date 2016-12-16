@@ -35,7 +35,7 @@ void Server::Listen(saddrin& addr){
 	setsockopt(m_sock,SOL_SOCKET,SO_REUSEADDR,&opt,sizeof(opt));
 	fill_saddrin_any(addr,m_port);
 	int bnd = bind(m_sock,reinterpret_cast<saddr*>(&addr),sizeof(saddrin));
-	TEST_ERR(bnd<0,"Socket not binded")
+	TEST_ERR_DO(bnd<0,"Socket not binded",exit(EXIT_FAILURE))
 	int lsn = listen(m_sock, 10);
 	TEST_ERR(lsn<0,"Cannot listen")
 	STDMSG("0;36","Listen:     port " << m_port);

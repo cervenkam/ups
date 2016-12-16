@@ -27,9 +27,9 @@ Person::Person(const char* player,unsigned char ch): Algorithm(player,ch){
 */
 void Person::Used(const Card* card,unsigned char player){
 	if(card==nullptr){
-		OUT(m_game->GetAlgorithm(player)->m_player << " " << ENDS << endl);
+		OUT(m_game->GetAlgorithm(player)->m_player << " " << ENDS << std::endl);
 	}else{
-		OUT(m_game->GetAlgorithm(player)->m_player << " " << USED << " " << *card << endl);
+		OUT(m_game->GetAlgorithm(player)->m_player << " " << USED << " " << *card << std::endl);
 	}
 }
 void Person::EndOfGame(unsigned max_points,unsigned count){
@@ -43,7 +43,7 @@ void Person::EndOfGame(unsigned max_points,unsigned count){
 	}else{
 		result = RESULT_LOSE;
 	}
-	cout << YOU << " " << result << endl;
+	std::cout << YOU << " " << result << std::endl;
 }
 
 void Person::Print(unsigned card,bool) const{
@@ -93,7 +93,7 @@ void Person::NewHand() const{
 bool Person::OnePlay(unsigned& card) const{
 	Print(card,true);
 	READ(char c = getchar());
-	OUT(MOVED(5) << "     " << endl);
+	OUT(MOVED(5) << "     " << std::endl);
 	switch(c){
 		case 91:
 			READ(c = getchar());
@@ -115,7 +115,7 @@ bool Person::OnePlay(unsigned& card) const{
 char Person::Vote() const{
 	char end;
 	OUT(CONTINUE);
-	cin >> end;
+	std::cin >> end;
 	switch(end){
 		case NO[0]: return -1; break;
 		case YES[0]: return 1; break;

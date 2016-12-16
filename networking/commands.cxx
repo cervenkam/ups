@@ -5,6 +5,8 @@
 #include <unistd.h>
 #include "../stdmcr.h"
 
+#define MAX_GAMES 100
+
 Commands::funcptr Commands::ms_commands[COMMANDS] = {
 	&Commands::Login,
 	&Commands::Disconnect,
@@ -146,11 +148,11 @@ Game* Commands::GetGame() const{
 	return m_game;
 }
 
-void Commands::SetThread(thread* const thread){
+void Commands::SetThread(std::thread* const thread){
 	m_thread = thread;
 }
 
-thread* Commands::GetThread() const{
+std::thread* Commands::GetThread() const{
 	return m_thread;
 }
 
@@ -376,6 +378,10 @@ void Commands::CreateGame(const char* const message) const{
 	}
 	if(GetGame()){
 		BadCommand("You are already logged in");
+		return;
+	}
+	if(GetServer()->GetCountOfGames()>=MAX_GAMES){
+		BadCommand("Max games exceeded\n");
 		return;
 	}
 	unsigned length = strlen(message);

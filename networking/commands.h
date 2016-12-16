@@ -20,7 +20,7 @@ class Commands{
 		void SetPlayer(NetworkPlayer* const);
 		void SetGame(Game* const);
 		void Start();
-		void SetThread(thread* const);
+		void SetThread(std::thread* const);
 		void SetConnected(bool);
 		void SetRunning(bool);
 		bool IsConnected() const;
@@ -56,7 +56,7 @@ class Commands{
 		static unsigned NumberOfSameLetters(const char* const,const char* const,unsigned);
 		void StopGame();
 		bool FindReasonToStay(unsigned);
-		thread* GetThread() const;
+		std::thread* GetThread() const;
 		Semaphore* GetSemaphore() const;
 		Server* GetServer() const;
 		NetworkPlayer* GetPlayer() const;
@@ -67,7 +67,7 @@ class Commands{
 		NetworkPlayer* m_player;
 		Game* m_game;
 		const Card* m_card_to_play;
-		thread* m_thread;
+		std::thread* m_thread;
 		bool m_is_connected = true;
 		bool m_running = true;
 		Semaphore* m_semaphore;

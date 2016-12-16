@@ -3,7 +3,7 @@
 
 #include <ctime>
 //OS dependency solver - can be used for GUI too
-#define OUT(x) cout << x
+#define OUT(x) std::cout << x
 
 #ifdef __unix__
 	#define COLOR(x,y) OUT("\033[" << x << "m" << y << "\033[0m")
@@ -26,7 +26,7 @@
 #define MOVEB(x) __MOVE_D__(x,"B")
 #define MOVEC(x) __MOVE_D__(x,"C")
 #define MOVED(x) __MOVE_D__(x,"D")
-#define STDMSG(X,Y) COLOR(X,"[ " << (long int)(time(0)) << " ] " << Y << endl)
+#define STDMSG(X,Y) COLOR(X,"[ " << (long int)(time(0)) << " ] " << Y << std::endl)
 
 extern char* Add(char* array,const char* text);
 extern char* Append(char* array, const int value);

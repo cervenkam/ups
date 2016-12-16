@@ -100,10 +100,10 @@ void Game::StopParallel(){
 }
 void Game::StartParallel(){
 	if(m_thr != nullptr){
-		cerr << "Game is already running" << endl;
+		std::cerr << "Game is already running" << std::endl;
 		return;
 	}
-	m_thr = new thread(&Game::Start,this); //deleted in Stopparallel function
+	m_thr = new std::thread(&Game::Start,this); //deleted in Stopparallel function
 }
 bool Game::Prepare(){
 	//Preparing deck
@@ -237,7 +237,7 @@ bool Game::UseNoCard(unsigned& player, unsigned& winner){
 	//end of game
 	if(!m_algos[GetStarted()]->GetCardCount()){
 		m_on_table->Free();
-		OUT(m_algos[GetStarted()]->m_player << " " << RECEIVED << " " << LAST_POINT << endl);
+		OUT(m_algos[GetStarted()]->m_player << " " << RECEIVED << " " << LAST_POINT << std::endl);
 		m_algos[GetStarted()]->AddPoints(1);
 		End();
 		return true;
@@ -270,7 +270,7 @@ void Game::FoundSameCards(unsigned winner_index){
 	for(unsigned c=0; c<m_players; c++){
 		m_algos[c]->ClearCards();
 	}
-	OUT(m_algos[winner_index]->m_player << " " << SAME_CARDS_HAND << endl);
+	OUT(m_algos[winner_index]->m_player << " " << SAME_CARDS_HAND << std::endl);
 	End();
 }
 void Game::DetermineWinner(const Card* card,unsigned& player, unsigned& winner){
@@ -292,9 +292,9 @@ void Game::DetermineWinner(const Card* card,unsigned& player, unsigned& winner){
 	}
 }
 void Game::Print(){
-	OUT("Deck content:" << endl);
+	OUT("Deck content:" << std::endl);
 	m_deck->Print();
-	OUT(endl);
+	OUT(std::endl);
 	for(unsigned char a=0; a<m_players; a++){
 		Algorithm* alg = m_algos[a];
 		unsigned char size = alg->GetCardCount();
@@ -303,7 +303,7 @@ void Game::Print(){
 		}
 		OUT("\t");
 	}
-	OUT(endl);
+	OUT(std::endl);
 }
 const Card* Game::FirstCard(){
 	return m_first;

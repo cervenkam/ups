@@ -15,14 +15,13 @@
 #define CARD_BLUE 24
 
 #include <ostream>
-using namespace std;
 class Card{
 	public:
 		Card(unsigned char value);
 		~Card();
 		unsigned char GetColor() const;
 		unsigned char GetRank() const;
-		friend ostream& operator<<(ostream& os,const Card& card);//NON VALID GETTER
+		friend std::ostream& operator<<(std::ostream& os,const Card& card);//NON VALID GETTER
 		bool IsPlayable(const Card* card) const;
 		bool IsSpecial() const;
 		bool IsValuable() const;

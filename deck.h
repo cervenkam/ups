@@ -3,7 +3,6 @@
 
 #include <functional>
 #include "card.h"
-using namespace std;
 class Deck{
 	public:
 		static const unsigned char ms_COUNT = 32; //HACK do not change
@@ -17,7 +16,7 @@ class Deck{
 		const Card* Pop();
 		const Card* Peek();
 		unsigned char Size();
-		void ForEach(function<void (const Card*)>) const;
+		void ForEach(std::function<void (const Card*)>) const;
 	private:
 		const Card* m_cards[ms_COUNT];
 		unsigned char m_count = 0;

@@ -8,8 +8,6 @@
 #include <iostream>
 #include "stdmcr.h"
 
-using namespace std;
-
 /*
 	Abstract algorithm constructor
 		=> player Name of the player
@@ -110,7 +108,7 @@ void Algorithm::ClearPoints(){
 	Identifies the algorithm
 */
 void Algorithm::Identify(){
-	OUT(I_AM << m_name << endl);
+	OUT(I_AM << m_name << std::endl);
 }
 /*
 	Set this player ready

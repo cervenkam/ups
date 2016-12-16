@@ -7,7 +7,6 @@
 #include "game.h"
 #include <vector>
 #include "semaphore.h"
-using namespace std;
 class Game;
 class Algorithm{
 	public:

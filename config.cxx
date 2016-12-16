@@ -15,7 +15,6 @@
 #include <fstream>
 #define CMP(MCR,NAME) if(!strcmp(name,MCR) || !strcmp(name,NAME))
 
-using namespace std;
 /* default algorithm name */
 const char* Configuration::ms_def = "ProgrammerBot";
 
@@ -48,8 +47,8 @@ Algorithm* Configuration::GetAlgorithm(const char* name,const char* player_name,
 	Loads the settings from string
 		=> in_str configuration string
 */
-void Configuration::Load(string in_str){
-	istringstream in(in_str);
+void Configuration::Load(std::string in_str){
+	std::istringstream in(in_str);
 	char* command = new char[512]; //deleted at the end of this function
 	char* parameter = new char[512]; //deleted at the end of this function
 	unsigned counter = 0;
@@ -66,7 +65,7 @@ void Configuration::Load(string in_str){
 	delete[] parameter; //created at the start of this function
 	delete[] command; //created at the start of this function
 }
-void Configuration::ReadLines(istringstream& in, unsigned& counter,char* command,char* parameter){
+void Configuration::ReadLines(std::istringstream& in, unsigned& counter,char* command,char* parameter){
 	char* name = new char[512]; //deleted at the end of this function (1/n) || in Algorithm destructor ((n-1)/n)
 	char* str = new char[512]; //deleted at the end of this function
 	char* strtmp = str;
@@ -154,7 +153,7 @@ Algorithm** Configuration::GetAlgorithms(){
 	Creates an configuration
 		=> str string with configuration
 */
-Configuration::Configuration(string str){
+Configuration::Configuration(std::string str){
 	m_algos = nullptr;
 	Load(str);
 }

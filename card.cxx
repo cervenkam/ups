@@ -15,7 +15,6 @@ const char* Card::ms_colors[4] = {"CERVENY", "ZELENY", "KULE", "ZALUDY"};
 const char* Card::ms_ranks[8] = {"7","8","9","X","JACK","QUEEN","KING","ACE"};
 const char* Card::ms_colors[4] = {"HEART", "LEAF", "BELL", "ACORN"};
 #endif
-using namespace std; 
 /*
 	Card constructor
 		=> value Value of the card (0-31)
@@ -58,7 +57,7 @@ unsigned char Card::GetColor() const{
 		=> card Sending card
 		<= Output stream sent as os
 */
-ostream& operator<<(ostream& cout,const Card& card){
+std::ostream& operator<<(std::ostream& cout,const Card& card){
 	return COLOR((card.IsSpecial()?7:1) << ";3" << (card.GetColor()+1)," " << Card::ms_ranks[card.GetRank()][0] << " ");
 }
 /*

@@ -45,7 +45,7 @@ class Game{
 		unsigned char m_points = 0;
 		char* m_name;
 		Configuration* m_conf;
-		thread* m_thr = nullptr;
+		std::thread* m_thr = nullptr;
 		bool m_end_of_game = false;
 		bool Prepare();
 		bool ChooseCard(unsigned&,unsigned&,const Card*&, bool&);

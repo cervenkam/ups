@@ -4,7 +4,6 @@
 #include <mutex>
 #include <condition_variable>
 
-using namespace std;
 class Semaphore{
 	public:
 		Semaphore(unsigned count=1);
@@ -12,8 +11,8 @@ class Semaphore{
 		void Wait();
 		bool Wait(unsigned);
 	private:
-		mutex m_mtx;
-		condition_variable m_cond;
+		std::mutex m_mtx;
+		std::condition_variable m_cond;
 		unsigned m_count;
 		unsigned m_max_count;
 };

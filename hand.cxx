@@ -32,7 +32,7 @@ const Card* Hand::Get(unsigned char index) const{
 */
 const Card* Hand::Use(unsigned char index){
 	if(index>=m_count){
-		cerr << "Card does not exists" << endl;
+		std::cerr << "Card does not exists" << std::endl;
 		return nullptr;
 	}
 	const Card* tmp = m_cards[index];
