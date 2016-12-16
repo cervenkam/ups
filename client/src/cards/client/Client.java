@@ -22,6 +22,7 @@ public class Client extends Thread{
 	private boolean running = true;
 	private Map<String,Consumer<String>> callbacks = new HashMap<>();
 	private OutputStream out;
+	private Timeout timeout;
 	public Client(String host,int port){
 		this.host = host;
 		this.port = port;
@@ -43,6 +44,9 @@ public class Client extends Thread{
 		try{
 			System.out.println("Sending:  "+message);
 			out.write((message+'\n').getBytes());
+		}catch(SocketException e){
+			error("ErrorServerDied");
+			return;
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -68,16 +72,20 @@ public class Client extends Thread{
 			}
 			out = socket.getOutputStream();
 			InputStream in = socket.getInputStream();
+			this.timeout = new Timeout(5000,this);
+			timeout.start();
 			while(running){
 				int count = in.read(buffer,0,buffer.length);
 				if(count<0){
-					System.out.println("EOS");
-					break;
+					running = false;
+					error("ErrorConnection");
+					return;
 				}else if(count<buffer.length){
 					BufferedReader br = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(buffer,0,count)));
 					String data;
 					while((data = br.readLine()) != null){
 						System.out.println("Received: "+data); //TODO lang
+						timeout.itIsOk();
 						notifyObserver(data);
 					}
 					br.close();
@@ -95,6 +103,7 @@ public class Client extends Thread{
 	}
 	private void softstop(){
 		running = false;
+		timeout.stopTimeout();
 	}
 	private synchronized void notifyObserver(String command){
 		Set<Entry<String,Consumer<String>>> set = callbacks.entrySet();
