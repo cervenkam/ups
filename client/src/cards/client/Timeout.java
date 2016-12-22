@@ -1,28 +1,46 @@
 package cards.client;
 import static cards.client.Common.*;
-public class Timeout<T> extends Thread{
-	private final int time;
-	private final Client client;
-	private boolean ok = false;
+public class Timeout extends Thread{
+	private int time;
+	private Client client;
+	private boolean ok = true;
 	private boolean running = true;
-	public Timeout(int time,Client client){
-		this.client=client;
-		this.time=time;
+	private Runnable onstop = null;
+	private String message;
+	private static final Timeout timeout = new Timeout();
+	public static Timeout getTimeout(){
+		return timeout;
+	}
+	private Timeout(){
+		start();
+	}
+	public void setTime(int time){
+		this.time = time;
+	}
+	public void setMessage(String message){
+		this.message = message;
+	}
+	public void setClient(Client client){
+		this.client = client;
+	}
+	public void setOnStop(Runnable onstop){
+		this.onstop = onstop;
 	}
 	public void run(){
 		while(running){
 			try{
-				client.send("I AM HERE");
+				sleep(time);
+			}catch(InterruptedException e){}
+			if(!ok && onstop!=null){
+				onstop.run();
+				onstop = null;
+			}
+			ok=false;
+			try{
+				client.send(message);
 			}catch(Exception e){
 				ok = true;
 			}
-			try{
-				sleep(time);
-			}catch(InterruptedException e){}
-			if(!ok){
-				error("ErrorConnection");
-			}
-			ok=false;	
 		}
 	}
 	public void stopTimeout(){

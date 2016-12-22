@@ -8,6 +8,7 @@ import java.nio.ByteBuffer;
 import java.awt.event.WindowListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowAdapter;
+import javax.swing.AbstractButton;
 import static java.awt.EventQueue.invokeLater;
 import static javax.swing.JOptionPane.showMessageDialog;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
@@ -16,6 +17,20 @@ public class Common{
 	public static final ResourceBundle SERVER_BUNDLE = ResourceBundle.getBundle("bundles/Server"  ,new Locale("cs","CZ"));
 	public static final ResourceBundle BUNDLE        = ResourceBundle.getBundle("bundles/Language",new Locale("cs","CZ"));
 	public static final boolean reverse = ByteOrder.nativeOrder().equals(ByteOrder.BIG_ENDIAN);
+	public static void standardHandle(Client client,AbstractButton... buttons){
+		Timeout.getTimeout().setOnStop(()->{
+			error("ErrorConnection");
+			for(AbstractButton button: buttons){
+				button.setEnabled(true);
+			}
+		});
+		client.setOnStop(()->{
+			error("ErrorConnection");
+			for(AbstractButton button: buttons){
+				button.setEnabled(true);
+			}
+		});
+	}
 	public static Dimension setPosition(boolean right,Component c,int x,int y){
 		Dimension size = c.getPreferredSize();
 		c.setBounds(x-(right?size.width:0),y,size.width,size.height);
@@ -41,6 +56,12 @@ public class Common{
 					System.exit(0);
 				});
 				client.send(SERVER_BUNDLE.getString("Disconnect"));
+				new Thread(()->{
+					try{
+						Thread.sleep(3000);
+					}catch(InterruptedException f){}
+					System.exit(0);
+				}).start();
 			}
 		};
 	}

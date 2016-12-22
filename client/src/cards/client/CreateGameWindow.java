@@ -76,6 +76,8 @@ class CreateGameWindow extends JFrame implements Runnable{
 		create_players_button.addActionListener((x)->{
 			String command = getCommand();
 			client.send(command);
+			create_players_button.setEnabled(false);
+			Common.standardHandle(client,create_players_button);
 		});
 		client.addCallback("GameCreated",(e)->{
 			client.removeCallback("GameCreated");

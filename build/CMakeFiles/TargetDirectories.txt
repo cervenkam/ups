@@ -1,2 +1,2 @@
-/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/build/networking/CMakeFiles/networking.dir
-/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/build/CMakeFiles/server.dir
+/home/martin/skola/UPS/SP/build/networking/CMakeFiles/networking.dir
+/home/martin/skola/UPS/SP/build/CMakeFiles/server.dir

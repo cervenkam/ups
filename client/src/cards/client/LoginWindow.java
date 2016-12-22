@@ -98,6 +98,8 @@ public class LoginWindow extends JFrame implements Runnable{
 			client.addCallback("PlayerExists",(s)->{
 				error("ErrorPlayerExists");
 			});
+			connection_button.setEnabled(false);
+			Common.standardHandle(client,connection_button);
 			client.start();
 		});
 	}

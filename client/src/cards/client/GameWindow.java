@@ -40,11 +40,14 @@ public class GameWindow extends JFrame{
 		pack();
 		send.addActionListener((e)->{
 			client.send(SERVER_BUNDLE.getString("SendMessage")+" "+message.getText());
+			send.setEnabled(false);
+			Common.standardHandle(client,send);
 		});
 		client.addCallback("ReceiveMessage",(s)->{
 			String[] split = s.split(" ");
 			content = toParagraph(split[0],split[1]) + content;
 			messages.setText(HEADER+content+FOOTER);
+			send.setEnabled(true);
 		});
 		client.addCallback("Bye",(s)->{
 			error("ErrorDisconnected");

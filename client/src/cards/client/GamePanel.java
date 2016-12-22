@@ -105,6 +105,7 @@ public class GamePanel extends JPanel{
 			tmp.addActionListener((e)->{
 				enableButtons(false);
 				client.send(SERVER_BUNDLE.getString("Play")+" "+tmp.getText());
+				Common.standardHandle(client,tmp,dont_want);
 			});
 			controls.add(tmp);
 			cardsbuttons[a] = tmp;
@@ -114,6 +115,7 @@ public class GamePanel extends JPanel{
 		dont_want.addActionListener((e)->{
 			enableButtons(false);
 			client.send(SERVER_BUNDLE.getString("Play")+" NULL");
+			Common.standardHandle(client,dont_want);
 		});
 		enableButtons(false);
 		prepareKeyListener();		

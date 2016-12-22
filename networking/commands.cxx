@@ -11,6 +11,7 @@ Commands::funcptr Commands::ms_commands[COMMANDS] = {
 	&Commands::Login,
 	&Commands::Disconnect,
 	&Commands::SendCard,
+	&Commands::_Ping,
 	&Commands::_CreateGame,
 	&Commands::_MyCards,
 	&Commands::_Welcome,
@@ -23,6 +24,7 @@ const char* const Commands::ms_texts[COMMANDS] = {
 	QUERY_LOGIN,
 	QUERY_DISCONNECT,
 	QUERY_PLAY,
+	QUERY_PING,
 	QUERY_CREATE_GAME,
 	QUERY_MY_CARDS,
 	QUERY_WELCOME,
@@ -154,6 +156,10 @@ void Commands::SetThread(std::thread* const thread){
 
 std::thread* Commands::GetThread() const{
 	return m_thread;
+}
+
+void Commands::Ping(const char* const) const{
+	TrySend(m_sock,RESPONSE_PING);
 }
 
 void Commands::Welcome(const char* const) const{
@@ -501,3 +507,4 @@ void Commands::        _MyCards(const char* msg){         MyCards(msg); }
 void Commands::        _Welcome(const char* msg){         Welcome(msg); }
 void Commands::_GetCountOfCards(const char* msg){ GetCountOfCards(msg); }
 void Commands::          _Table(const char* msg){           Table(msg); }
+void Commands::           _Ping(const char* msg){            Ping(msg); }

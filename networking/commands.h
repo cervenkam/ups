@@ -5,7 +5,7 @@
 #include "../networkplayer.h"
 #include <thread>
 
-#define COMMANDS 10
+#define COMMANDS 11
 
 class Server;
 class NetworkPlayer;
@@ -42,6 +42,7 @@ class Commands{
 	private:
 		void            Login(const char* const);
 		void         SendCard(const char* const);
+		void             Ping(const char* const) const;
 		void      SendMessage(const char* const) const;
 		void       BadCommand(const char* const) const;
 		void       CreateGame(const char* const) const;
@@ -84,6 +85,7 @@ class Commands{
 		void         _MyCards(const char* const);
 		void         _Welcome(const char* const);
 		void _GetCountOfCards(const char* const);
+		void            _Ping(const char* const);
 };
 
 

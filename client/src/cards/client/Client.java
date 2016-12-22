@@ -22,10 +22,20 @@ public class Client extends Thread{
 	private boolean running = true;
 	private Map<String,Consumer<String>> callbacks = new HashMap<>();
 	private OutputStream out;
-	private Timeout timeout;
+	private Runnable onstop;
 	public Client(String host,int port){
 		this.host = host;
 		this.port = port;
+		final Timeout timeout = Timeout.getTimeout();
+		timeout.setTime(5000);
+		timeout.setClient(this);
+		timeout.setMessage(SERVER_BUNDLE.getString("Ping"));
+		addCallback("Pong",(s)->{
+			timeout.itIsOk();
+		});
+	}
+	public void setOnStop(Runnable onstop){
+		this.onstop = onstop;
 	}
 	public synchronized void addCallback(String str,Consumer<String> func){
 		callbacks.put(SERVER_BUNDLE.getString(str),func);
@@ -42,10 +52,11 @@ public class Client extends Thread{
 	}
 	public void send(String message){
 		try{
-			System.out.println("Sending:  "+message);
-			out.write((message+'\n').getBytes());
+			if(out != null){
+				System.out.println("Sending:  "+message);
+				out.write((message+'\n').getBytes());
+			}
 		}catch(SocketException e){
-			error("ErrorServerDied");
 			return;
 		}catch(Exception e){
 			e.printStackTrace();
@@ -53,39 +64,34 @@ public class Client extends Thread{
 	}
 	public void run(){
 		running = true;
-		try{
+		label: try{
 			InetAddress address;
 			Socket socket;
 			try{
 				address = InetAddress.getByName(host);
 			}catch(UnknownHostException e){
 				running = false;
-				error("ErrorConnection");
-				return;
+				break label;
 			}
 			try{
 				socket = new Socket(address, port);
 			}catch(SocketException e){
 				running = false;
-				error("ErrorConnection");
-				return;
+				break label;
 			}
 			out = socket.getOutputStream();
 			InputStream in = socket.getInputStream();
-			this.timeout = new Timeout(5000,this);
-			timeout.start();
 			while(running){
 				int count = in.read(buffer,0,buffer.length);
 				if(count<0){
 					running = false;
 					error("ErrorConnection");
-					return;
+					break label;
 				}else if(count<buffer.length){
 					BufferedReader br = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(buffer,0,count)));
 					String data;
 					while((data = br.readLine()) != null){
 						System.out.println("Received: "+data); //TODO lang
-						timeout.itIsOk();
 						notifyObserver(data);
 					}
 					br.close();
@@ -95,15 +101,13 @@ public class Client extends Thread{
 				}
 			}
 			socket.close();
-		}catch(Exception e){
-			error("ErrorGeneral");
-			e.printStackTrace();
-		}
+		}catch(Exception e){}
 		running = false;
+		onstop.run();
 	}
 	private void softstop(){
 		running = false;
-		timeout.stopTimeout();
+		Timeout.getTimeout().stopTimeout();
 	}
 	private synchronized void notifyObserver(String command){
 		Set<Entry<String,Consumer<String>>> set = callbacks.entrySet();
