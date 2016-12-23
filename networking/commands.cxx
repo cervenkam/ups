@@ -173,17 +173,28 @@ void Commands::BadCommand(const char* const command) const{
 	delete[] buff;
 }
 
-void Commands::Call(const char* const command){
-	if(command == nullptr){
-		return;
+void Commands::Call(const char* command){
+	bool found = true;
+	while(found){
+		found = false;
+		unsigned len = strlen(command);
+		if(command == nullptr){
+			return;
+		}
+		int index = FindMethod(command);
+		if(index>=0 && index<COMMANDS){
+			(this->*ms_commands[index])(command+strlen(ms_texts[index])+1);
+		}else{
+			BadCommand(command);
+		}
+		for(unsigned a=0; a<len; a++){
+			if(command[a]=='\n'){
+				found = true;
+				command = command+a+1;
+				break;
+			}
+		}
 	}
-	int index = FindMethod(command);
-	if(index>=0 && index<COMMANDS){
-		(this->*ms_commands[index])(command+strlen(ms_texts[index])+1);
-	}else{
-		BadCommand(command);
-	}
-	return;
 }
 
 bool Commands::TotalCompare(const char* const command,int index){
