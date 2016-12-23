@@ -39,9 +39,9 @@ public class Common{
 	public static void error(String message){
 		String messg = BUNDLE.getString(message);
 		String error = BUNDLE.getString("Error");
-		invokeLater(()->{
+		//invokeLater(()->{
 			showMessageDialog(null,messg,error,ERROR_MESSAGE);
-		});
+		//});
 	}
 	public static byte[] htonl(int val){
 		if(reverse){

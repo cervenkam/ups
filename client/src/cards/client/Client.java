@@ -92,7 +92,9 @@ public class Client extends Thread{
 					String data;
 					while((data = br.readLine()) != null){
 						System.out.println("Received: "+data); //TODO lang
-						notifyObserver(data);
+						if(!Timeout.getTimeout().isOnStopRunning()){
+							notifyObserver(data);
+						}
 					}
 					br.close();
 				}else{

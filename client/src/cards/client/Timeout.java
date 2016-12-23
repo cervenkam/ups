@@ -5,6 +5,7 @@ public class Timeout extends Thread{
 	private Client client;
 	private boolean ok = true;
 	private boolean running = true;
+	private boolean onstoprunning = false;
 	private Runnable onstop = null;
 	private String message;
 	private static final Timeout timeout = new Timeout();
@@ -20,6 +21,9 @@ public class Timeout extends Thread{
 	public void setMessage(String message){
 		this.message = message;
 	}
+	public boolean isOnStopRunning(){
+		return onstoprunning;
+	}
 	public void setClient(Client client){
 		this.client = client;
 	}
@@ -32,8 +36,12 @@ public class Timeout extends Thread{
 				sleep(time);
 			}catch(InterruptedException e){}
 			if(!ok && onstop!=null){
+				System.out.println("RUNNING");
+				onstoprunning = true;
 				onstop.run();
 				onstop = null;
+				onstoprunning = false;
+				System.out.println("NOT RUNNING");
 			}
 			ok=false;
 			try{

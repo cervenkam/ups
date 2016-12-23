@@ -52,7 +52,7 @@ class Commands{
 		int FindMethod(const char* const);
 		bool TotalCompare(const char* const,int);
 		void InitPlayer(Game*);
-		void FindPlayerInGame(Game*,const char* const);
+		bool FindPlayerInGame(Game*,const char* const);
 		void TryStartMyGame();
 		static unsigned NumberOfSameLetters(const char* const,const char* const,unsigned);
 		void StopGame();

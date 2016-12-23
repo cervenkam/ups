@@ -1,38 +1,38 @@
 # The set of languages for which implicit dependencies are needed:
-SET(CMAKE_DEPENDS_LANGUAGES
+set(CMAKE_DEPENDS_LANGUAGES
   "CXX"
   )
 # The set of files for implicit dependencies of each language:
-SET(CMAKE_DEPENDS_CHECK_CXX
-  "/home/martin/skola/UPS/SP/algono.cxx" "/home/martin/skola/UPS/SP/build/CMakeFiles/server.dir/algono.cxx.o"
-  "/home/martin/skola/UPS/SP/algorithm.cxx" "/home/martin/skola/UPS/SP/build/CMakeFiles/server.dir/algorithm.cxx.o"
-  "/home/martin/skola/UPS/SP/card.cxx" "/home/martin/skola/UPS/SP/build/CMakeFiles/server.dir/card.cxx.o"
-  "/home/martin/skola/UPS/SP/config.cxx" "/home/martin/skola/UPS/SP/build/CMakeFiles/server.dir/config.cxx.o"
-  "/home/martin/skola/UPS/SP/deck.cxx" "/home/martin/skola/UPS/SP/build/CMakeFiles/server.dir/deck.cxx.o"
-  "/home/martin/skola/UPS/SP/game.cxx" "/home/martin/skola/UPS/SP/build/CMakeFiles/server.dir/game.cxx.o"
-  "/home/martin/skola/UPS/SP/hand.cxx" "/home/martin/skola/UPS/SP/build/CMakeFiles/server.dir/hand.cxx.o"
-  "/home/martin/skola/UPS/SP/main.cxx" "/home/martin/skola/UPS/SP/build/CMakeFiles/server.dir/main.cxx.o"
-  "/home/martin/skola/UPS/SP/networkplayer.cxx" "/home/martin/skola/UPS/SP/build/CMakeFiles/server.dir/networkplayer.cxx.o"
-  "/home/martin/skola/UPS/SP/person.cxx" "/home/martin/skola/UPS/SP/build/CMakeFiles/server.dir/person.cxx.o"
-  "/home/martin/skola/UPS/SP/programmerbot.cxx" "/home/martin/skola/UPS/SP/build/CMakeFiles/server.dir/programmerbot.cxx.o"
-  "/home/martin/skola/UPS/SP/semaphore.cxx" "/home/martin/skola/UPS/SP/build/CMakeFiles/server.dir/semaphore.cxx.o"
-  "/home/martin/skola/UPS/SP/stdmcr.cxx" "/home/martin/skola/UPS/SP/build/CMakeFiles/server.dir/stdmcr.cxx.o"
+set(CMAKE_DEPENDS_CHECK_CXX
+  "/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/algono.cxx" "/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/build/CMakeFiles/server.dir/algono.cxx.o"
+  "/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/algorithm.cxx" "/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/build/CMakeFiles/server.dir/algorithm.cxx.o"
+  "/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/card.cxx" "/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/build/CMakeFiles/server.dir/card.cxx.o"
+  "/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/config.cxx" "/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/build/CMakeFiles/server.dir/config.cxx.o"
+  "/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/deck.cxx" "/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/build/CMakeFiles/server.dir/deck.cxx.o"
+  "/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/game.cxx" "/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/build/CMakeFiles/server.dir/game.cxx.o"
+  "/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/hand.cxx" "/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/build/CMakeFiles/server.dir/hand.cxx.o"
+  "/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/main.cxx" "/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/build/CMakeFiles/server.dir/main.cxx.o"
+  "/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/networkplayer.cxx" "/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/build/CMakeFiles/server.dir/networkplayer.cxx.o"
+  "/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/person.cxx" "/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/build/CMakeFiles/server.dir/person.cxx.o"
+  "/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/programmerbot.cxx" "/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/build/CMakeFiles/server.dir/programmerbot.cxx.o"
+  "/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/semaphore.cxx" "/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/build/CMakeFiles/server.dir/semaphore.cxx.o"
+  "/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/stdmcr.cxx" "/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/build/CMakeFiles/server.dir/stdmcr.cxx.o"
   )
-SET(CMAKE_CXX_COMPILER_ID "GNU")
+set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # Preprocessor definitions for this target.
-SET(CMAKE_TARGET_DEFINITIONS
+set(CMAKE_TARGET_DEFINITIONS
   "SERVER"
   )
 
 # Targets to which this target links.
-SET(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/martin/skola/UPS/SP/build/networking/CMakeFiles/networking.dir/DependInfo.cmake"
+set(CMAKE_TARGET_LINKED_INFO_FILES
+  "/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/build/networking/CMakeFiles/networking.dir/DependInfo.cmake"
   )
 
 # The include file search paths:
-SET(CMAKE_C_TARGET_INCLUDE_PATH
+set(CMAKE_C_TARGET_INCLUDE_PATH
   )
-SET(CMAKE_CXX_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})
-SET(CMAKE_Fortran_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})
-SET(CMAKE_ASM_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})
+set(CMAKE_CXX_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})
+set(CMAKE_Fortran_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})
+set(CMAKE_ASM_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})

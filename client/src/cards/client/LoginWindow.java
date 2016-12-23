@@ -84,19 +84,24 @@ public class LoginWindow extends JFrame implements Runnable{
 				client.send(SERVER_BUNDLE.getString("Login")+" "+connection_name.getText());
 			});
 			client.addCallback("NoGame",(s)->{
-				client.removeCallback("NoGame");
-				dispose();
-				String name = connection_name.getText();
-				new CreateGameWindow(client,name).setVisible(true);
+				if(!Timeout.getTimeout().isOnStopRunning()){
+					client.removeCallback("NoGame");
+					dispose();
+					String name = connection_name.getText();
+					new CreateGameWindow(client,name).setVisible(true);
+				}
 			});
 			client.addCallback("Game",(s)->{
-				client.removeCallback("Game");
-				dispose();
-				String name = connection_name.getText();
-				new GameWindow(client,name).setVisible(true);
+				if(!Timeout.getTimeout().isOnStopRunning()){
+					client.removeCallback("Game");
+					dispose();
+					String name = connection_name.getText();
+					new GameWindow(client,name).setVisible(true);
+				}
 			});
 			client.addCallback("PlayerExists",(s)->{
 				error("ErrorPlayerExists");
+				connection_button.setEnabled(true);
 			});
 			connection_button.setEnabled(false);
 			Common.standardHandle(client,connection_button);

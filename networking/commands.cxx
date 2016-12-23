@@ -281,7 +281,9 @@ void Commands::Login(const char* const message){
 	unsigned games_len = GetServer()->GetCountOfGames();
 	for(unsigned a=0; a<games_len; a++){
 		Game* game = GetServer()->GetGame(a);
-		FindPlayerInGame(game,player_name);
+		if(FindPlayerInGame(game,player_name)){
+			break;
+		}
 	}
 	if(m_player == nullptr){
 		TrySend(m_sock,RESPONSE_NO_GAME);
@@ -290,9 +292,9 @@ void Commands::Login(const char* const message){
 		TryStartMyGame();
 	}
 }
-void Commands::FindPlayerInGame(Game* game,const char* const player_name){
+bool Commands::FindPlayerInGame(Game* game,const char* const player_name){
 	if(!game){
-		return;
+		return false;
 	}
 	unsigned players_len = game->GetCountOfPlayers();
 	for(unsigned b=0; b<players_len; b++){
@@ -300,13 +302,14 @@ void Commands::FindPlayerInGame(Game* game,const char* const player_name){
 		if(algo && !strcmp(algo->m_player,player_name)){
 			if((m_player = dynamic_cast<NetworkPlayer*>(algo))){	
 				InitPlayer(game);
-				break;
+				return true;
 			}else{
 				TrySend(m_sock,RESPONSE_NO_GAME);
-				return;
+				return false;
 			}
 		}
 	}
+	return false;
 }
 void Commands::TryStartMyGame(){
 	bool game_is_ready = true;

@@ -6,53 +6,53 @@
 
 #IncludeRegexTransform: 
 
-/home/martin/skola/UPS/SP/algorithm.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/algorithm.h
 card.h
-/home/martin/skola/UPS/SP/card.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/card.h
 hand.h
-/home/martin/skola/UPS/SP/hand.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/hand.h
 lang.h
-/home/martin/skola/UPS/SP/lang.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/lang.h
 game.h
-/home/martin/skola/UPS/SP/game.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/game.h
 vector
 -
 semaphore.h
-/home/martin/skola/UPS/SP/semaphore.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/semaphore.h
 
-/home/martin/skola/UPS/SP/card.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/card.h
 ostream
 -
 
-/home/martin/skola/UPS/SP/config.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/config.h
 algorithm.h
-/home/martin/skola/UPS/SP/algorithm.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/algorithm.h
 
-/home/martin/skola/UPS/SP/deck.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/deck.h
 functional
 -
 card.h
-/home/martin/skola/UPS/SP/card.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/card.h
 
-/home/martin/skola/UPS/SP/game.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/game.h
 deck.h
-/home/martin/skola/UPS/SP/deck.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/deck.h
 algorithm.h
-/home/martin/skola/UPS/SP/algorithm.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/algorithm.h
 config.h
-/home/martin/skola/UPS/SP/config.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/config.h
 thread
 -
 
-/home/martin/skola/UPS/SP/hand.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/hand.h
 card.h
-/home/martin/skola/UPS/SP/card.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/card.h
 
-/home/martin/skola/UPS/SP/networking/commands.cxx
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/networking/commands.cxx
 commands.h
-/home/martin/skola/UPS/SP/networking/commands.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/networking/commands.h
 lang.h
-/home/martin/skola/UPS/SP/networking/lang.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/networking/lang.h
 cstring
 -
 iostream
@@ -60,17 +60,17 @@ iostream
 unistd.h
 -
 ../stdmcr.h
-/home/martin/skola/UPS/SP/stdmcr.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/stdmcr.h
 
-/home/martin/skola/UPS/SP/networking/commands.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/networking/commands.h
 server.h
-/home/martin/skola/UPS/SP/networking/server.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/networking/server.h
 ../networkplayer.h
-/home/martin/skola/UPS/SP/networkplayer.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/networkplayer.h
 thread
 -
 
-/home/martin/skola/UPS/SP/networking/commonnetwork.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/networking/commonnetwork.h
 sys/socket.h
 -
 sys/types.h
@@ -82,37 +82,37 @@ netinet/in.h
 netdb.h
 -
 
-/home/martin/skola/UPS/SP/networking/lang.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/networking/lang.h
 
-/home/martin/skola/UPS/SP/networking/server.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/networking/server.h
 commands.h
-/home/martin/skola/UPS/SP/networking/commands.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/networking/commands.h
 commonnetwork.h
-/home/martin/skola/UPS/SP/networking/commonnetwork.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/networking/commonnetwork.h
 ../game.h
-/home/martin/skola/UPS/SP/game.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/game.h
 thread
 -
 
-/home/martin/skola/UPS/SP/networkplayer.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/networkplayer.h
 algorithm.h
-/home/martin/skola/UPS/SP/algorithm.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/algorithm.h
 programmerbot.h
-/home/martin/skola/UPS/SP/programmerbot.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/programmerbot.h
 networking/commands.h
-/home/martin/skola/UPS/SP/networking/commands.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/networking/commands.h
 
-/home/martin/skola/UPS/SP/programmerbot.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/programmerbot.h
 algorithm.h
-/home/martin/skola/UPS/SP/algorithm.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/algorithm.h
 
-/home/martin/skola/UPS/SP/semaphore.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/semaphore.h
 mutex
 -
 condition_variable
 -
 
-/home/martin/skola/UPS/SP/stdmcr.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/stdmcr.h
 ctime
 -
 

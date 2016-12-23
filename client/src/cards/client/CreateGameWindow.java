@@ -80,13 +80,17 @@ class CreateGameWindow extends JFrame implements Runnable{
 			Common.standardHandle(client,create_players_button);
 		});
 		client.addCallback("GameCreated",(e)->{
-			client.removeCallback("GameCreated");
 			client.send(SERVER_BUNDLE.getString("Login")+" "+name);
 		});
 		client.addCallback("Game",(e)->{
-			client.removeCallback("Game");
 			dispose();
 			new GameWindow(client,name).setVisible(true);
+		});
+		client.addCallback("PlayerExists",(s)->{
+			error("ErrorPlayerExists");
+			create_players_button.setEnabled(true);
+			dispose();
+			Main.main();	
 		});
 	}
 	private String getCommand(){

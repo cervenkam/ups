@@ -6,41 +6,41 @@
 
 #IncludeRegexTransform: 
 
-/home/martin/skola/UPS/SP/algono.cxx
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/algono.cxx
 algono.h
-/home/martin/skola/UPS/SP/algono.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/algono.h
 iostream
 -
 
-/home/martin/skola/UPS/SP/algono.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/algono.h
 algorithm.h
-/home/martin/skola/UPS/SP/algorithm.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/algorithm.h
 
-/home/martin/skola/UPS/SP/algorithm.cxx
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/algorithm.cxx
 algorithm.h
-/home/martin/skola/UPS/SP/algorithm.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/algorithm.h
 vector
 -
 iostream
 -
 stdmcr.h
-/home/martin/skola/UPS/SP/stdmcr.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/stdmcr.h
 
-/home/martin/skola/UPS/SP/algorithm.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/algorithm.h
 card.h
-/home/martin/skola/UPS/SP/card.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/card.h
 hand.h
-/home/martin/skola/UPS/SP/hand.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/hand.h
 lang.h
-/home/martin/skola/UPS/SP/lang.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/lang.h
 game.h
-/home/martin/skola/UPS/SP/game.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/game.h
 vector
 -
 semaphore.h
-/home/martin/skola/UPS/SP/semaphore.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/semaphore.h
 
-/home/martin/skola/UPS/SP/card.cxx
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/card.cxx
 ostream
 -
 iostream
@@ -48,25 +48,25 @@ iostream
 cstring
 -
 card.h
-/home/martin/skola/UPS/SP/card.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/card.h
 stdmcr.h
-/home/martin/skola/UPS/SP/stdmcr.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/stdmcr.h
 
-/home/martin/skola/UPS/SP/card.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/card.h
 ostream
 -
 
-/home/martin/skola/UPS/SP/config.cxx
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/config.cxx
 stdmcr.h
-/home/martin/skola/UPS/SP/stdmcr.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/stdmcr.h
 person.h
-/home/martin/skola/UPS/SP/person.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/person.h
 algono.h
-/home/martin/skola/UPS/SP/algono.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/algono.h
 programmerbot.h
-/home/martin/skola/UPS/SP/programmerbot.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/programmerbot.h
 networkplayer.h
-/home/martin/skola/UPS/SP/networkplayer.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/networkplayer.h
 cstring
 -
 sstream
@@ -76,31 +76,31 @@ iostream
 fstream
 -
 
-/home/martin/skola/UPS/SP/config.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/config.h
 algorithm.h
-/home/martin/skola/UPS/SP/algorithm.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/algorithm.h
 
-/home/martin/skola/UPS/SP/deck.cxx
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/deck.cxx
 deck.h
-/home/martin/skola/UPS/SP/deck.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/deck.h
 stdmcr.h
-/home/martin/skola/UPS/SP/stdmcr.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/stdmcr.h
 iostream
 -
 fstream
 -
 
-/home/martin/skola/UPS/SP/deck.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/deck.h
 functional
 -
 card.h
-/home/martin/skola/UPS/SP/card.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/card.h
 
-/home/martin/skola/UPS/SP/game.cxx
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/game.cxx
 game.h
-/home/martin/skola/UPS/SP/game.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/game.h
 stdmcr.h
-/home/martin/skola/UPS/SP/stdmcr.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/stdmcr.h
 iostream
 -
 fstream
@@ -108,31 +108,31 @@ fstream
 thread
 -
 
-/home/martin/skola/UPS/SP/game.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/game.h
 deck.h
-/home/martin/skola/UPS/SP/deck.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/deck.h
 algorithm.h
-/home/martin/skola/UPS/SP/algorithm.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/algorithm.h
 config.h
-/home/martin/skola/UPS/SP/config.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/config.h
 thread
 -
 
-/home/martin/skola/UPS/SP/hand.cxx
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/hand.cxx
 hand.h
-/home/martin/skola/UPS/SP/hand.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/hand.h
 iostream
 -
 
-/home/martin/skola/UPS/SP/hand.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/hand.h
 card.h
-/home/martin/skola/UPS/SP/card.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/card.h
 
-/home/martin/skola/UPS/SP/lang.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/lang.h
 
-/home/martin/skola/UPS/SP/main.cxx
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/main.cxx
 networking/server.h
-/home/martin/skola/UPS/SP/networking/server.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/networking/server.h
 cstdlib
 -
 cstdio
@@ -144,15 +144,15 @@ signal.h
 exception
 -
 
-/home/martin/skola/UPS/SP/networking/commands.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/networking/commands.h
 server.h
-/home/martin/skola/UPS/SP/networking/server.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/networking/server.h
 ../networkplayer.h
-/home/martin/skola/UPS/SP/networkplayer.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/networkplayer.h
 thread
 -
 
-/home/martin/skola/UPS/SP/networking/commonnetwork.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/networking/commonnetwork.h
 sys/socket.h
 -
 sys/types.h
@@ -164,87 +164,87 @@ netinet/in.h
 netdb.h
 -
 
-/home/martin/skola/UPS/SP/networking/lang.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/networking/lang.h
 
-/home/martin/skola/UPS/SP/networking/server.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/networking/server.h
 commands.h
-/home/martin/skola/UPS/SP/networking/commands.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/networking/commands.h
 commonnetwork.h
-/home/martin/skola/UPS/SP/networking/commonnetwork.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/networking/commonnetwork.h
 ../game.h
-/home/martin/skola/UPS/SP/game.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/game.h
 thread
 -
 
-/home/martin/skola/UPS/SP/networkplayer.cxx
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/networkplayer.cxx
 networkplayer.h
-/home/martin/skola/UPS/SP/networkplayer.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/networkplayer.h
 networking/lang.h
-/home/martin/skola/UPS/SP/networking/lang.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/networking/lang.h
 stdmcr.h
-/home/martin/skola/UPS/SP/stdmcr.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/stdmcr.h
 iostream
 -
 cstring
 -
 
-/home/martin/skola/UPS/SP/networkplayer.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/networkplayer.h
 algorithm.h
-/home/martin/skola/UPS/SP/algorithm.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/algorithm.h
 programmerbot.h
-/home/martin/skola/UPS/SP/programmerbot.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/programmerbot.h
 networking/commands.h
-/home/martin/skola/UPS/SP/networking/commands.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/networking/commands.h
 
-/home/martin/skola/UPS/SP/person.cxx
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/person.cxx
 person.h
-/home/martin/skola/UPS/SP/person.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/person.h
 stdmcr.h
-/home/martin/skola/UPS/SP/stdmcr.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/stdmcr.h
 networking/lang.h
-/home/martin/skola/UPS/SP/networking/lang.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/networking/lang.h
 iostream
 -
 fstream
 -
 
-/home/martin/skola/UPS/SP/person.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/person.h
 algorithm.h
-/home/martin/skola/UPS/SP/algorithm.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/algorithm.h
 
-/home/martin/skola/UPS/SP/programmerbot.cxx
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/programmerbot.cxx
 programmerbot.h
-/home/martin/skola/UPS/SP/programmerbot.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/programmerbot.h
 limits.h
-/home/martin/skola/UPS/SP/limits.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/limits.h
 iostream
 -
 
-/home/martin/skola/UPS/SP/programmerbot.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/programmerbot.h
 algorithm.h
-/home/martin/skola/UPS/SP/algorithm.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/algorithm.h
 
-/home/martin/skola/UPS/SP/semaphore.cxx
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/semaphore.cxx
 semaphore.h
-/home/martin/skola/UPS/SP/semaphore.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/semaphore.h
 iostream
 -
 
-/home/martin/skola/UPS/SP/semaphore.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/semaphore.h
 mutex
 -
 condition_variable
 -
 
-/home/martin/skola/UPS/SP/stdmcr.cxx
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/stdmcr.cxx
 stdmcr.h
-/home/martin/skola/UPS/SP/stdmcr.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/stdmcr.h
 cstring
 -
 cstdio
 -
 
-/home/martin/skola/UPS/SP/stdmcr.h
+/afs/zcu.cz/users/c/cervemar/home/UPS/projekt/ups/stdmcr.h
 ctime
 -
 

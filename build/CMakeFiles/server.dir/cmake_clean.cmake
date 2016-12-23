@@ -1,4 +1,4 @@
-FILE(REMOVE_RECURSE
+file(REMOVE_RECURSE
   "CMakeFiles/server.dir/stdmcr.cxx.o"
   "CMakeFiles/server.dir/semaphore.cxx.o"
   "CMakeFiles/server.dir/config.cxx.o"
@@ -17,6 +17,6 @@ FILE(REMOVE_RECURSE
 )
 
 # Per-language clean rules from dependency scanning.
-FOREACH(lang CXX)
-  INCLUDE(CMakeFiles/server.dir/cmake_clean_${lang}.cmake OPTIONAL)
-ENDFOREACH(lang)
+foreach(lang CXX)
+  include(CMakeFiles/server.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()
